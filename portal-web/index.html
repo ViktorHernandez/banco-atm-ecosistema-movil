@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Banco ATM · Banca en línea</title>
+    <meta
+      name="description"
+      content="Portal web de Banco ATM: consulte cuentas, transfiera, pague servicios y administre su tarjeta desde un solo lugar."
+    />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/publico.css" />
+    <link rel="stylesheet" href="/css/accesibilidad.css" />
+  </head>
+  <body>
+    <a class="salto-contenido" href="#acceso">Ir al contenido principal</a>
+
+    <div class="sitio">
+      <div class="cinta">
+        <div class="cinta__interior">
+          <span>Ecosistema Banco ATM · Portal web, app móvil y cajeros conectados a la misma API bancaria</span>
+          <span>
+            Atención a clientes:
+            <button type="button" class="cinta__telefono" id="telefonoCinta">
+              56 2972 7628
+            </button>
+          </span>
+        </div>
+      </div>
+
+      <header class="cabecera">
+        <div class="cabecera__interior">
+          <a class="marca" href="#inicio">
+            <span class="marca__sello" id="selloMarca">BA</span>
+            <span class="marca__nombre" id="nombreMarca">Banco ATM</span>
+          </a>
+          <nav class="navegacion" aria-label="Navegación del sitio">
+            <a href="#servicios">Servicios</a>
+            <a href="#canales">Canales</a>
+            <a href="/seguridad">Seguridad</a>
+            <a href="#ayuda">Ayuda</a>
+          </nav>
+          <a class="boton" href="#acceso" data-panel="acceso">Entrar al portal</a>
+        </div>
+      </header>
+
+      <main id="inicio">
+        <section class="portada">
+          <div class="portada__interior">
+            <div>
+              <span class="portada__eyebrow">Banca en línea</span>
+              <h1 class="portada__titulo">
+                Su dinero, <em>igual de claro</em> desde cualquier canal.
+              </h1>
+              <p class="portada__texto">
+                Consulte sus cuentas, transfiera, pague servicios y controle su
+                tarjeta. Lo que hace aquí se refleja de inmediato en el cajero y
+                en la app, porque los tres canales operan sobre la misma banca.
+              </p>
+              <ul class="portada__puntos">
+                <li>Saldo y movimientos actualizados al momento de la consulta.</li>
+                <li>Transferencias entre cuentas del banco con comprobante.</li>
+                <li>Bloqueo y desbloqueo de tarjeta cuando usted lo decida.</li>
+              </ul>
+            </div>
+
+            <section class="acceso" id="acceso" aria-labelledby="tituloAcceso">
+              <div class="acceso__pestanas" role="tablist">
+                <button type="button" class="acceso__pestana activa" data-panel="acceso" role="tab">
+                  Entrar
+                </button>
+                <button type="button" class="acceso__pestana" data-panel="crearcuenta" role="tab">
+                  Crear cuenta
+                </button>
+              </div>
+
+
+              <div class="acceso__panel activa" data-panel-contenido="acceso">
+                <h2 class="acceso__titulo" id="tituloAcceso">Acceso al portal</h2>
+                <p class="acceso__texto">
+                  Use el mismo correo y contraseña de su banca. Los administradores
+                  entran por esta misma pantalla.
+                </p>
+
+                <div id="avisoAcceso" hidden></div>
+
+                <form id="formularioAcceso" novalidate>
+                  <label class="campo">
+                    <span class="campo__etiqueta">Correo</span>
+                    <input type="email" id="correo" class="campo__control"
+                      autocomplete="username" placeholder="nombre@bancoatm.test" required />
+                  </label>
+
+                  <label class="campo">
+                    <span class="campo__etiqueta">Contraseña</span>
+                    <input type="password" id="password" class="campo__control"
+                      autocomplete="current-password" required />
+                  </label>
+
+                  <button type="submit" class="boton boton--bloque" id="botonAcceso">
+                    Entrar
+                  </button>
+
+                  <button type="button" class="boton boton--secundario boton--bloque" id="enlaceRecuperar">
+                    ¿Olvidó su contraseña?
+                  </button>
+                </form>
+
+                <p class="acceso__alterna">¿Todavía no tiene cuenta?</p>
+                <button type="button" class="boton boton--bloque boton--secundario" data-panel="crearcuenta">
+                  Crear cuenta
+                </button>
+
+                <div class="acceso__pie">
+                  <span class="rotulo">Cuentas de prueba</span>
+                  <p class="campo__ayuda">
+                    Toque una para llenar el formulario. Son los datos del seed del
+                    proyecto.
+                  </p>
+                  <div class="credenciales">
+                    <button type="button" class="credencial"
+                      data-correo="mariana.robles@bancoatm.test" data-password="Cliente123!">
+                      <span>
+                        <strong>Mariana Robles Cadena</strong>
+                        mariana.robles@bancoatm.test
+                      </span>
+                      <span class="insignia insignia--neutra">Cliente</span>
+                    </button>
+                    <button type="button" class="credencial"
+                      data-correo="esteban.quintero@bancoatm.test" data-password="Cliente123!">
+                      <span>
+                        <strong>Esteban Quintero Lara</strong>
+                        esteban.quintero@bancoatm.test
+                      </span>
+                      <span class="insignia insignia--neutra">Cliente</span>
+                    </button>
+                    <button type="button" class="credencial"
+                      data-correo="rodrigo.alcantara@bancoatm.test" data-password="Admin123!">
+                      <span>
+                        <strong>Rodrigo Alcántara Vega</strong>
+                        rodrigo.alcantara@bancoatm.test
+                      </span>
+                      <span class="insignia">Administrador</span>
+                    </button>
+                  </div>
+                  <p class="campo__ayuda" id="estadoServicio">
+                    Verificando el enlace con la API bancaria…
+                  </p>
+                </div>
+              </div>
+
+
+              <div class="acceso__panel" data-panel-contenido="crearcuenta">
+                <h2 class="acceso__titulo">Crear una cuenta</h2>
+                <p class="acceso__texto">
+                  Registre sus datos y le enviaremos un código para comprobar que el
+                  correo le pertenece.
+                </p>
+
+                <div id="avisoRegistro" hidden></div>
+
+                <form id="formularioRegistro" novalidate>
+                  <label class="campo">
+                    <span class="campo__etiqueta">Nombre completo</span>
+                    <input type="text" id="registroNombre" class="campo__control"
+                      autocomplete="name" placeholder="Nombre y apellidos" required />
+                  </label>
+
+                  <label class="campo">
+                    <span class="campo__etiqueta">Correo electrónico</span>
+                    <input type="email" id="registroCorreo" class="campo__control"
+                      autocomplete="email" placeholder="nombre@ejemplo.com" required />
+                  </label>
+
+                  <label class="campo">
+                    <span class="campo__etiqueta">Teléfono</span>
+                    <input type="tel" id="registroTelefono" class="campo__control"
+                      autocomplete="tel" placeholder="55 1234 5678" required />
+                  </label>
+
+                  <label class="campo">
+                    <span class="campo__etiqueta">Contraseña</span>
+                    <input type="password" id="registroPassword" class="campo__control"
+                      autocomplete="new-password" required />
+                    <span class="campo__ayuda">Mínimo 8 caracteres.</span>
+                  </label>
+
+                  <label class="campo">
+                    <span class="campo__etiqueta">Repita la contraseña</span>
+                    <input type="password" id="registroConfirmacion" class="campo__control"
+                      autocomplete="new-password" required />
+                  </label>
+
+                  <button type="submit" class="boton boton--bloque" id="botonRegistro">
+                    Crear cuenta
+                  </button>
+                </form>
+
+                <p class="acceso__alterna">¿Ya tiene cuenta?</p>
+                <button type="button" class="boton boton--bloque boton--secundario" data-panel="acceso">
+                  Entrar al portal
+                </button>
+              </div>
+
+
+              <div class="acceso__panel" data-panel-contenido="verificar">
+                <h2 class="acceso__titulo">Verifique su correo</h2>
+                <p class="acceso__texto" id="textoVerificacion">
+                  Escriba el código de 6 dígitos que le enviamos.
+                </p>
+
+                <div id="avisoVerificacion" hidden></div>
+
+                <form id="formularioVerificacion" novalidate>
+                  <label class="campo">
+                    <span class="campo__etiqueta">Correo</span>
+                    <input type="email" id="verificarCorreo" class="campo__control" required />
+                  </label>
+
+                  <label class="campo">
+                    <span class="campo__etiqueta">Código de verificación</span>
+                    <input type="text" id="verificarCodigo" class="campo__control campo__control--codigo"
+                      inputmode="numeric" maxlength="6" placeholder="000000" required />
+                  </label>
+
+                  <button type="submit" class="boton boton--bloque" id="botonVerificar">
+                    Verificar mi cuenta
+                  </button>
+                </form>
+
+                <p class="acceso__alterna">¿No le llegó el código?</p>
+                <button type="button" class="boton boton--bloque boton--secundario" id="botonReenviar">
+                  Enviar otro código
+                </button>
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section class="seccion" id="servicios">
+          <h2 class="seccion__titulo">Lo que puede hacer desde el portal</h2>
+          <p class="seccion__intro">
+            Todas las operaciones se resuelven en el backend del banco, así que
+            las reglas de saldo, límites y bloqueos son idénticas a las del
+            cajero.
+          </p>
+
+          <div class="servicios">
+            <article class="servicio">
+              <div class="servicio__icono" data-icono="cuentas"></div>
+              <h3 class="servicio__titulo">Cuentas y saldo</h3>
+              <p>
+                Revise el saldo disponible, el detalle de su cuenta y el
+                histórico de movimientos con filtros por fecha y tipo.
+              </p>
+            </article>
+            <article class="servicio">
+              <div class="servicio__icono" data-icono="transferencias"></div>
+              <h3 class="servicio__titulo">Transferencias</h3>
+              <p>
+                Envíe dinero a otra cuenta del banco, confirme el detalle antes
+                de aplicar y descargue el comprobante.
+              </p>
+            </article>
+            <article class="servicio">
+              <div class="servicio__icono" data-icono="pagos"></div>
+              <h3 class="servicio__titulo">Pago de servicios</h3>
+              <p>
+                Pague luz, agua, gas, telefonía y televisión desde el catálogo de
+                proveedores del banco.
+              </p>
+            </article>
+            <article class="servicio">
+              <div class="servicio__icono" data-icono="tarjeta"></div>
+              <h3 class="servicio__titulo">Su tarjeta</h3>
+              <p>
+                Bloquee la tarjeta en un toque si la extravía y desbloquéela
+                cuando aparezca.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="seccion--tenue" id="canales">
+          <div class="seccion__interior">
+            <h2 class="seccion__titulo">Tres canales, una sola banca</h2>
+            <p class="seccion__intro">
+              El portal web, la aplicación móvil y los cajeros automáticos
+              consultan y escriben sobre la misma base de datos a través de la
+              API bancaria común.
+            </p>
+
+            <div class="canales">
+              <article class="canal">
+                <h3>Portal web</h3>
+                <p class="texto-tenue">
+                  Para clientes y para el personal del banco. Incluye el panel
+                  administrativo con usuarios, tarjetas, reportes y auditoría.
+                </p>
+                <div class="canal__estado">
+                  <span class="insignia insignia--activa">En operación</span>
+                  <a class="boton boton--secundario boton--chico" href="#acceso" data-panel="acceso">
+                    Entrar
+                  </a>
+                </div>
+              </article>
+              <article class="canal">
+                <h3>Cajero automático</h3>
+                <p class="texto-tenue">
+                  Retiros, depósitos, transferencias, pago de servicios y cambio
+                  de PIN con autenticación por tarjeta.
+                </p>
+                <div class="canal__estado">
+                  <span class="insignia insignia--activa">En operación</span>
+                  <a class="boton boton--secundario boton--chico" id="enlaceCajero"
+                     href="http://localhost:5500/" target="_blank" rel="noopener">
+                    Abrir el cajero
+                  </a>
+                </div>
+              </article>
+              <article class="canal">
+                <h3>Aplicación móvil</h3>
+                <p class="texto-tenue">
+                  Consulta de saldo, movimientos, transferencias y
+                  notificaciones desde el teléfono. Descargue el archivo de
+                  instalación para Android desde el portal.
+                </p>
+                <div class="canal__estado">
+                  <span class="insignia insignia--activa">Disponible para Android</span>
+                  <a class="boton boton--secundario boton--chico" href="/app-movil">
+                    Conocer la aplicación
+                  </a>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="seccion" id="seguridad">
+          <div class="seguridad">
+            <div>
+              <h2 class="seccion__titulo">Cómo protegemos su sesión</h2>
+              <p class="seccion__intro">
+                La seguridad no depende del canal que use: se aplica en el mismo
+                lugar para todos.
+              </p>
+              <ul class="seguridad__lista">
+                <li>
+                  <span class="seguridad__numero">1</span>
+                  <div>
+                    <strong>Contraseñas y PIN cifrados</strong>
+                    <p>
+                      Guardamos solo el hash. Ni desde la base de datos es
+                      posible recuperar su PIN.
+                    </p>
+                  </div>
+                </li>
+                <li>
+                  <span class="seguridad__numero">2</span>
+                  <div>
+                    <strong>Sesión con vencimiento</strong>
+                    <p>
+                      Su acceso caduca solo. Si deja el portal abierto, la sesión
+                      se cierra sin que usted haga nada.
+                    </p>
+                  </div>
+                </li>
+                <li>
+                  <span class="seguridad__numero">3</span>
+                  <div>
+                    <strong>Cada operación queda registrada</strong>
+                    <p>
+                      El banco guarda quién hizo qué, desde qué canal y cuándo,
+                      para poder aclarar cualquier movimiento.
+                    </p>
+                  </div>
+                </li>
+                <li>
+                  <span class="seguridad__numero">4</span>
+                  <div>
+                    <strong>Bloqueo automático de tarjeta</strong>
+                    <p>
+                      Tras tres intentos incorrectos de PIN en el cajero, la
+                      tarjeta se bloquea de inmediato.
+                    </p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="tarjeta">
+              <h3>¿Perdió su tarjeta?</h3>
+              <p class="texto-tenue" style="margin: 8px 0 18px">
+                Entre al portal y bloquéela usted mismo. El bloqueo aplica en el
+                cajero en la siguiente consulta, sin llamar a nadie.
+              </p>
+              <a class="boton boton--bloque" href="#acceso">Entrar y bloquear mi tarjeta</a>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="pie" id="ayuda">
+        <div class="pie__interior">
+          <div class="pie__columnas">
+            <div>
+              <a class="marca" href="#inicio">
+                <span class="marca__sello">BA</span>
+                <span class="marca__nombre">Banco ATM</span>
+              </a>
+              <p style="margin-top: 12px; font-size: 0.88rem">
+                Institución bancaria ficticia creada como proyecto final de
+                Ingeniería de Software.
+              </p>
+            </div>
+            <div>
+              <h4>Servicios</h4>
+              <ul>
+                <li><a href="#servicios">Cuentas y saldo</a></li>
+                <li><a href="#servicios">Transferencias</a></li>
+                <li><a href="#servicios">Pago de servicios</a></li>
+                <li><a href="#servicios">Gestión de tarjeta</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4>Canales</h4>
+              <ul>
+                <li><a href="#canales">Portal web</a></li>
+                <li><a href="http://localhost:5500/" id="enlaceCajeroPie" target="_blank" rel="noopener">Cajero automático</a></li>
+                <li><a href="/app-movil">Aplicación móvil</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4>Contacto</h4>
+              <ul>
+                <li>
+                  <button type="button" class="pie__telefono" id="pieTelefono">
+                    56 2972 7628
+                  </button>
+                </li>
+                <li id="pieCorreo">atencion@bancoatm.test</li>
+                <li><a href="/seguridad">Consejos de seguridad</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="pie__legal">
+            <span id="pieLegal">
+              © 2026 Banco ATM. Proyecto académico sin operación financiera real.
+            </span>
+            <span>Los datos mostrados corresponden a un entorno de pruebas.</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <div class="capa-carga" id="capaCarga" hidden>
+      <div class="giro" role="status" aria-label="Procesando"></div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="js/traducciones.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/accesibilidad.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/asistente.js"></script>
+    <script src="js/publico.js"></script>
+  </body>
+</html>

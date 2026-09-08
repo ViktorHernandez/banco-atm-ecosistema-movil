@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cajero Automático - Banco ATM</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="salto-contenido" href="#pantallaPrincipal" data-i18n="Ir al contenido principal">Ir al contenido principal</a>
+    <div class="cajero">
+      <header class="cajero__encabezado">
+        <div>
+          <span class="cajero__banco" id="etiquetaBanco">Banco ATM</span>
+          <span class="cajero__id" id="etiquetaCajero">ATM-001</span>
+        </div>
+        <div class="cajero__estado">
+          <span id="indicadorConexion" class="indicador indicador--desconocido"></span>
+          <span id="textoConexion" role="status" aria-live="polite">Verificando enlace...</span>
+          <button type="button" id="botonConfiguracion" class="boton-icono" title="Configurar API" data-i18n-title="Configurar API" data-i18n="API">
+            API
+          </button>
+        </div>
+      </header>
+
+      <main class="cajero__pantalla" id="pantallaPrincipal" tabindex="-1">
+        <section class="pantalla activa" data-pantalla="inicio" role="region" tabindex="-1">
+          <h1 class="pantalla__titulo" data-i18n="Bienvenido">Bienvenido</h1>
+          <p class="pantalla__texto" data-i18n="Inserte su tarjeta para comenzar. Este cajero opera contra la API bancaria común del ecosistema.">
+            Inserte su tarjeta para comenzar. Este cajero opera contra la API
+            bancaria común del ecosistema.
+          </p>
+          <div class="acciones acciones--centro">
+            <button type="button" class="boton boton--principal" data-accion="insertar-tarjeta" data-i18n="Insertar tarjeta">
+              Insertar tarjeta
+            </button>
+          </div>
+          <p class="pantalla__nota" id="notaConexion"></p>
+        </section>
+
+        <section class="pantalla" data-pantalla="tarjeta" role="region" tabindex="-1">
+          <h2 class="pantalla__titulo" data-i18n="Número de tarjeta">Número de tarjeta</h2>
+          <p class="pantalla__texto" data-i18n="Capture los 16 dígitos de su tarjeta.">Capture los 16 dígitos de su tarjeta.</p>
+          <div class="entrada" id="entradaTarjeta">----</div>
+          <div class="teclado" data-teclado="tarjeta"></div>
+          <div class="acciones">
+            <button type="button" class="boton boton--secundario" data-accion="cancelar-sesion" data-i18n="Cancelar">
+              Cancelar
+            </button>
+            <button type="button" class="boton boton--principal" data-accion="confirmar-tarjeta" data-i18n="Continuar">
+              Continuar
+            </button>
+          </div>
+        </section>
+
+        <section class="pantalla" data-pantalla="pin" role="region" tabindex="-1">
+          <h2 class="pantalla__titulo" data-i18n="Ingrese su PIN">Ingrese su PIN</h2>
+          <p class="pantalla__texto" id="textoTarjetaEnmascarada"></p>
+          <div class="entrada entrada--pin" id="entradaPin"></div>
+          <div class="teclado" data-teclado="pin"></div>
+          <div class="acciones">
+            <button type="button" class="boton boton--secundario" data-accion="cancelar-sesion" data-i18n="Cancelar">
+              Cancelar
+            </button>
+            <button type="button" class="boton boton--principal" data-accion="confirmar-pin" data-i18n="Aceptar">
+              Aceptar
+            </button>
+          </div>
+        </section>
+
+        <section class="pantalla" data-pantalla="menu" role="region" tabindex="-1">
+          <h2 class="pantalla__titulo" data-i18n="Menú principal">Menú principal</h2>
+          <p class="pantalla__texto" id="textoBienvenida"></p>
+          <div class="menu">
+            <button type="button" class="boton boton--menu" data-ir="saldo" data-i18n="Consultar saldo">Consultar saldo</button>
+            <button type="button" class="boton boton--menu" data-ir="retiro" data-i18n="Retiro de efectivo">Retiro de efectivo</button>
+            <button type="button" class="boton boton--menu" data-ir="deposito" data-i18n="Depósito">Depósito</button>
+            <button type="button" class="boton boton--menu" data-ir="transferencia" data-i18n="Transferencia">Transferencia</button>
+            <button type="button" class="boton boton--menu" data-ir="movimientos" data-i18n="Movimientos">Movimientos</button>
+            <button type="button" class="boton boton--menu" data-ir="pago" data-i18n="Pago de servicios">Pago de servicios</button>
+            <button type="button" class="boton boton--menu" data-ir="cambio-pin" data-i18n="Cambiar PIN">Cambiar PIN</button>
+            <button type="button" class="boton boton--menu" data-ir="tarjeta-gestion" data-i18n="Mi tarjeta">Mi tarjeta</button>
+            <button type="button" class="boton boton--menu" data-ir="prestamo" data-i18n="Préstamos">Préstamos</button>
+          </div>
+          <div class="acciones acciones--centro">
+            <button type="button" class="boton boton--secundario" data-accion="cerrar-sesion" data-i18n="Finalizar y retirar tarjeta">
+              Finalizar y retirar tarjeta
+            </button>
+          </div>
+        </section>
+
+        <section class="pantalla" data-pantalla="saldo" role="region" tabindex="-1">
+          <h2 class="pantalla__titulo" data-i18n="Saldo disponible">Saldo disponible</h2>
+          <div class="tarjeta-dato">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Cuenta">Cuenta</span>
+            <span class="tarjeta-dato__valor" id="saldoCuenta">—</span>
+          </div>
+          <div class="tarjeta-dato tarjeta-dato--destacado">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Saldo">Saldo</span>
+            <span class="tarjeta-dato__valor" id="saldoMonto">—</span>
+          </div>
+          <p class="pantalla__nota" id="saldoFecha"></p>
+          <div class="acciones">
+            <button type="button" class="boton boton--secundario" data-accion="volver-menu" data-i18n="Menú">Menú</button>
+          </div>
+        </section>
+
+        <section class="pantalla" data-pantalla="retiro" role="region" tabindex="-1">
+          <h2 class="pantalla__titulo" data-i18n="Retiro de efectivo">Retiro de efectivo</h2>
+          <p class="pantalla__texto">
+            <span id="notaRetiro">Seleccione un monto o capture otra cantidad.</span>
+          </p>
+          <div class="montos" id="montosRetiro"></div>
+          <label class="campo">
+            <span class="campo__etiqueta" data-i18n="Otro monto">Otro monto</span>
+            <input type="number" id="montoRetiro" class="campo__control" inputmode="numeric" />
+          </label>
+          <div class="acciones">
+            <button type="button" class="boton boton--secundario" data-accion="volver-menu" data-i18n="Menú">Menú</button>
+            <button type="button" class="boton boton--principal" data-accion="confirmar-retiro" data-i18n="Retirar">Retirar</button>
+          </div>
+        </section>
+
+        <section class="pantalla" data-pantalla="deposito" role="region" tabindex="-1">
+          <h2 class="pantalla__titulo" data-i18n="Depósito de efectivo">Depósito de efectivo</h2>
+          <p class="pantalla__texto">
+            <span id="notaDeposito">Coloque los billetes en la ranura.</span>
+          </p>
+          <div class="montos" id="montosDeposito"></div>
+          <label class="campo">
+            <span class="campo__etiqueta" data-i18n="Otro monto">Otro monto</span>
+            <input type="number" id="montoDeposito" class="campo__control" inputmode="numeric" />
+          </label>
+          <div class="acciones">
+            <button type="button" class="boton boton--secundario" data-accion="volver-menu" data-i18n="Menú">Menú</button>
+            <button type="button" class="boton boton--principal" data-accion="confirmar-deposito" data-i18n="Depositar">Depositar</button>
+          </div>
+        </section>
+
+        <section class="pantalla" data-pantalla="transferencia" role="region" tabindex="-1">
+          <h2 class="pantalla__titulo" data-i18n="Transferencia">Transferencia</h2>
+          <p class="pantalla__texto" data-i18n="Transferencias entre cuentas de este banco.">Transferencias entre cuentas de este banco.</p>
+          <label class="campo">
+            <span class="campo__etiqueta" data-i18n="Cuenta destino">Cuenta destino</span>
+            <input type="text" id="cuentaDestino" class="campo__control" inputmode="numeric" placeholder="1000000002" />
+          </label>
+          <label class="campo">
+            <span class="campo__etiqueta" data-i18n="Monto">Monto</span>
+            <input type="number" id="montoTransferencia" class="campo__control" min="1" step="0.01" inputmode="decimal" />
+          </label>
+          <label class="campo">
+            <span class="campo__etiqueta" data-i18n="Concepto (opcional)">Concepto (opcional)</span>
+            <input type="text" id="conceptoTransferencia" class="campo__control" maxlength="120" />
+          </label>
+          <div class="acciones">
+            <button type="button" class="boton boton--secundario" data-accion="volver-menu" data-i18n="Menú">Menú</button>
+            <button type="button" class="boton boton--principal" data-accion="confirmar-transferencia" data-i18n="Transferir">Transferir</button>
+          </div>
+        </section>
+
+        <section class="pantalla" data-pantalla="movimientos" role="region" tabindex="-1">
+          <h2 class="pantalla__titulo" data-i18n="Últimos movimientos">Últimos movimientos</h2>
+          <div class="movimientos" id="listaMovimientos"></div>
+          <div class="acciones">
+            <button type="button" class="boton boton--secundario" data-accion="volver-menu" data-i18n="Menú">Menú</button>
+          </div>
+        </section>
+
+        <section class="pantalla" data-pantalla="pago" role="region" tabindex="-1">
+          <h2 class="pantalla__titulo" data-i18n="Pago de servicios">Pago de servicios</h2>
+          <label class="campo">
+            <span class="campo__etiqueta" data-i18n="Proveedor">Proveedor</span>
+            <select id="proveedorServicio" class="campo__control"></select>
+          </label>
+          <p class="pantalla__nota" id="notaProveedor"></p>
+          <label class="campo">
+            <span class="campo__etiqueta" data-i18n="Referencia">Referencia</span>
+            <input type="text" id="referenciaServicio" class="campo__control" maxlength="20" />
+          </label>
+          <label class="campo">
+            <span class="campo__etiqueta" data-i18n="Monto">Monto</span>
+            <input type="number" id="montoServicio" class="campo__control" min="1" step="0.01" inputmode="decimal" />
+          </label>
+          <div class="acciones">
+            <button type="button" class="boton boton--secundario" data-accion="volver-menu" data-i18n="Menú">Menú</button>
+            <button type="button" class="boton boton--principal" data-accion="confirmar-pago" data-i18n="Pagar">Pagar</button>
+          </div>
+          <p class="pantalla__nota" id="notaPrestamosPago" hidden></p>
+          <div class="acciones" id="accionesPrestamosPago" hidden>
+            <button type="button" class="boton boton--secundario" data-accion="ver-prestamos-vigentes" data-i18n="Pagar un préstamo">Pagar un préstamo</button>
+          </div>
+        </section>
+
+        <section class="pantalla" data-pantalla="cambio-pin" role="region" tabindex="-1">
+          <h2 class="pantalla__titulo" data-i18n="Cambio de PIN">Cambio de PIN</h2>
+          <label class="campo">
+            <span class="campo__etiqueta" data-i18n="PIN actual">PIN actual</span>
+            <input type="password" id="pinActual" class="campo__control" maxlength="6" inputmode="numeric" />
+          </label>
+          <label class="campo">
+            <span class="campo__etiqueta" data-i18n="PIN nuevo">PIN nuevo</span>
+            <input type="password" id="pinNuevo" class="campo__control" maxlength="6" inputmode="numeric" />
+          </label>
+          <label class="campo">
+            <span class="campo__etiqueta" data-i18n="Confirmar PIN nuevo">Confirmar PIN nuevo</span>
+            <input type="password" id="pinConfirmacion" class="campo__control" maxlength="6" inputmode="numeric" />
+          </label>
+          <div class="acciones">
+            <button type="button" class="boton boton--secundario" data-accion="volver-menu" data-i18n="Menú">Menú</button>
+            <button type="button" class="boton boton--principal" data-accion="confirmar-cambio-pin" data-i18n="Cambiar">Cambiar</button>
+          </div>
+        </section>
+
+        <section class="pantalla" data-pantalla="tarjeta-gestion" role="region" tabindex="-1">
+          <h2 class="pantalla__titulo" data-i18n="Mi tarjeta">Mi tarjeta</h2>
+          <div class="tarjeta-dato">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Número">Número</span>
+            <span class="tarjeta-dato__valor" id="tarjetaNumero">—</span>
+          </div>
+          <div class="tarjeta-dato">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Estado">Estado</span>
+            <span class="tarjeta-dato__valor" id="tarjetaEstado">—</span>
+          </div>
+          <div class="tarjeta-dato">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Intentos fallidos">Intentos fallidos</span>
+            <span class="tarjeta-dato__valor" id="tarjetaIntentos">—</span>
+          </div>
+          <p class="pantalla__nota" data-i18n="El bloqueo finaliza su sesión de inmediato. El desbloqueo se realiza desde la app móvil o el portal web.">
+            El bloqueo finaliza su sesión de inmediato. El desbloqueo se realiza
+            desde la app móvil o el portal web.
+          </p>
+          <div class="acciones">
+            <button type="button" class="boton boton--secundario" data-accion="volver-menu" data-i18n="Menú">Menú</button>
+            <button type="button" class="boton boton--peligro" data-accion="confirmar-bloqueo" data-i18n="Bloquear tarjeta">
+              Bloquear tarjeta
+            </button>
+          </div>
+        </section>
+
+        <section class="pantalla" data-pantalla="prestamo" role="region" tabindex="-1">
+          <h2 class="pantalla__titulo" data-i18n="Préstamos">Préstamos</h2>
+          <div class="tarjeta-dato tarjeta-dato--destacado">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Puede solicitar hasta">Puede solicitar hasta</span>
+            <span class="tarjeta-dato__valor" id="prestamoLimite">—</span>
+          </div>
+          <div class="tarjeta-dato">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Perfil aplicado">Perfil aplicado</span>
+            <span class="tarjeta-dato__valor" id="prestamoPerfil">—</span>
+          </div>
+          <div class="tarjeta-dato">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Saldo considerado">Saldo considerado</span>
+            <span class="tarjeta-dato__valor" id="prestamoSaldo">—</span>
+          </div>
+          <div class="tarjeta-dato">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Monto mínimo">Monto mínimo</span>
+            <span class="tarjeta-dato__valor" id="prestamoMinimo">—</span>
+          </div>
+          <div class="tarjeta-dato">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Tasa anual">Tasa anual</span>
+            <span class="tarjeta-dato__valor" id="prestamoTasa">—</span>
+          </div>
+          <p class="pantalla__nota" id="prestamoNota"></p>
+          <div class="acciones">
+            <button type="button" class="boton boton--secundario" data-accion="volver-menu" data-i18n="Menú">Menú</button>
+            <button type="button" class="boton boton--secundario" data-accion="ver-prestamos-vigentes" id="botonPrestamosVigentes" data-i18n="Mis préstamos">Mis préstamos</button>
+            <button type="button" class="boton boton--principal" data-accion="ir-monto-prestamo" id="botonIrMontoPrestamo" data-i18n="Solicitar préstamo">Solicitar préstamo</button>
+          </div>
+        </section>
+
+        <section class="pantalla" data-pantalla="prestamos-vigentes" role="region" tabindex="-1">
+          <h2 class="pantalla__titulo" data-i18n="Mis préstamos">Mis préstamos</h2>
+          <p class="pantalla__texto" id="prestamosVigentesTexto"></p>
+          <div class="movimientos" id="listaPrestamosVigentes"></div>
+          <div class="acciones">
+            <button type="button" class="boton boton--secundario" data-accion="volver-menu" data-i18n="Menú">Menú</button>
+            <button type="button" class="boton boton--secundario" data-ir="prestamo" data-i18n="Préstamos">Préstamos</button>
+          </div>
+        </section>
+
+        <section class="pantalla" data-pantalla="prestamo-detalle" role="region" tabindex="-1">
+          <h2 class="pantalla__titulo" data-i18n="Detalle del préstamo">Detalle del préstamo</h2>
+          <div class="tarjeta-dato tarjeta-dato--destacado">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Falta por pagar">Falta por pagar</span>
+            <span class="tarjeta-dato__valor" id="detallePendiente">—</span>
+          </div>
+          <div class="tarjeta-dato">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Folio">Folio</span>
+            <span class="tarjeta-dato__valor" id="detalleFolio">—</span>
+          </div>
+          <div class="tarjeta-dato">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Estado">Estado</span>
+            <span class="tarjeta-dato__valor" id="detalleEstado">—</span>
+          </div>
+          <div class="tarjeta-dato">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Monto original">Monto original</span>
+            <span class="tarjeta-dato__valor" id="detalleMonto">—</span>
+          </div>
+          <div class="tarjeta-dato">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Total proyectado">Total proyectado</span>
+            <span class="tarjeta-dato__valor" id="detalleTotal">—</span>
+          </div>
+          <div class="tarjeta-dato">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Plazo">Plazo</span>
+            <span class="tarjeta-dato__valor" id="detallePlazo">—</span>
+          </div>
+          <div class="tarjeta-dato">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Pagos realizados">Pagos realizados</span>
+            <span class="tarjeta-dato__valor" id="detallePagos">—</span>
+          </div>
+          <div class="tarjeta-dato">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Tasa anual">Tasa anual</span>
+            <span class="tarjeta-dato__valor" id="detalleTasa">—</span>
+          </div>
+          <div class="tarjeta-dato">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Pago mensual">Pago mensual</span>
+            <span class="tarjeta-dato__valor" id="detalleMensual">—</span>
+          </div>
+          <div class="tarjeta-dato">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Pago mínimo">Pago mínimo</span>
+            <span class="tarjeta-dato__valor" id="detalleMinimo">—</span>
+          </div>
+          <div class="tarjeta-dato">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Para liquidar hoy">Para liquidar hoy</span>
+            <span class="tarjeta-dato__valor" id="detalleLiquidar">—</span>
+          </div>
+          <div class="tarjeta-dato">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Próximo pago">Próximo pago</span>
+            <span class="tarjeta-dato__valor" id="detalleProximo">—</span>
+          </div>
+          <p class="pantalla__nota" data-i18n="Liquidar hoy evita los intereses de los pagos que faltan.">Liquidar hoy evita los intereses de los pagos que faltan.</p>
+          <div class="acciones">
+            <button type="button" class="boton boton--secundario" data-accion="ver-prestamos-vigentes" data-i18n="Volver">Volver</button>
+            <button type="button" class="boton boton--principal" data-accion="ir-pago-prestamo" id="botonIrPagoPrestamo" data-i18n="Pagar">Pagar</button>
+          </div>
+        </section>
+
+        <section class="pantalla" data-pantalla="prestamo-pago" role="region" tabindex="-1">
+          <h2 class="pantalla__titulo" data-i18n="Pagar préstamo">Pagar préstamo</h2>
+          <p class="pantalla__texto" id="pagoPrestamoTexto"></p>
+          <div class="montos" id="montosPagoPrestamo"></div>
+          <label class="campo">
+            <span class="campo__etiqueta" data-i18n="Otra cantidad">Otra cantidad</span>
+            <input type="number" id="montoPagoPrestamo" class="campo__control" min="0" step="0.01" inputmode="decimal" />
+          </label>
+          <div class="acciones">
+            <button type="button" class="boton boton--secundario" data-accion="ver-prestamos-vigentes" data-i18n="Cancelar">Cancelar</button>
+            <button type="button" class="boton boton--principal" data-accion="confirmar-pago-prestamo" data-i18n="Confirmar pago">Confirmar pago</button>
+          </div>
+        </section>
+
+        <section class="pantalla" data-pantalla="prestamo-monto" role="region" tabindex="-1">
+          <h2 class="pantalla__titulo" data-i18n="Monto del préstamo">Monto del préstamo</h2>
+          <p class="pantalla__texto" id="prestamoRangoTexto"></p>
+          <div class="montos" id="montosPrestamo"></div>
+          <label class="campo">
+            <span class="campo__etiqueta" data-i18n="Otra cantidad">Otra cantidad</span>
+            <input type="number" id="montoPrestamo" class="campo__control" min="0" step="100" inputmode="decimal" />
+          </label>
+          <label class="campo">
+            <span class="campo__etiqueta" data-i18n="Plazo">Plazo</span>
+            <select id="plazoPrestamo" class="campo__control"></select>
+          </label>
+          <div class="acciones">
+            <button type="button" class="boton boton--secundario" data-accion="volver-menu" data-i18n="Menú">Menú</button>
+            <button type="button" class="boton boton--principal" data-accion="revisar-prestamo" data-i18n="Continuar">Continuar</button>
+          </div>
+        </section>
+
+        <section class="pantalla" data-pantalla="prestamo-resumen" role="region" tabindex="-1">
+          <h2 class="pantalla__titulo" data-i18n="Confirme su solicitud">Confirme su solicitud</h2>
+          <div class="tarjeta-dato tarjeta-dato--destacado">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Monto solicitado">Monto solicitado</span>
+            <span class="tarjeta-dato__valor" id="resumenPrestamoMonto">—</span>
+          </div>
+          <div class="tarjeta-dato">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Límite disponible">Límite disponible</span>
+            <span class="tarjeta-dato__valor" id="resumenPrestamoLimite">—</span>
+          </div>
+          <div class="tarjeta-dato">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Plazo">Plazo</span>
+            <span class="tarjeta-dato__valor" id="resumenPrestamoPlazo">—</span>
+          </div>
+          <div class="tarjeta-dato">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Tasa anual">Tasa anual</span>
+            <span class="tarjeta-dato__valor" id="resumenPrestamoTasa">—</span>
+          </div>
+          <div class="tarjeta-dato">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Pago mensual">Pago mensual</span>
+            <span class="tarjeta-dato__valor" id="resumenPrestamoPago">—</span>
+          </div>
+          <div class="tarjeta-dato">
+            <span class="tarjeta-dato__etiqueta" data-i18n="Total a pagar">Total a pagar</span>
+            <span class="tarjeta-dato__valor" id="resumenPrestamoTotal">—</span>
+          </div>
+          <p class="pantalla__nota" data-i18n="El monto se depositará en su cuenta al confirmar. El primer pago vence a los 30 días.">El monto se depositará en su cuenta al confirmar. El primer pago vence a los 30 días.</p>
+          <div class="acciones">
+            <button type="button" class="boton boton--secundario" data-accion="ir-monto-prestamo" data-i18n="Corregir">Corregir</button>
+            <button type="button" class="boton boton--principal" data-accion="confirmar-prestamo" data-i18n="Confirmar solicitud">Confirmar solicitud</button>
+          </div>
+        </section>
+
+        <section class="pantalla" data-pantalla="comprobante" role="region" tabindex="-1">
+          <h2 class="pantalla__titulo" data-i18n="Comprobante">Comprobante</h2>
+          <pre class="comprobante" id="textoComprobante"></pre>
+          <div class="acciones">
+            <button type="button" class="boton boton--secundario" data-accion="imprimir-comprobante" data-i18n="Imprimir">
+              Imprimir
+            </button>
+            <button type="button" class="boton boton--principal" data-accion="volver-menu" data-i18n="Menú principal">
+              Menú principal
+            </button>
+          </div>
+        </section>
+
+        <section class="pantalla" data-pantalla="mensaje" role="region" tabindex="-1">
+          <h2 class="pantalla__titulo" id="mensajeTitulo">Aviso</h2>
+          <p class="pantalla__texto pantalla__texto--grande" id="mensajeTexto"></p>
+          <div class="acciones acciones--centro">
+            <button type="button" class="boton boton--principal" id="botonMensaje">Continuar</button>
+          </div>
+        </section>
+      </main>
+
+      <footer class="cajero__pie">
+        <span id="avisoInactividad" role="status" aria-live="off"></span>
+        <span id="avisoApi"></span>
+      </footer>
+
+      <div class="solo-lectores" id="anuncioCajero" role="status" aria-live="polite"></div>
+      <div class="solo-lectores" id="alertaCajero" role="alert"></div>
+
+      <div class="capa-carga" id="capaCarga" hidden aria-hidden="true">
+        <div class="capa-carga__caja" role="status" aria-live="assertive">
+          <div class="capa-carga__giro"></div>
+          <span id="textoCarga">Procesando operación...</span>
+        </div>
+      </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

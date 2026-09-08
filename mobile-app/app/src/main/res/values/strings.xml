@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_nombre">Banco ATM</string>
+    <string name="canal_movimientos">Movimientos</string>
+    <string name="canal_movimientos_detalle">Avisos de operaciones en su cuenta</string>
+
+    <string name="accion_entrar">Entrar</string>
+    <string name="accion_continuar">Continuar</string>
+    <string name="accion_cancelar">Cancelar</string>
+    <string name="accion_aceptar">Aceptar</string>
+    <string name="accion_reintentar">Reintentar</string>
+    <string name="accion_volver">Volver</string>
+    <string name="accion_guardar">Guardar</string>
+    <string name="accion_cerrar">Cerrar</string>
+    <string name="accion_enviar">Enviar</string>
+
+    <string name="acceso_titulo">Su banco, en su bolsillo</string>
+    <string name="acceso_correo">Correo electrónico</string>
+    <string name="acceso_password">Contraseña</string>
+    <string name="acceso_totp">Código de verificación</string>
+    <string name="acceso_totp_ayuda">Introduzca el código de su aplicación autenticadora</string>
+    <string name="acceso_olvido">¿Olvidó su contraseña?</string>
+    <string name="acceso_crear">Crear una cuenta</string>
+    <string name="acceso_entrando">Verificando sus credenciales…</string>
+
+    <string name="registro_titulo">Cree su cuenta</string>
+    <string name="registro_nombre">Nombre completo</string>
+    <string name="registro_telefono">Teléfono</string>
+    <string name="registro_password_repetir">Repita la contraseña</string>
+    <string name="registro_enviado">Le enviamos un código de verificación a su correo</string>
+    <string name="registro_codigo">Código de 6 dígitos</string>
+    <string name="registro_verificar">Verificar correo</string>
+    <string name="registro_reenviar">Reenviar código</string>
+    <string name="registro_password_distinta">Las contraseñas no coinciden</string>
+
+    <string name="recuperar_titulo">Restablecer contraseña</string>
+    <string name="recuperar_solicitar">Enviar código</string>
+    <string name="recuperar_enviado">Si el correo existe, le enviamos un código temporal</string>
+    <string name="recuperar_nueva">Contraseña nueva</string>
+    <string name="recuperar_listo">Su contraseña fue actualizada</string>
+
+    <string name="inicio_saludo">Hola, %1$s</string>
+    <string name="inicio_saldo">Saldo disponible</string>
+    <string name="inicio_movimientos">Movimientos recientes</string>
+    <string name="inicio_ver_todo">Ver todo</string>
+    <string name="inicio_sin_movimientos">Todavía no hay movimientos en esta cuenta</string>
+    <string name="inicio_ocultar_saldo">Ocultar el saldo</string>
+    <string name="inicio_mostrar_saldo">Mostrar el saldo</string>
+
+    <string name="menu_inicio">Inicio</string>
+    <string name="menu_movimientos">Movimientos</string>
+    <string name="menu_operar">Operar</string>
+    <string name="menu_tarjetas">Tarjetas</string>
+    <string name="menu_mas">Más</string>
+
+    <string name="operar_transferir">Transferir</string>
+    <string name="operar_pagar">Pagar servicio</string>
+    <string name="operar_retirar">Retirar</string>
+    <string name="operar_depositar">Depositar</string>
+    <string name="operar_apartados">Apartados</string>
+    <string name="operar_prestamos">Préstamos</string>
+    <string name="operar_avisos">Avisos</string>
+    <string name="operar_perfil">Perfil</string>
+    <string name="operar_asistente">Asistente</string>
+
+    <string name="transferir_titulo">Transferencia</string>
+    <string name="transferir_destino">Cuenta destino</string>
+    <string name="transferir_monto">Monto</string>
+    <string name="transferir_concepto">Concepto</string>
+    <string name="transferir_confirmar">Confirmar transferencia</string>
+
+    <string name="pago_titulo">Pago de servicio</string>
+    <string name="pago_proveedor">Proveedor</string>
+    <string name="pago_referencia">Referencia</string>
+    <string name="pago_confirmar">Confirmar pago</string>
+
+    <string name="retiro_titulo">Retiro</string>
+    <string name="deposito_titulo">Depósito</string>
+
+    <string name="tarjetas_titulo">Sus tarjetas</string>
+    <string name="tarjetas_debito">Débito</string>
+    <string name="tarjetas_credito">Crédito</string>
+    <string name="tarjetas_activa">Activa</string>
+    <string name="tarjetas_bloqueada">Bloqueada</string>
+    <string name="tarjetas_inactiva">Inactiva</string>
+    <string name="tarjetas_bloquear">Bloquear tarjeta</string>
+    <string name="tarjetas_desbloquear">Desbloquear tarjeta</string>
+    <string name="tarjetas_ver_datos">Ver los datos</string>
+    <string name="tarjetas_ocultar_datos">Ocultar los datos</string>
+    <string name="tarjetas_vence">Vence</string>
+    <string name="tarjetas_titular">Titular</string>
+    <string name="tarjetas_limite">Línea de crédito</string>
+    <string name="tarjetas_disponible">Crédito disponible</string>
+    <string name="tarjetas_utilizado">Saldo utilizado</string>
+    <string name="tarjetas_solicitar">Solicitar tarjeta de crédito</string>
+    <string name="tarjetas_sin_tarjetas">No tiene tarjetas emitidas</string>
+
+    <string name="apartados_titulo">Apartados</string>
+    <string name="apartados_intro">Separe dinero de su saldo para alcanzar sus metas</string>
+    <string name="apartados_total">Total apartado</string>
+    <string name="apartados_disponible">Saldo disponible</string>
+    <string name="apartados_crear">Crear apartado</string>
+    <string name="apartados_nombre">Nombre del apartado</string>
+    <string name="apartados_meta">Meta (opcional)</string>
+    <string name="apartados_guardar_dinero">Apartar dinero</string>
+    <string name="apartados_retirar_dinero">Devolver al saldo</string>
+    <string name="apartados_cerrar">Cerrar apartado</string>
+    <string name="apartados_sin_apartados">Todavía no ha creado apartados</string>
+    <string name="apartados_progreso">%1$d %% de la meta</string>
+
+    <string name="prestamos_titulo">Préstamos</string>
+    <string name="prestamos_solicitar">Solicitar préstamo</string>
+    <string name="prestamos_monto">Monto</string>
+    <string name="prestamos_plazo">Plazo en meses</string>
+    <string name="prestamos_simular">Simular</string>
+    <string name="prestamos_pago_mensual">Pago mensual</string>
+    <string name="prestamos_pendiente">Capital pendiente</string>
+    <string name="prestamos_pagar">Pagar</string>
+    <string name="prestamos_sin_prestamos">No tiene préstamos registrados</string>
+    <string name="prestamos_limite">Límite autorizado</string>
+
+    <string name="avisos_titulo">Avisos</string>
+    <string name="avisos_marcar">Marcar todo como leído</string>
+    <string name="avisos_sin_avisos">No tiene avisos</string>
+    <string name="avisos_push_activas">Notificaciones push activas</string>
+    <string name="avisos_push_inactivas">Las notificaciones push no están configuradas en el servidor</string>
+    <string name="avisos_push_probar">Enviar notificación de prueba</string>
+
+    <string name="perfil_titulo">Perfil</string>
+    <string name="perfil_datos">Sus datos</string>
+    <string name="perfil_password">Cambiar contraseña</string>
+    <string name="perfil_password_actual">Contraseña actual</string>
+    <string name="perfil_idioma">Idioma</string>
+    <string name="perfil_entorno">Servidor</string>
+    <string name="perfil_entorno_local">Local</string>
+    <string name="perfil_entorno_produccion">Producción</string>
+    <string name="perfil_servidor_local">Dirección del servidor local</string>
+    <string name="perfil_cerrar_sesion">Cerrar sesión</string>
+    <string name="perfil_cuenta">Número de cuenta</string>
+
+    <string name="asistente_titulo">Asistente</string>
+    <string name="asistente_escribir">Escriba su consulta</string>
+
+    <string name="error_sin_red">No hay conexión con el servidor. Revise su red y la dirección configurada.</string>
+    <string name="error_tiempo">El servidor tardó demasiado en responder. Si usa Render, el servicio puede estar despertando; espere unos segundos.</string>
+    <string name="error_sesion">Su sesión expiró. Vuelva a iniciar sesión.</string>
+    <string name="error_permiso">No tiene permiso para realizar esta operación.</string>
+    <string name="error_servidor">El servidor tuvo un problema. Intente de nuevo más tarde.</string>
+    <string name="error_generico">No fue posible completar la operación.</string>
+
+    <string name="estado_cargando">Cargando…</string>
+    <string name="estado_procesando">Procesando…</string>
+    <string name="comprobante_titulo">Operación realizada</string>
+    <string name="comprobante_folio">Folio</string>
+    <string name="comprobante_saldo">Saldo resultante</string>
+
+    <string name="etiqueta_cargo">Cargo</string>
+    <string name="etiqueta_abono">Abono</string>
+
+    <string name="tipo_retiro">Retiro</string>
+    <string name="tipo_deposito">Depósito</string>
+    <string name="tipo_transferencia">Transferencia</string>
+    <string name="tipo_pago_servicio">Pago de servicio</string>
+    <string name="tipo_prestamo">Préstamo</string>
+    <string name="tipo_pago_prestamo">Pago de préstamo</string>
+    <string name="tipo_apartado_abono">Traspaso a apartado</string>
+    <string name="tipo_apartado_retiro">Retiro de apartado</string>
+
+    <string name="permiso_notificaciones">Permita las notificaciones para recibir avisos de sus movimientos</string>
+
+    <string name="registro_listo">Su cuenta fue verificada. Ya puede iniciar sesión.</string>
+
+    <string name="accion_mostrar_password">Mostrar la contraseña</string>
+    <string name="accion_ocultar_password">Ocultar la contraseña</string>
+    <string name="accion_cerrar_sesion_pregunta">¿Desea cerrar la sesión en este dispositivo?</string>
+
+    <string name="operar_transferir_detalle">Envíe dinero a otra cuenta del banco</string>
+    <string name="operar_pagar_detalle">Pague luz, agua, gas, teléfono o televisión</string>
+    <string name="operar_retirar_detalle">Disponga de efectivo de su cuenta</string>
+    <string name="operar_depositar_detalle">Abone efectivo a su cuenta</string>
+    <string name="operar_apartados_detalle">Separe dinero de su saldo para una meta</string>
+    <string name="operar_prestamos_detalle">Consulte, solicite y pague sus préstamos</string>
+    <string name="operar_grupo_dinero">Mover dinero</string>
+    <string name="operar_grupo_productos">Productos y ahorro</string>
+
+    <string name="prestamo_estado_aprobado">Aprobado</string>
+    <string name="prestamo_estado_rechazado">Rechazado</string>
+    <string name="prestamo_estado_liquidado">Liquidado</string>
+    <string name="prestamos_progreso">%1$d %% pagado</string>
+
+    <string name="tarjetas_detalle_error">No fue posible obtener los datos de la tarjeta.</string>
+    <string name="asistente_error">No fue posible contactar con el asistente.</string>
+
+    <string name="tarjetas_beneficios">Beneficios de la tarjeta</string>
+    <string name="tarjetas_anualidad">Anualidad</string>
+    <string name="tarjetas_sin_anualidad">Sin anualidad</string>
+    <string name="tarjetas_catalogo_titulo">Solicitar otra tarjeta de crédito</string>
+    <string name="tarjetas_catalogo_saldo">Su saldo actual es de %1$s. La aprobación depende de ese saldo en el momento de solicitarla.</string>
+    <string name="tarjetas_catalogo_sin_opciones">Por ahora su saldo no alcanza el mínimo de ninguna tarjeta de crédito disponible.</string>
+    <string name="tarjetas_catalogo_sin_cupo">Ya cuenta con el máximo de tarjetas de crédito permitidas.</string>
+    <string name="tarjetas_nivel_disponible">Disponible</string>
+    <string name="tarjetas_nivel_recomendada">Recomendada para usted</string>
+    <string name="tarjetas_saldo_minimo">Saldo mínimo</string>
+    <string name="tarjetas_linea_estimada">Línea estimada</string>
+    <string name="tarjetas_solicitud_aprobada">Solicitud aprobada</string>
+    <string name="tarjetas_solicitud_registrada">Solicitud registrada</string>
+    <string name="tarjetas_solicitud_error">No fue posible completar la solicitud.</string>
+
+    <string name="nivel_clasica">Clásica</string>
+    <string name="nivel_oro">Oro</string>
+    <string name="nivel_platino">Platino</string>
+    <string name="nivel_infinite">Infinite</string>
+
+    <string name="beneficio_sin_anualidad_primer_ano">Sin anualidad el primer año</string>
+    <string name="beneficio_45_dias">Hasta 45 días sin intereses</string>
+    <string name="beneficio_proteccion_compras">Seguro de protección de compras</string>
+    <string name="beneficio_movimientos_canales">Consulta de movimientos en los tres canales</string>
+    <string name="beneficio_todo_clasica">Todo lo de la Clásica</string>
+    <string name="beneficio_bonificacion">2 % de bonificación en supermercado y gasolina</string>
+    <string name="beneficio_seguro_viaje">Seguro de viaje para el titular</string>
+    <string name="beneficio_meses_sin_intereses">Meses sin intereses en comercios participantes</string>
+    <string name="beneficio_todo_oro">Todo lo de la Oro</string>
+    <string name="beneficio_salas_vip">Acceso a salas VIP de aeropuerto (4 visitas al año)</string>
+    <string name="beneficio_seguro_auto">Seguro de auto de renta y de equipaje</string>
+    <string name="beneficio_atencion_24">Atención telefónica prioritaria las 24 horas</string>
+    <string name="beneficio_todo_platino">Todo lo de la Platino</string>
+    <string name="beneficio_salas_ilimitadas">Salas VIP ilimitadas para el titular y un acompañante</string>
+    <string name="beneficio_concierge">Concierge personal y asistencia en viajes</string>
+    <string name="beneficio_puntos">Programa de puntos con acumulación acelerada</string>
+    <string name="beneficio_seguro_medico">Seguro médico internacional</string>
+</resources>

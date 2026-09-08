@@ -1,0 +1,18 @@
+{
+  "name": "portal-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Portal web bancario (Equipo 3) que consume la API bancaria comun del ecosistema",
+  "scripts": {
+    "start": "node server.js",
+    "test:a11y": "node accesibilidad.test.js",
+    "test:i18n": "node i18n-portal.test.js",
+    "test:i18n-publico": "node i18n-publico.test.js",
+    "test:i18n-atm": "node i18n-atm.test.js",
+    "test": "node accesibilidad.test.js && node i18n-portal.test.js && node i18n-publico.test.js && node i18n-atm.test.js"
+  },
+  "devDependencies": {
+    "axe-core": "^4.13.0",
+    "jsdom": "^30.0.1"
+  }
+}

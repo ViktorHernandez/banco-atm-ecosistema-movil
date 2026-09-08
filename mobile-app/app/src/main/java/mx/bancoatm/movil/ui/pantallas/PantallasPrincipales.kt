@@ -1,0 +1,539 @@
+package mx.bancoatm.movil.ui.pantallas
+
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBalanceWallet
+import androidx.compose.material.icons.filled.Chat
+import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Payments
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.ReceiptLong
+import androidx.compose.material.icons.filled.Savings
+import androidx.compose.material.icons.filled.SouthWest
+import androidx.compose.material.icons.filled.SwapHoriz
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.dp
+import mx.bancoatm.movil.R
+import mx.bancoatm.movil.data.Movimiento
+import mx.bancoatm.movil.ui.ModeloBanco
+import mx.bancoatm.movil.ui.Rutas
+import mx.bancoatm.movil.ui.componentes.Cargando
+import mx.bancoatm.movil.ui.componentes.ErrorReintentable
+import mx.bancoatm.movil.ui.componentes.EstadoVacio
+import mx.bancoatm.movil.ui.componentes.TarjetaAccion
+import mx.bancoatm.movil.ui.componentes.TituloSeccion
+import mx.bancoatm.movil.ui.formatearFecha
+import mx.bancoatm.movil.ui.formatearMoneda
+
+@Composable
+fun etiquetaTipo(tipo: String): String = when (tipo) {
+    "RETIRO" -> stringResource(R.string.tipo_retiro)
+    "DEPOSITO" -> stringResource(R.string.tipo_deposito)
+    "TRANSFERENCIA" -> stringResource(R.string.tipo_transferencia)
+    "PAGO_SERVICIO" -> stringResource(R.string.tipo_pago_servicio)
+    "PRESTAMO" -> stringResource(R.string.tipo_prestamo)
+    "PAGO_PRESTAMO" -> stringResource(R.string.tipo_pago_prestamo)
+    "APARTADO_ABONO" -> stringResource(R.string.tipo_apartado_abono)
+    "APARTADO_RETIRO" -> stringResource(R.string.tipo_apartado_retiro)
+    else -> tipo
+}
+
+@Composable
+fun FilaMovimiento(movimiento: Movimiento, idioma: String) {
+    val esAbono = movimiento.signo == "ABONO"
+
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(Modifier.weight(1f)) {
+            Text(etiquetaTipo(movimiento.tipo), style = MaterialTheme.typography.titleMedium)
+            Text(
+                formatearFecha(movimiento.fecha, idioma),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            if (!movimiento.contraparte.isNullOrBlank()) {
+                Text(
+                    movimiento.contraparte,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+        Text(
+            text = (if (esAbono) "+ " else "− ") +
+                formatearMoneda(movimiento.monto, idioma),
+            style = MaterialTheme.typography.titleMedium,
+            color = if (esAbono) {
+                MaterialTheme.colorScheme.tertiary
+            } else {
+                MaterialTheme.colorScheme.onSurface
+            },
+        )
+    }
+}
+
+@Composable
+fun PantallaInicio(
+    modelo: ModeloBanco,
+    alVerMovimientos: () -> Unit,
+    alOperar: (String) -> Unit,
+) {
+    val estado by modelo.estado.collectAsState()
+    val cuenta by modelo.cuenta.collectAsState()
+    val movimientos by modelo.movimientos.collectAsState()
+    val idioma by modelo.idioma.collectAsState()
+    var visible by remember { mutableStateOf(true) }
+
+    LaunchedEffect(Unit) { modelo.cargarInicio() }
+
+    if (estado.cargando && cuenta == null) {
+        Cargando(etiqueta = stringResource(R.string.estado_cargando))
+        return
+    }
+
+    if (estado.error != null && cuenta == null) {
+        ErrorReintentable(
+            mensaje = estado.errorDetalle ?: stringResource(estado.error!!),
+            alReintentar = { modelo.cargarInicio() },
+        )
+        return
+    }
+
+    LazyColumn(
+        modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        item {
+            Spacer(Modifier.height(16.dp))
+            Text(
+                stringResource(
+                    R.string.inicio_saludo,
+                    cuenta?.titular?.substringBefore(" ") ?: "",
+                ),
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.semantics { heading() },
+            )
+        }
+
+        item {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(20.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                ),
+            ) {
+                Column(Modifier.padding(20.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            stringResource(R.string.inicio_saldo),
+                            style = MaterialTheme.typography.labelLarge,
+                            color = MaterialTheme.colorScheme.onPrimary,
+                        )
+                        IconButton(onClick = { visible = !visible }) {
+                            Icon(
+                                imageVector = if (visible) {
+                                    Icons.Filled.VisibilityOff
+                                } else {
+                                    Icons.Filled.Visibility
+                                },
+                                contentDescription = stringResource(
+                                    if (visible) {
+                                        R.string.inicio_ocultar_saldo
+                                    } else {
+                                        R.string.inicio_mostrar_saldo
+                                    },
+                                ),
+                                tint = MaterialTheme.colorScheme.onPrimary,
+                            )
+                        }
+                    }
+                    Text(
+                        text = if (visible) {
+                            formatearMoneda(cuenta?.saldo ?: 0.0, idioma)
+                        } else {
+                            "•••••••"
+                        },
+                        style = MaterialTheme.typography.displaySmall,
+                        color = MaterialTheme.colorScheme.onPrimary,
+                    )
+                    Text(
+                        cuenta?.numeroCuentaEnmascarado.orEmpty(),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onPrimary,
+                    )
+                }
+            }
+        }
+
+        item {
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                accesosRapidos.forEach { acceso ->
+                    AccesoRapido(
+                        texto = stringResource(acceso.etiqueta),
+                        icono = acceso.icono,
+                        modifier = Modifier.weight(1f),
+                    ) { alOperar(acceso.ruta) }
+                }
+            }
+        }
+
+        item {
+            TituloSeccion(
+                texto = stringResource(R.string.inicio_movimientos),
+                accion = alVerMovimientos,
+                textoAccion = stringResource(R.string.inicio_ver_todo),
+            )
+        }
+
+        if (movimientos.isEmpty()) {
+            item { EstadoVacio(stringResource(R.string.inicio_sin_movimientos)) }
+        } else {
+            items(movimientos) { FilaMovimiento(it, idioma) }
+        }
+
+        item { Spacer(Modifier.height(24.dp)) }
+    }
+}
+
+private data class AccesoRapidoInicio(
+    val ruta: String,
+    val etiqueta: Int,
+    val icono: ImageVector,
+)
+
+private val accesosRapidos = listOf(
+    AccesoRapidoInicio(Rutas.TRANSFERENCIA, R.string.operar_transferir, Icons.Filled.SwapHoriz),
+    AccesoRapidoInicio(Rutas.PAGO, R.string.operar_pagar, Icons.Filled.Payments),
+    AccesoRapidoInicio(Rutas.APARTADOS, R.string.operar_apartados, Icons.Filled.Savings),
+)
+
+@Composable
+private fun AccesoRapido(
+    texto: String,
+    icono: ImageVector,
+    modifier: Modifier,
+    alPulsar: () -> Unit,
+) {
+    TarjetaAccion(modifier = modifier, descripcion = texto, alPulsar = alPulsar) {
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(vertical = 14.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            Icon(
+                imageVector = icono,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+            )
+            Text(
+                texto,
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.primary,
+            )
+        }
+    }
+}
+
+@Composable
+fun PantallaMovimientos(modelo: ModeloBanco) {
+    val estado by modelo.estado.collectAsState()
+    val movimientos by modelo.movimientos.collectAsState()
+    val idioma by modelo.idioma.collectAsState()
+    var filtro by remember { mutableStateOf<String?>(null) }
+
+    LaunchedEffect(filtro) { modelo.cargarMovimientos(filtro) }
+
+    Column(Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
+        Spacer(Modifier.height(16.dp))
+        Text(
+            stringResource(R.string.menu_movimientos),
+            style = MaterialTheme.typography.headlineSmall,
+            modifier = Modifier.semantics { heading() },
+        )
+        Spacer(Modifier.height(12.dp))
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .horizontalScroll(rememberScrollState()),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            listOf(
+                null to stringResource(R.string.inicio_ver_todo),
+                "TRANSFERENCIA" to stringResource(R.string.tipo_transferencia),
+                "PAGO_SERVICIO" to stringResource(R.string.tipo_pago_servicio),
+                "RETIRO" to stringResource(R.string.tipo_retiro),
+                "DEPOSITO" to stringResource(R.string.tipo_deposito),
+            ).forEach { (valor, etiqueta) ->
+                FilterChip(
+                    selected = filtro == valor,
+                    onClick = { filtro = valor },
+                    label = { Text(etiqueta, maxLines = 1) },
+                )
+            }
+        }
+
+        Spacer(Modifier.height(8.dp))
+
+        when {
+            estado.cargando -> Cargando(etiqueta = stringResource(R.string.estado_cargando))
+            estado.error != null -> ErrorReintentable(
+                mensaje = estado.errorDetalle ?: stringResource(estado.error!!),
+                alReintentar = { modelo.cargarMovimientos(filtro) },
+            )
+            movimientos.isEmpty() -> EstadoVacio(
+                stringResource(R.string.inicio_sin_movimientos),
+            )
+            else -> LazyColumn {
+                items(movimientos) { FilaMovimiento(it, idioma) }
+            }
+        }
+    }
+}
+
+private data class OpcionMenu(
+    val ruta: String,
+    val etiqueta: Int,
+    val detalle: Int,
+    val icono: ImageVector,
+)
+
+private val operacionesDinero = listOf(
+    OpcionMenu(
+        Rutas.TRANSFERENCIA,
+        R.string.operar_transferir,
+        R.string.operar_transferir_detalle,
+        Icons.Filled.SwapHoriz,
+    ),
+    OpcionMenu(
+        Rutas.PAGO,
+        R.string.operar_pagar,
+        R.string.operar_pagar_detalle,
+        Icons.Filled.Payments,
+    ),
+    OpcionMenu(
+        Rutas.RETIRO,
+        R.string.operar_retirar,
+        R.string.operar_retirar_detalle,
+        Icons.Filled.SouthWest,
+    ),
+    OpcionMenu(
+        Rutas.DEPOSITO,
+        R.string.operar_depositar,
+        R.string.operar_depositar_detalle,
+        Icons.Filled.AccountBalanceWallet,
+    ),
+)
+
+private val operacionesProductos = listOf(
+    OpcionMenu(
+        Rutas.APARTADOS,
+        R.string.operar_apartados,
+        R.string.operar_apartados_detalle,
+        Icons.Filled.Savings,
+    ),
+    OpcionMenu(
+        Rutas.PRESTAMOS,
+        R.string.operar_prestamos,
+        R.string.operar_prestamos_detalle,
+        Icons.Filled.ReceiptLong,
+    ),
+)
+
+@Composable
+private fun FilaOpcionMenu(
+    icono: ImageVector,
+    titulo: String,
+    detalle: String?,
+    contador: Int,
+    alPulsar: () -> Unit,
+) {
+    val descripcion = if (detalle == null) titulo else "$titulo. $detalle"
+
+    TarjetaAccion(
+        modifier = Modifier.fillMaxWidth(),
+        descripcion = if (contador > 0) "$descripcion ($contador)" else descripcion,
+        alPulsar = alPulsar,
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(18.dp),
+            horizontalArrangement = Arrangement.spacedBy(14.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(
+                imageVector = icono,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+            )
+            Column(Modifier.weight(1f)) {
+                Text(titulo, style = MaterialTheme.typography.titleMedium)
+                if (detalle != null) {
+                    Text(
+                        detalle,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+            if (contador > 0) {
+                Text(
+                    contador.toString(),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.error,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun PantallaOperar(alElegir: (String) -> Unit) {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize().padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        item {
+            Text(
+                stringResource(R.string.menu_operar),
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.semantics { heading() },
+            )
+        }
+
+        item { TituloSeccion(stringResource(R.string.operar_grupo_dinero)) }
+        items(operacionesDinero) { opcion ->
+            FilaOpcionMenu(
+                icono = opcion.icono,
+                titulo = stringResource(opcion.etiqueta),
+                detalle = stringResource(opcion.detalle),
+                contador = 0,
+                alPulsar = { alElegir(opcion.ruta) },
+            )
+        }
+
+        item { TituloSeccion(stringResource(R.string.operar_grupo_productos)) }
+        items(operacionesProductos) { opcion ->
+            FilaOpcionMenu(
+                icono = opcion.icono,
+                titulo = stringResource(opcion.etiqueta),
+                detalle = stringResource(opcion.detalle),
+                contador = 0,
+                alPulsar = { alElegir(opcion.ruta) },
+            )
+        }
+
+        item { Spacer(Modifier.height(24.dp)) }
+    }
+}
+
+@Composable
+fun PantallaMas(modelo: ModeloBanco, alElegir: (String) -> Unit) {
+    val noLeidas by modelo.noLeidas.collectAsState()
+    var confirmarSalida by remember { mutableStateOf(false) }
+
+    val opciones = listOf(
+        Triple(Rutas.AVISOS, R.string.operar_avisos, Icons.Filled.Notifications),
+        Triple(Rutas.PERFIL, R.string.operar_perfil, Icons.Filled.Person),
+        Triple(Rutas.ASISTENTE, R.string.operar_asistente, Icons.Filled.Chat),
+        Triple(Rutas.PRESTAMOS, R.string.operar_prestamos, Icons.Filled.ReceiptLong),
+        Triple(Rutas.APARTADOS, R.string.operar_apartados, Icons.Filled.Savings),
+    )
+
+    LazyColumn(
+        modifier = Modifier.fillMaxSize().padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        item {
+            Text(
+                stringResource(R.string.menu_mas),
+                style = MaterialTheme.typography.headlineSmall,
+                modifier = Modifier.semantics { heading() },
+            )
+        }
+        items(opciones) { (ruta, etiqueta, icono) ->
+            FilaOpcionMenu(
+                icono = icono,
+                titulo = stringResource(etiqueta),
+                detalle = null,
+                contador = if (ruta == Rutas.AVISOS) noLeidas else 0,
+                alPulsar = { alElegir(ruta) },
+            )
+        }
+        item {
+            FilaOpcionMenu(
+                icono = Icons.Filled.Logout,
+                titulo = stringResource(R.string.perfil_cerrar_sesion),
+                detalle = null,
+                contador = 0,
+                alPulsar = { confirmarSalida = true },
+            )
+            Spacer(Modifier.height(24.dp))
+        }
+    }
+
+    if (confirmarSalida) {
+        AlertDialog(
+            onDismissRequest = { confirmarSalida = false },
+            title = { Text(stringResource(R.string.perfil_cerrar_sesion)) },
+            text = { Text(stringResource(R.string.accion_cerrar_sesion_pregunta)) },
+            confirmButton = {
+                TextButton(onClick = {
+                    confirmarSalida = false
+                    modelo.cerrarSesion { }
+                }) { Text(stringResource(R.string.perfil_cerrar_sesion)) }
+            },
+            dismissButton = {
+                TextButton(onClick = { confirmarSalida = false }) {
+                    Text(stringResource(R.string.accion_cancelar))
+                }
+            },
+        )
+    }
+}

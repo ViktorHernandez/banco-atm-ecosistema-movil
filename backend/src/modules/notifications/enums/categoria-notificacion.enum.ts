@@ -1,0 +1,8 @@
+export enum CategoriaNotificacion {
+  GENERAL = 'GENERAL',
+  MOVIMIENTO = 'MOVIMIENTO',
+  TARJETA = 'TARJETA',
+  PRESTAMO = 'PRESTAMO',
+  SEGURIDAD = 'SEGURIDAD',
+  PERFIL = 'PERFIL',
+}

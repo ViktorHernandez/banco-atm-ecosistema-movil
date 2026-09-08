@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Banco ATM · Aplicación móvil</title>
+    <meta
+      name="description"
+      content="Descargue la aplicación móvil de Banco ATM para Android y opere su cuenta desde el teléfono con avisos en tiempo real."
+    />
+    <link rel="stylesheet" href="/css/base.css" />
+    <link rel="stylesheet" href="/css/publico.css" />
+    <link rel="stylesheet" href="/css/accesibilidad.css" />
+  </head>
+  <body>
+    <div class="sitio">
+      <header class="cabecera">
+        <div class="cabecera__interior">
+          <a class="marca" href="/">
+            <span class="marca__sello">BA</span>
+            <span class="marca__nombre">Banco ATM</span>
+          </a>
+          <nav class="navegacion" aria-label="Navegación del sitio">
+            <a href="/#servicios">Servicios</a>
+            <a href="/#canales">Canales</a>
+            <a href="/#seguridad">Seguridad</a>
+          </nav>
+          <a class="boton" href="/login">Entrar al portal</a>
+        </div>
+      </header>
+
+      <main>
+        <section class="construccion">
+          <div class="construccion__interior">
+            <div>
+              <span class="portada__eyebrow">Aplicación móvil</span>
+              <h1 class="portada__titulo">
+                Ya está <em>disponible</em>.
+              </h1>
+              <p class="portada__texto">
+                La aplicación móvil de Banco ATM para Android completa el
+                ecosistema. Trabaja contra la misma API bancaria que el portal web
+                y los cajeros, por lo que una operación hecha en el teléfono se ve
+                de inmediato en los otros canales y al revés.
+              </p>
+              <p class="portada__texto">
+                Al tratarse de un proyecto académico, la aplicación no se publica en
+                tiendas. Se instala directamente mediante un archivo APK.
+              </p>
+
+              <div class="construccion__acciones">
+                <a class="boton" id="enlaceDescargaApk" href="/descargas/banco-atm-movil.apk" download>Descargar el APK</a>
+                <a class="boton boton--secundario" href="#instalacion">Cómo instalarla</a>
+              </div>
+
+              <p class="portada__texto" id="estadoDescarga" role="status" aria-live="polite"></p>
+            </div>
+
+            <div class="telefono" aria-hidden="true">
+              <div class="telefono__marco">
+                <div class="telefono__muesca"></div>
+                <div class="telefono__pantalla">
+                  <div class="telefono__barra">
+                    <span>9:41</span>
+                    <span>Banco ATM</span>
+                  </div>
+                  <div class="telefono__saldo">
+                    <span class="telefono__etiqueta">Saldo disponible</span>
+                    <span class="telefono__monto">$ 5,000.00</span>
+                    <span class="telefono__cuenta">•••• 0001</span>
+                  </div>
+                  <div class="telefono__acciones">
+                    <span class="telefono__accion">Transferir</span>
+                    <span class="telefono__accion">Pagar</span>
+                    <span class="telefono__accion">Tarjetas</span>
+                    <span class="telefono__accion">Avisos</span>
+                  </div>
+                  <div class="telefono__lista">
+                    <div class="telefono__fila">
+                      <span>Transferencia enviada</span><span>− $250.00</span>
+                    </div>
+                    <div class="telefono__fila">
+                      <span>Depósito en efectivo</span><span class="telefono__abono">+ $1,000.00</span>
+                    </div>
+                    <div class="telefono__fila">
+                      <span>Pago de servicio</span><span>− $300.00</span>
+                    </div>
+                  </div>
+                  <div class="telefono__marca">Vista de la aplicación</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="seccion" id="incluira">
+          <h2 class="seccion__titulo">Qué puede hacer desde la aplicación</h2>
+          <p class="seccion__intro">
+            Todas estas operaciones utilizan los mismos endpoints y las mismas
+            reglas bancarias que el portal web y los cajeros.
+          </p>
+
+          <div class="servicios">
+            <article class="servicio">
+              <div class="servicio__icono" data-icono="cuentas"></div>
+              <h3 class="servicio__titulo">Saldo y movimientos</h3>
+              <p>
+                Consulta del saldo disponible y del histórico de operaciones con
+                filtros por tipo, igual que en el portal.
+              </p>
+            </article>
+            <article class="servicio">
+              <div class="servicio__icono" data-icono="transferencias"></div>
+              <h3 class="servicio__titulo">Transferencias y pagos</h3>
+              <p>
+                Envíos entre cuentas del banco y pago de servicios con comprobante,
+                sujetos a los mismos límites que el resto de canales.
+              </p>
+            </article>
+            <article class="servicio">
+              <div class="servicio__icono" data-icono="tarjeta"></div>
+              <h3 class="servicio__titulo">Tarjetas y préstamos</h3>
+              <p>
+                Datos de la tarjeta bajo demanda, bloqueo inmediato, solicitud de
+                crédito y gestión de préstamos con sus pagos.
+              </p>
+            </article>
+            <article class="servicio">
+              <div class="servicio__icono" data-icono="notificaciones"></div>
+              <h3 class="servicio__titulo">Apartados y avisos</h3>
+              <p>
+                Separe dinero de su saldo para sus metas y reciba un aviso en el
+                teléfono cuando ocurra un movimiento en su cuenta.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="seccion--tenue" id="instalacion">
+          <div class="seccion__interior">
+            <h2 class="seccion__titulo">Cómo instalar la aplicación</h2>
+            <p class="seccion__intro">
+              La instalación desde un archivo APK requiere autorizar la fuente en su
+              teléfono. Es el procedimiento normal para aplicaciones que no se
+              distribuyen en tiendas.
+            </p>
+
+            <ul class="seguridad__lista">
+              <li>
+                <span class="seguridad__numero">1</span>
+                <div>
+                  <strong>Descargue el archivo</strong>
+                  <p>
+                    Abra esta página desde el teléfono y pulse el botón de descarga.
+                    El archivo queda en la carpeta de descargas.
+                  </p>
+                </div>
+              </li>
+              <li>
+                <span class="seguridad__numero">2</span>
+                <div>
+                  <strong>Autorice la instalación</strong>
+                  <p>
+                    Android le pedirá permiso para instalar aplicaciones desconocidas
+                    desde el navegador o el explorador de archivos. Acepte solo si
+                    reconoce el origen del archivo.
+                  </p>
+                </div>
+              </li>
+              <li>
+                <span class="seguridad__numero">3</span>
+                <div>
+                  <strong>Abra la aplicación y entre</strong>
+                  <p>
+                    Use el mismo correo y la misma contraseña del portal web. Si tiene
+                    verificación en dos pasos activada, le pediremos el código.
+                  </p>
+                </div>
+              </li>
+              <li>
+                <span class="seguridad__numero">4</span>
+                <div>
+                  <strong>Permita los avisos</strong>
+                  <p>
+                    Acepte el permiso de notificaciones para recibir un aviso cuando
+                    reciba una transferencia o se registre un movimiento en su cuenta.
+                  </p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+      </main>
+
+      <footer class="pie">
+        <div class="pie__interior">
+          <div class="pie__legal">
+            <span>
+              © <span id="anioActual">2026</span> Banco ATM. Proyecto académico sin
+              operación financiera real.
+            </span>
+            <span><a href="/">Volver al inicio</a></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script src="/config.js"></script>
+    <script src="/js/traducciones.js"></script>
+    <script src="/js/i18n.js"></script>
+    <script src="/js/util.js"></script>
+    <script src="/js/accesibilidad.js"></script>
+    <script src="/js/enlace-cajero.js"></script>
+    <script>
+      (function () {
+        'use strict';
+
+        var config = window.PORTAL_CONFIG || {};
+        var util = window.PortalUtil;
+
+        document.addEventListener('DOMContentLoaded', function () {
+          util.nodos('[data-icono]').forEach(function (elemento) {
+            elemento.innerHTML = util.icono(elemento.getAttribute('data-icono'));
+          });
+
+          var enlace = util.nodo('#enlaceDescargaApk');
+          var estado = util.nodo('#estadoDescarga');
+
+          if (enlace && estado) {
+            fetch(enlace.getAttribute('href'), { method: 'HEAD' })
+              .then(function (respuesta) {
+                if (respuesta.ok) {
+                  var version = respuesta.headers.get('x-app-version');
+                  estado.textContent = version
+                    ? 'Versión disponible: ' + version
+                    : 'Archivo disponible para descargar.';
+                  return;
+                }
+                throw new Error('no disponible');
+              })
+              .catch(function () {
+                enlace.setAttribute('aria-disabled', 'true');
+                enlace.classList.add('boton--secundario');
+                enlace.removeAttribute('href');
+                estado.textContent =
+                  'El archivo todavía no está publicado en este servidor. Solicítelo al equipo del proyecto.';
+              });
+          }
+
+          util.nodo('#anioActual').textContent = String(new Date().getFullYear());
+        });
+      })();
+    </script>
+  </body>
+</html>

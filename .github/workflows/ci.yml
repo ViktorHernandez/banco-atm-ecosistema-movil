@@ -1,0 +1,270 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: Backend - build, migraciones y pruebas
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: banco_atm_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/banco_atm_ci
+      DATABASE_SSL: 'false'
+      JWT_SECRET: secreto-solo-para-integracion-continua
+      JWT_EXPIRES_IN: 15m
+      CORS_ORIGIN: http://localhost:5500,http://localhost:5501
+      APP_TIMEZONE: America/Mexico_City
+      PORTAL_PUBLIC_URL: http://localhost:5501
+      SERVE_ATM: 'false'
+      MAIL_ENABLED: 'false'
+      PORT: '3000'
+
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Analisis estatico
+        run: npm run lint -- --max-warnings=0
+        continue-on-error: true
+
+      - name: Compilar
+        run: npm run build
+
+      - name: Pruebas unitarias
+        run: npm test -- --ci
+
+      - name: Preparar extensiones de PostgreSQL
+        run: |
+          PGPASSWORD=postgres psql -h localhost -U postgres -d banco_atm_ci \
+            -c 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp";'
+
+      - name: Ejecutar migraciones
+        run: npm run migration:run
+
+      - name: Comprobar que las migraciones son idempotentes
+        run: |
+          salida=$(npm run migration:run 2>&1)
+          echo "$salida"
+          if echo "$salida" | grep -q "has been executed successfully"; then
+            echo "Una segunda ejecucion aplico cambios: las migraciones no son idempotentes."
+            exit 1
+          fi
+
+      - name: Cargar datos de demostracion
+        run: npm run seed
+
+      - name: Arrancar la API
+        run: |
+          node dist/main.js > /tmp/api.log 2>&1 &
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:3000/ > /dev/null; then
+              echo "API disponible"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "La API no respondio a tiempo"
+          cat /tmp/api.log
+          exit 1
+
+      - name: Comprobar health check
+        run: |
+          salud=$(curl -sf http://localhost:3000/)
+          echo "$salud"
+          echo "$salud" | grep -q '"status":"ok"'
+          echo "$salud" | grep -q '"database":"connected"'
+
+      - name: Pruebas de humo de la API
+        run: |
+          token=$(curl -sf -X POST http://localhost:3000/auth/login \
+            -H 'Content-Type: application/json' \
+            -d '{"correo":"mariana.robles@bancoatm.test","password":"Cliente123!"}' \
+            | node -e "let d='';process.stdin.on('data',c=>d+=c).on('end',()=>console.log(JSON.parse(d).accessToken))")
+          test -n "$token"
+          for ruta in /accounts/me/saldo /accounts/me/movimientos /cards/me \
+                      /loans/condiciones /notifications/me /notifications/me/resumen \
+                      /profile/me; do
+            codigo=$(curl -s -o /dev/null -w '%{http_code}' "http://localhost:3000$ruta" \
+              -H "Authorization: Bearer $token")
+            echo "$ruta -> $codigo"
+            test "$codigo" = "200"
+          done
+
+      - name: Comprobar que los endpoints protegidos rechazan sin token
+        run: |
+          for ruta in /accounts/me/saldo /admin/usuarios /notifications/me; do
+            codigo=$(curl -s -o /dev/null -w '%{http_code}' "http://localhost:3000$ruta")
+            echo "$ruta sin token -> $codigo"
+            test "$codigo" = "401"
+          done
+
+      - name: Comprobar cabeceras de seguridad
+        run: |
+          cabeceras=$(curl -sI http://localhost:3000/)
+          echo "$cabeceras"
+          echo "$cabeceras" | grep -qi 'x-content-type-options: nosniff'
+          echo "$cabeceras" | grep -qi 'x-frame-options'
+          if echo "$cabeceras" | grep -qi 'x-powered-by'; then
+            echo "La cabecera x-powered-by no deberia exponerse"
+            exit 1
+          fi
+
+      - name: Guardar el log de la API
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-log
+          path: /tmp/api.log
+
+  portal:
+    name: Portal web - sintaxis y accesibilidad
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: portal-web
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependencias
+        run: npm install --no-audit --no-fund
+
+      - name: Verificar sintaxis de los archivos JavaScript
+        run: |
+          for archivo in config.js server.js js/*.js; do
+            node --check "$archivo"
+          done
+
+      - name: Verificar que existan los archivos de la interfaz
+        run: |
+          test -f index.html
+          test -f portal.html
+          test -f seguridad.html
+          test -f app-movil.html
+          test -f css/base.css
+          test -f css/publico.css
+          test -f css/portal.css
+          test -f css/accesibilidad.css
+
+      - name: Auditoria de accesibilidad
+        run: npm run test:a11y
+
+  atm:
+    name: ATM - sintaxis e integridad
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: atm-client
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Verificar sintaxis de los archivos JavaScript
+        run: |
+          for archivo in config.js server.js js/*.js; do
+            node --check "$archivo"
+          done
+
+      - name: Verificar que existan los archivos de la interfaz
+        run: |
+          test -f index.html
+          test -f styles.css
+
+      - name: Comprobar la correccion de la capa de carga
+        run: |
+          grep -Pzoq '\.capa-carga\[hidden\]\s*\{\s*display:\s*none\s*!important;' styles.css
+
+  seguridad:
+    name: Seguridad - dependencias y secretos
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Auditoria de dependencias del backend
+        working-directory: backend
+        run: npm audit --audit-level=high
+        continue-on-error: true
+
+      - name: Comprobar que no se versionan archivos .env
+        run: |
+          if git ls-files | grep -E '(^|/)\.env$'; then
+            echo "Hay un archivo .env versionado. Debe eliminarse del repositorio."
+            exit 1
+          fi
+          echo "No hay archivos .env versionados."
+
+      - name: Buscar credenciales en el codigo
+        run: |
+          patrones='postgres(ql)?://[^ "]*:[^ "@]*@|BEGIN [A-Z ]*PRIVATE KEY|xox[baprs]-|sk_live_|AKIA[0-9A-Z]{16}'
+          if git grep -nEI "$patrones" -- . ':!*.md' ':!*package-lock.json' ':!.github/workflows/*' ':!backend/.env.example'; then
+            echo "Se encontraron posibles credenciales en el codigo."
+            exit 1
+          fi
+          echo "No se encontraron credenciales en el codigo."
+
+      - name: Comprobar que .env.example solo contiene marcadores
+        run: |
+          reales='supabase\.com|@gmail\.com|@outlook\.com|@hotmail\.com'
+          if grep -nEI "$reales" backend/.env.example; then
+            echo "backend/.env.example contiene valores que parecen reales."
+            exit 1
+          fi
+          if grep -nE '^(JWT_SECRET|MAIL_PASSWORD|MAIL_API_KEY|TOTP_ENCRYPTION_KEY)=.{24,}$' backend/.env.example; then
+            echo "backend/.env.example contiene un secreto con aspecto real."
+            exit 1
+          fi
+          if grep -nE 'xkeysib-|re_[A-Za-z0-9]{16,}|SG\.[A-Za-z0-9_-]{20,}' backend/.env.example; then
+            echo "backend/.env.example contiene una clave de proveedor de correo."
+            exit 1
+          fi
+          echo "backend/.env.example solo contiene marcadores."

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Banco ATM · Mi banca</title>
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/portal.css" />
+    <link rel="stylesheet" href="/css/accesibilidad.css" />
+  </head>
+  <body>
+    <a class="salto-contenido" href="#contenido">Ir al contenido principal</a>
+
+    <div class="aplicacion">
+      <aside class="lateral" id="lateral" aria-label="Navegación principal">
+        <a class="marca" href="/resumen" data-ir="/resumen">
+          <span class="marca__sello" id="selloMarca">BA</span>
+          <span class="marca__nombre" id="nombreMarca">Banco ATM</span>
+        </a>
+
+        <nav id="navegacionLateral" aria-label="Secciones del portal"></nav>
+
+        <div class="lateral__pie">
+          <span id="pieCanal">Canal web · Sesión segura</span>
+        </div>
+      </aside>
+
+      <div>
+        <header class="superior">
+          <div class="superior__identidad">
+            <button
+              type="button"
+              class="menu-movil"
+              id="botonMenu"
+              aria-label="Abrir menú de secciones"
+              aria-expanded="false"
+              aria-controls="lateral"
+            ></button>
+            <span class="superior__avatar" id="avatarUsuario" aria-hidden="true">—</span>
+            <span>
+              <span class="superior__nombre" id="nombreUsuario">—</span>
+              <span class="superior__meta" id="metaUsuario">—</span>
+            </span>
+          </div>
+
+          <div class="superior__acciones">
+            <span class="sesion" id="indicadorSesion" role="status">
+              <span class="sesion__punto" aria-hidden="true"></span>
+              <span id="textoSesion">Sesión activa</span>
+            </span>
+            <button type="button" class="boton boton--secundario boton--chico" id="botonSalir">
+              Salir
+            </button>
+          </div>
+        </header>
+
+        <main class="contenido" id="contenido" tabindex="-1" aria-busy="true">
+          <div class="vacio">Cargando su información…</div>
+        </main>
+
+        <div class="solo-lectores" id="anuncioVista" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <div class="capa-carga" id="capaCarga" hidden aria-hidden="true">
+      <div class="giro" aria-hidden="true"></div>
+      <span class="solo-lectores">Procesando su operación</span>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="js/traducciones.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/accesibilidad.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/vistas-cliente.js"></script>
+    <script src="js/vistas-admin.js"></script>
+    <script src="js/notificaciones.js"></script>
+    <script src="js/asistente.js"></script>
+    <script src="js/portal.js"></script>
+  </body>
+</html>

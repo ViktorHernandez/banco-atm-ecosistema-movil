@@ -1,0 +1,111 @@
+services:
+  - type: web
+    name: banco-atm-api-movil
+    runtime: node
+    plan: free
+    region: virginia
+    rootDir: backend
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start:prod
+    healthCheckPath: /
+    envVars:
+      - key: NODE_VERSION
+        value: '20'
+      - key: DATABASE_URL
+        sync: false
+      - key: DATABASE_SSL
+        value: 'true'
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_EXPIRES_IN
+        value: 15m
+      - key: APP_TIMEZONE
+        value: America/Mexico_City
+      - key: CORS_ORIGIN
+        sync: false
+      - key: PORTAL_PUBLIC_URL
+        sync: false
+      - key: SERVE_ATM
+        value: 'false'
+      - key: MAIL_ENABLED
+        sync: false
+      - key: MAIL_TRANSPORT
+        value: api
+      - key: MAIL_API_PROVIDER
+        value: brevo
+      - key: MAIL_API_KEY
+        sync: false
+      - key: MAIL_FROM
+        sync: false
+      - key: FIREBASE_PROJECT_ID
+        sync: false
+      - key: FIREBASE_CLIENT_EMAIL
+        sync: false
+      - key: FIREBASE_PRIVATE_KEY
+        sync: false
+
+  - type: web
+    name: banco-atm-cajero-movil
+    runtime: static
+    rootDir: atm-client
+    buildCommand: ''
+    staticPublishPath: .
+
+  - type: web
+    name: banco-portal-web-movil
+    runtime: static
+    rootDir: portal-web
+    buildCommand: ''
+    staticPublishPath: .
+    routes:
+      - type: rewrite
+        source: /app-movil
+        destination: /app-movil.html
+      - type: rewrite
+        source: /seguridad
+        destination: /seguridad.html
+      - type: rewrite
+        source: /resumen
+        destination: /portal.html
+      - type: rewrite
+        source: /cuentas
+        destination: /portal.html
+      - type: rewrite
+        source: /movimientos
+        destination: /portal.html
+      - type: rewrite
+        source: /transferencias
+        destination: /portal.html
+      - type: rewrite
+        source: /pagos
+        destination: /portal.html
+      - type: rewrite
+        source: /tarjetas
+        destination: /portal.html
+      - type: rewrite
+        source: /prestamos
+        destination: /portal.html
+      - type: rewrite
+        source: /avisos
+        destination: /portal.html
+      - type: rewrite
+        source: /perfil
+        destination: /portal.html
+      - type: rewrite
+        source: /admin
+        destination: /portal.html
+      - type: rewrite
+        source: /admin/*
+        destination: /portal.html
+      - type: rewrite
+        source: /login
+        destination: /index.html
+      - type: rewrite
+        source: /crearcuenta
+        destination: /index.html
+      - type: rewrite
+        source: /verificar
+        destination: /index.html
+      - type: rewrite
+        source: /contacto
+        destination: /contacto.html
