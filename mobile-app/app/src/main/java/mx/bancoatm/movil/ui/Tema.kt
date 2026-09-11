@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 private val Primario = Color(0xFF0B4F6C)
@@ -53,7 +54,28 @@ private val esquemaOscuro = darkColorScheme(
     onError = Color(0xFF690005),
 )
 
+object Dimensiones {
+    val radioTarjeta = 20.dp
+    val radioTarjetaGrande = 24.dp
+    val radioControl = 14.dp
+    val radioIcono = 14.dp
+
+    val espacioSeccion = 20.dp
+    val espacioElemento = 12.dp
+    val espacioCompacto = 8.dp
+    val margenPantalla = 16.dp
+    val rellenoTarjeta = 18.dp
+    val rellenoTarjetaGrande = 22.dp
+
+    val elevacionTarjeta = 0.dp
+    val elevacionDestacada = 2.dp
+
+    val iconoCirculo = 40.dp
+    val alturaAcceso = 96.dp
+}
+
 private val tipografia = Typography(
+    displayMedium = TextStyle(fontSize = 36.sp, fontWeight = FontWeight.Bold),
     displaySmall = TextStyle(fontSize = 32.sp, fontWeight = FontWeight.Bold),
     headlineMedium = TextStyle(fontSize = 26.sp, fontWeight = FontWeight.Bold),
     headlineSmall = TextStyle(fontSize = 21.sp, fontWeight = FontWeight.SemiBold),
@@ -62,6 +84,7 @@ private val tipografia = Typography(
     bodyLarge = TextStyle(fontSize = 16.sp),
     bodyMedium = TextStyle(fontSize = 14.sp),
     labelLarge = TextStyle(fontSize = 14.sp, fontWeight = FontWeight.Medium),
+    labelMedium = TextStyle(fontSize = 13.sp, fontWeight = FontWeight.Medium),
     labelSmall = TextStyle(fontSize = 12.sp),
 )
 

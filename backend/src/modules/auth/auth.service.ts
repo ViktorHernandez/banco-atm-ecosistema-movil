@@ -343,24 +343,33 @@ export class AuthService {
     });
 
     if (existente) {
-      if (!existente.correoVerificado) {
-        existente.codigoVerificacion = this.generarCodigo();
-        existente.codigoVerificacionExpira = this.expiracionCodigo();
-        await this.usuarioRepository.save(existente);
-
-        void this.mailService.codigoVerificacion(
-          existente.correo,
-          existente.nombreCompleto,
-          existente.codigoVerificacion,
-        );
-      }
-
       await this.auditService.registrar({
         accion: 'REGISTRO_CORREO_DUPLICADO',
         entidadAfectada: 'Usuario',
         canal: Canal.WEB,
         detalle: 'Intento de registro con un correo ya existente',
       });
+
+      if (existente.correoVerificado) {
+        return {
+          registrado: false,
+          correo,
+          envioDeCorreoActivo: this.mailService.habilitado,
+          estadoCuenta: 'ACTIVA',
+          mensaje:
+            'Este correo ya está vinculado a una cuenta. Inicie sesión para continuar.',
+        };
+      }
+
+      existente.codigoVerificacion = this.generarCodigo();
+      existente.codigoVerificacionExpira = this.expiracionCodigo();
+      await this.usuarioRepository.save(existente);
+
+      void this.mailService.codigoVerificacion(
+        existente.correo,
+        existente.nombreCompleto,
+        existente.codigoVerificacion,
+      );
 
       return {
         registrado: true,

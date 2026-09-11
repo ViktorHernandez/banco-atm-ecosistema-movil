@@ -49,6 +49,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import mx.bancoatm.movil.R
+import mx.bancoatm.movil.ui.Dimensiones
 
 @Composable
 fun CampoTexto(
@@ -269,7 +270,7 @@ fun TarjetaAccion(
                 }
             }
             .clickable(onClick = alPulsar),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(Dimensiones.radioTarjeta),
     ) {
         contenido()
     }

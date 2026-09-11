@@ -61,14 +61,22 @@ fun PantallaAcceso(
     modelo: ModeloBanco,
     alRegistrarse: () -> Unit,
     alRecuperar: () -> Unit,
+    correoInicial: String = "",
+    avisoInicial: Boolean = false,
 ) {
     val estado by modelo.estado.collectAsState()
-    var correo by remember { mutableStateOf("") }
+    var correo by remember { mutableStateOf(correoInicial) }
     var password by remember { mutableStateOf("") }
     var codigo by remember { mutableStateOf("") }
     var pideSegundoFactor by remember { mutableStateOf(false) }
 
     ContenedorFormulario(stringResource(R.string.acceso_titulo)) {
+        if (avisoInicial) {
+            MensajeEstado(
+                texto = stringResource(R.string.registro_cuenta_existente),
+                esError = false,
+            )
+        }
         CampoTexto(
             valor = correo,
             alCambiar = { correo = it; modelo.limpiarEstado() },
@@ -130,7 +138,11 @@ fun PantallaAcceso(
 }
 
 @Composable
-fun PantallaRegistro(modelo: ModeloBanco, alVolver: () -> Unit) {
+fun PantallaRegistro(
+    modelo: ModeloBanco,
+    alVolver: () -> Unit,
+    alExistirCuenta: (String) -> Unit = {},
+) {
     val estado by modelo.estado.collectAsState()
     var nombre by remember { mutableStateOf("") }
     var correo by remember { mutableStateOf("") }
@@ -188,7 +200,14 @@ fun PantallaRegistro(modelo: ModeloBanco, alVolver: () -> Unit) {
                 habilitado = nombre.isNotBlank() && correo.isNotBlank() &&
                     telefono.isNotBlank() && password.length >= 8 && !distintas,
                 alPulsar = {
-                    modelo.registrar(nombre, correo, telefono, password) { enviado = true }
+                    modelo.registrar(
+                        nombre = nombre,
+                        correo = correo,
+                        telefono = telefono,
+                        password = password,
+                        alRegistrar = { enviado = true },
+                        alExistirCuenta = alExistirCuenta,
+                    )
                 },
             )
         } else if (!verificado) {

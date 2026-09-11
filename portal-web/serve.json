@@ -1,0 +1,21 @@
+{
+  "rewrites": [
+    { "source": "/login", "destination": "/index.html" },
+    { "source": "/crearcuenta", "destination": "/index.html" },
+    { "source": "/verificar", "destination": "/index.html" },
+    { "source": "/contacto", "destination": "/index.html" },
+    { "source": "/app-movil", "destination": "/app-movil.html" },
+    { "source": "/seguridad", "destination": "/seguridad.html" },
+    { "source": "/resumen", "destination": "/portal.html" },
+    { "source": "/cuentas", "destination": "/portal.html" },
+    { "source": "/movimientos", "destination": "/portal.html" },
+    { "source": "/transferencias", "destination": "/portal.html" },
+    { "source": "/pagos", "destination": "/portal.html" },
+    { "source": "/tarjetas", "destination": "/portal.html" },
+    { "source": "/prestamos", "destination": "/portal.html" },
+    { "source": "/avisos", "destination": "/portal.html" },
+    { "source": "/perfil", "destination": "/portal.html" },
+    { "source": "/admin", "destination": "/portal.html" },
+    { "source": "/admin/**", "destination": "/portal.html" }
+  ]
+}

@@ -926,6 +926,8 @@
       'Seguro de auto de renta y de equipaje':
         'Rental car and baggage insurance',
       'Seguro de protección de compras': 'Purchase protection insurance',
+      'Este correo ya está vinculado a una cuenta. Inicie sesión para continuar.':
+        'This email is already linked to an account. Sign in to continue.',
       'Seguro de viaje': 'Travel insurance',
       'Seguro de viaje para el titular': 'Travel insurance for the cardholder',
       'Seguro médico internacional': 'International medical insurance',

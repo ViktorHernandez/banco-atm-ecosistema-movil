@@ -34,6 +34,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import mx.bancoatm.movil.R
+import mx.bancoatm.movil.ui.Dimensiones
 import mx.bancoatm.movil.data.Apartado
 import mx.bancoatm.movil.data.Entorno
 import mx.bancoatm.movil.data.Resultado
@@ -59,7 +60,7 @@ private fun FilaApartado(
     var monto by remember { mutableStateOf("") }
     val valido = monto.toDoubleOrNull()?.let { it > 0 } == true
 
-    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
+    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(Dimensiones.radioTarjeta)) {
         Column(
             modifier = Modifier.padding(18.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -165,7 +166,7 @@ fun PantallaApartados(modelo: ModeloBanco, alVolver: () -> Unit) {
         item {
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(16.dp),
+                shape = RoundedCornerShape(Dimensiones.radioTarjeta),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                 ),

@@ -484,6 +484,13 @@
         nodo('#botonRegistro').disabled = false;
         nodo('#formularioRegistro').reset();
 
+        if (resultado.estadoCuenta === 'ACTIVA' && resultado.registrado === false) {
+          nodo('#correo').value = resultado.correo || correo;
+          mostrarPanel('acceso');
+          mostrarAviso('#avisoAcceso', resultado.mensaje, 'atencion');
+          return;
+        }
+
         nodo('#verificarCorreo').value = resultado.correo || correo;
         nodo('#textoVerificacion').textContent =
           'Enviamos un código de 6 dígitos a ' +

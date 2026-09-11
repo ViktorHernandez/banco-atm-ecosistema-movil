@@ -228,4 +228,8 @@
     <string name="beneficio_concierge">Concierge personal y asistencia en viajes</string>
     <string name="beneficio_puntos">Programa de puntos con acumulación acelerada</string>
     <string name="beneficio_seguro_medico">Seguro médico internacional</string>
+
+    <string name="error_credenciales">Correo o contraseña incorrectos. Compruebe sus datos e inténtelo de nuevo.</string>
+    <string name="registro_cuenta_existente">Este correo ya está vinculado a una cuenta. Inicie sesión para continuar.</string>
+    <string name="inicio_accesos">Accesos rápidos</string>
 </resources>

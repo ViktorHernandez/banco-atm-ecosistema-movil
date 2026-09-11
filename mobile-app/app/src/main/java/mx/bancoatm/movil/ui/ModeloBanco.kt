@@ -11,6 +11,7 @@ import mx.bancoatm.movil.data.Apartado
 import mx.bancoatm.movil.data.CatalogoCredito
 import mx.bancoatm.movil.data.Comprobante
 import mx.bancoatm.movil.data.Cuenta
+import mx.bancoatm.movil.data.cuentaYaExiste
 import mx.bancoatm.movil.data.Entorno
 import mx.bancoatm.movil.data.ErrorApi
 import mx.bancoatm.movil.data.Movimiento
@@ -87,6 +88,7 @@ class ModeloBanco(
     fun mensajeDe(error: ErrorApi): Int = when (error.tipo) {
         TipoError.SIN_RED -> R.string.error_sin_red
         TipoError.TIEMPO_AGOTADO -> R.string.error_tiempo
+        TipoError.CREDENCIALES_INVALIDAS -> R.string.error_credenciales
         TipoError.SESION_EXPIRADA -> R.string.error_sesion
         TipoError.NO_AUTORIZADO -> R.string.error_permiso
         TipoError.SERVIDOR -> R.string.error_servidor
@@ -152,6 +154,7 @@ class ModeloBanco(
         telefono: String,
         password: String,
         alRegistrar: () -> Unit,
+        alExistirCuenta: (String) -> Unit = {},
     ) {
         _estado.value = EstadoPantalla(procesando = true)
         viewModelScope.launch {
@@ -159,7 +162,11 @@ class ModeloBanco(
                 is Resultado.Fallo -> publicarError(r.error)
                 is Resultado.Exito -> {
                     _estado.value = EstadoPantalla()
-                    alRegistrar()
+                    if (cuentaYaExiste(r.datos)) {
+                        alExistirCuenta(r.datos.optString("correo", correo.trim()))
+                    } else {
+                        alRegistrar()
+                    }
                 }
             }
         }

@@ -55,7 +55,11 @@ import mx.bancoatm.movil.ui.ModeloBanco
 import mx.bancoatm.movil.ui.Rutas
 import mx.bancoatm.movil.ui.componentes.Cargando
 import mx.bancoatm.movil.ui.componentes.ErrorReintentable
+import mx.bancoatm.movil.ui.Dimensiones
+import mx.bancoatm.movil.ui.componentes.AccesoCuadricula
 import mx.bancoatm.movil.ui.componentes.EstadoVacio
+import mx.bancoatm.movil.ui.componentes.FilaConIcono
+import mx.bancoatm.movil.ui.componentes.TarjetaSaldo
 import mx.bancoatm.movil.ui.componentes.TarjetaAccion
 import mx.bancoatm.movil.ui.componentes.TituloSeccion
 import mx.bancoatm.movil.ui.formatearFecha
@@ -78,37 +82,38 @@ fun etiquetaTipo(tipo: String): String = when (tipo) {
 fun FilaMovimiento(movimiento: Movimiento, idioma: String) {
     val esAbono = movimiento.signo == "ABONO"
 
-    Row(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Column(Modifier.weight(1f)) {
-            Text(etiquetaTipo(movimiento.tipo), style = MaterialTheme.typography.titleMedium)
-            Text(
-                formatearFecha(movimiento.fecha, idioma),
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            if (!movimiento.contraparte.isNullOrBlank()) {
-                Text(
-                    movimiento.contraparte,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        }
-        Text(
-            text = (if (esAbono) "+ " else "− ") +
-                formatearMoneda(movimiento.monto, idioma),
-            style = MaterialTheme.typography.titleMedium,
-            color = if (esAbono) {
-                MaterialTheme.colorScheme.tertiary
-            } else {
-                MaterialTheme.colorScheme.onSurface
-            },
-        )
-    }
+    FilaConIcono(
+        icono = iconoDeMovimiento(movimiento.tipo, esAbono),
+        titulo = etiquetaTipo(movimiento.tipo),
+        subtitulo = formatearFecha(movimiento.fecha, idioma),
+        detalle = movimiento.contraparte,
+        valor = (if (esAbono) "+ " else "\u2212 ") + formatearMoneda(movimiento.monto, idioma),
+        colorValor = if (esAbono) {
+            MaterialTheme.colorScheme.tertiary
+        } else {
+            MaterialTheme.colorScheme.onSurface
+        },
+        fondoIcono = if (esAbono) {
+            MaterialTheme.colorScheme.tertiary.copy(alpha = 0.14f)
+        } else {
+            MaterialTheme.colorScheme.primaryContainer
+        },
+        tinteIcono = if (esAbono) {
+            MaterialTheme.colorScheme.tertiary
+        } else {
+            MaterialTheme.colorScheme.onPrimaryContainer
+        },
+    )
+}
+
+private fun iconoDeMovimiento(tipo: String, esAbono: Boolean): ImageVector = when (tipo) {
+    "TRANSFERENCIA" -> Icons.Filled.SwapHoriz
+    "PAGO_SERVICIO" -> Icons.Filled.Payments
+    "RETIRO" -> Icons.Filled.SouthWest
+    "DEPOSITO" -> Icons.Filled.AccountBalanceWallet
+    "PRESTAMO", "PAGO_PRESTAMO" -> Icons.Filled.ReceiptLong
+    "APARTADO_ABONO", "APARTADO_RETIRO" -> Icons.Filled.Savings
+    else -> if (esAbono) Icons.Filled.SouthWest else Icons.Filled.Payments
 }
 
 @Composable
@@ -155,74 +160,47 @@ fun PantallaInicio(
         }
 
         item {
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(20.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
+            TarjetaSaldo(
+                etiquetaSaldo = stringResource(R.string.inicio_saldo),
+                saldo = if (visible) {
+                    formatearMoneda(cuenta?.saldo ?: 0.0, idioma)
+                } else {
+                    "\u2022\u2022\u2022\u2022\u2022\u2022\u2022"
+                },
+                cuentaEnmascarada = cuenta?.numeroCuentaEnmascarado.orEmpty(),
+                visible = visible,
+                descripcionAlternar = stringResource(
+                    if (visible) R.string.inicio_ocultar_saldo else R.string.inicio_mostrar_saldo,
                 ),
-            ) {
-                Column(Modifier.padding(20.dp)) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Text(
-                            stringResource(R.string.inicio_saldo),
-                            style = MaterialTheme.typography.labelLarge,
-                            color = MaterialTheme.colorScheme.onPrimary,
-                        )
-                        IconButton(onClick = { visible = !visible }) {
-                            Icon(
-                                imageVector = if (visible) {
-                                    Icons.Filled.VisibilityOff
-                                } else {
-                                    Icons.Filled.Visibility
-                                },
-                                contentDescription = stringResource(
-                                    if (visible) {
-                                        R.string.inicio_ocultar_saldo
-                                    } else {
-                                        R.string.inicio_mostrar_saldo
-                                    },
-                                ),
-                                tint = MaterialTheme.colorScheme.onPrimary,
-                            )
-                        }
-                    }
-                    Text(
-                        text = if (visible) {
-                            formatearMoneda(cuenta?.saldo ?: 0.0, idioma)
-                        } else {
-                            "•••••••"
-                        },
-                        style = MaterialTheme.typography.displaySmall,
-                        color = MaterialTheme.colorScheme.onPrimary,
-                    )
-                    Text(
-                        cuenta?.numeroCuentaEnmascarado.orEmpty(),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onPrimary,
-                    )
-                }
-            }
+                alAlternar = { visible = !visible },
+            )
         }
 
+        item { Spacer(Modifier.height(Dimensiones.espacioCompacto)) }
+
         item {
+            TituloSeccion(texto = stringResource(R.string.inicio_accesos))
+        }
+
+        items(accesosRapidos.chunked(2)) { fila ->
             Row(
-                modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(Dimensiones.espacioElemento),
             ) {
-                accesosRapidos.forEach { acceso ->
-                    AccesoRapido(
+                fila.forEach { acceso ->
+                    AccesoCuadricula(
                         texto = stringResource(acceso.etiqueta),
                         icono = acceso.icono,
                         modifier = Modifier.weight(1f),
                     ) { alOperar(acceso.ruta) }
                 }
+                if (fila.size == 1) {
+                    Spacer(Modifier.weight(1f))
+                }
             }
         }
+
+        item { Spacer(Modifier.height(Dimensiones.espacioCompacto)) }
 
         item {
             TituloSeccion(
@@ -252,34 +230,9 @@ private val accesosRapidos = listOf(
     AccesoRapidoInicio(Rutas.TRANSFERENCIA, R.string.operar_transferir, Icons.Filled.SwapHoriz),
     AccesoRapidoInicio(Rutas.PAGO, R.string.operar_pagar, Icons.Filled.Payments),
     AccesoRapidoInicio(Rutas.APARTADOS, R.string.operar_apartados, Icons.Filled.Savings),
+    AccesoRapidoInicio(Rutas.ASISTENTE, R.string.operar_asistente, Icons.Filled.Chat),
 )
 
-@Composable
-private fun AccesoRapido(
-    texto: String,
-    icono: ImageVector,
-    modifier: Modifier,
-    alPulsar: () -> Unit,
-) {
-    TarjetaAccion(modifier = modifier, descripcion = texto, alPulsar = alPulsar) {
-        Column(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 14.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(6.dp),
-        ) {
-            Icon(
-                imageVector = icono,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-            )
-            Text(
-                texto,
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.primary,
-            )
-        }
-    }
-}
 
 @Composable
 fun PantallaMovimientos(modelo: ModeloBanco) {

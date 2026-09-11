@@ -35,6 +35,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import mx.bancoatm.movil.R
+import mx.bancoatm.movil.ui.Dimensiones
 import mx.bancoatm.movil.data.CatalogoCredito
 import mx.bancoatm.movil.data.DetalleTarjeta
 import mx.bancoatm.movil.data.NivelCredito
@@ -81,7 +82,7 @@ private fun TarjetaVisual(
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(Dimensiones.radioTarjetaGrande),
         colors = CardDefaults.cardColors(
             containerColor = if (esCredito) {
                 MaterialTheme.colorScheme.secondary
@@ -422,7 +423,7 @@ private fun FilaNivelCredito(
     procesando: Boolean,
     alSolicitar: (String) -> Unit,
 ) {
-    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
+    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(Dimensiones.radioTarjeta)) {
         Column(
             modifier = Modifier.fillMaxWidth().padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(6.dp),
@@ -507,7 +508,7 @@ private fun FilaPrestamo(
         0f
     }
 
-    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
+    Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(Dimensiones.radioTarjeta)) {
         Column(
             modifier = Modifier.padding(18.dp),
             verticalArrangement = Arrangement.spacedBy(6.dp),
@@ -595,7 +596,7 @@ fun PantallaPrestamos(modelo: ModeloBanco, alVolver: () -> Unit) {
         item { EncabezadoOperacion(stringResource(R.string.prestamos_titulo), alVolver) }
 
         item {
-            Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp)) {
+            Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(Dimensiones.radioTarjeta)) {
                 Column(
                     modifier = Modifier.padding(18.dp),
                     verticalArrangement = Arrangement.spacedBy(10.dp),

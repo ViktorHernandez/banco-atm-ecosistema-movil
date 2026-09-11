@@ -207,4 +207,8 @@
     <string name="beneficio_concierge">Personal concierge and travel assistance</string>
     <string name="beneficio_puntos">Points programme with accelerated earning</string>
     <string name="beneficio_seguro_medico">International medical insurance</string>
+
+    <string name="error_credenciales">Incorrect email or password. Check your details and try again.</string>
+    <string name="registro_cuenta_existente">This email is already linked to an account. Sign in to continue.</string>
+    <string name="inicio_accesos">Quick actions</string>
 </resources>

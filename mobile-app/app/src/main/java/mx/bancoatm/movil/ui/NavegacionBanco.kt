@@ -16,6 +16,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -83,16 +86,32 @@ fun NavegacionBanco(modelo: ModeloBanco) {
     val navegador = rememberNavController()
 
     if (!autenticado) {
+        var correoExistente by rememberSaveable { mutableStateOf("") }
+        var avisoCuentaExistente by rememberSaveable { mutableStateOf(false) }
+
         NavHost(navController = navegador, startDestination = Rutas.ACCESO) {
             composable(Rutas.ACCESO) {
                 PantallaAcceso(
                     modelo = modelo,
-                    alRegistrarse = { navegador.navigate(Rutas.REGISTRO) },
+                    alRegistrarse = {
+                        avisoCuentaExistente = false
+                        navegador.navigate(Rutas.REGISTRO)
+                    },
                     alRecuperar = { navegador.navigate(Rutas.RECUPERAR) },
+                    correoInicial = correoExistente,
+                    avisoInicial = avisoCuentaExistente,
                 )
             }
             composable(Rutas.REGISTRO) {
-                PantallaRegistro(modelo = modelo, alVolver = { navegador.popBackStack() })
+                PantallaRegistro(
+                    modelo = modelo,
+                    alVolver = { navegador.popBackStack() },
+                    alExistirCuenta = { correo ->
+                        correoExistente = correo
+                        avisoCuentaExistente = true
+                        navegador.popBackStack(Rutas.ACCESO, inclusive = false)
+                    },
+                )
             }
             composable(Rutas.RECUPERAR) {
                 PantallaRecuperar(modelo = modelo, alVolver = { navegador.popBackStack() })

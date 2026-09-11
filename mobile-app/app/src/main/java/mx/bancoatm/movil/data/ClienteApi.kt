@@ -26,6 +26,7 @@ data class ErrorApi(
 
 enum class TipoError {
     SIN_RED,
+    CREDENCIALES_INVALIDAS,
     TIEMPO_AGOTADO,
     SESION_EXPIRADA,
     NO_AUTORIZADO,
@@ -47,9 +48,13 @@ class ClienteApi(private val sesion: ContextoSesion) {
 
     private val tipoJson = "application/json; charset=utf-8".toMediaType()
 
-    private fun clasificar(codigo: Int): TipoError = when (codigo) {
+    private fun clasificar(codigo: Int, autenticado: Boolean): TipoError = when (codigo) {
         400 -> TipoError.SOLICITUD_INVALIDA
-        401 -> TipoError.SESION_EXPIRADA
+        401 -> if (autenticado) {
+            TipoError.SESION_EXPIRADA
+        } else {
+            TipoError.CREDENCIALES_INVALIDAS
+        }
         403 -> TipoError.NO_AUTORIZADO
         404 -> TipoError.NO_ENCONTRADO
         409 -> TipoError.CONFLICTO
@@ -150,7 +155,7 @@ class ClienteApi(private val sesion: ContextoSesion) {
                     ErrorApi(
                         respuesta.code,
                         mensajeDeCuerpo(texto, respuesta.code),
-                        clasificar(respuesta.code),
+                        clasificar(respuesta.code, autenticado),
                     ),
                 )
             }

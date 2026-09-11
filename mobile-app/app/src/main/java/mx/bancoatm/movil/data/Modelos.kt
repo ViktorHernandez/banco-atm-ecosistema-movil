@@ -327,3 +327,7 @@ fun JSONObject.aRespuestaAsistente(): RespuestaAsistente {
             .filter { it.isNotBlank() },
     )
 }
+
+fun cuentaYaExiste(respuesta: JSONObject): Boolean =
+    respuesta.optString("estadoCuenta", "") == "ACTIVA" &&
+        !respuesta.optBoolean("registrado", true)
