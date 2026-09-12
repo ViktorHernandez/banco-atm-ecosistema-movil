@@ -26,12 +26,15 @@ private val esquemaClaro = lightColorScheme(
     secondary = Acento,
     onSecondary = Color.White,
     tertiary = Exito,
-    background = Color(0xFFF6F8FA),
-    onBackground = Color(0xFF14181B),
+    background = Color(0xFFF2F5F9),
+    onBackground = Color(0xFF101418),
     surface = Color.White,
-    onSurface = Color(0xFF14181B),
-    surfaceVariant = Color(0xFFE6ECF0),
-    onSurfaceVariant = Color(0xFF43494D),
+    onSurface = Color(0xFF101418),
+    surfaceVariant = Color(0xFFEEF3F8),
+    onSurfaceVariant = Color(0xFF5A6570),
+    outline = Color(0xFFD6DEE6),
+    outlineVariant = Color(0xFFE8EEF4),
+    surfaceTint = Color.Transparent,
     error = Peligro,
     onError = Color.White,
 )
@@ -44,48 +47,77 @@ private val esquemaOscuro = darkColorScheme(
     secondary = Acento,
     onSecondary = Color(0xFF00303A),
     tertiary = Color(0xFF6FD79B),
-    background = Color(0xFF101417),
-    onBackground = Color(0xFFE1E3E5),
-    surface = Color(0xFF181D21),
-    onSurface = Color(0xFFE1E3E5),
-    surfaceVariant = Color(0xFF2A3136),
-    onSurfaceVariant = Color(0xFFC0C7CC),
+    background = Color(0xFF0C1014),
+    onBackground = Color(0xFFE6E9EC),
+    surface = Color(0xFF161B20),
+    onSurface = Color(0xFFE6E9EC),
+    surfaceVariant = Color(0xFF212930),
+    onSurfaceVariant = Color(0xFFA8B2BC),
+    outline = Color(0xFF333C45),
+    outlineVariant = Color(0xFF262E36),
+    surfaceTint = Color.Transparent,
     error = Color(0xFFFFB4AB),
     onError = Color(0xFF690005),
 )
 
 object Dimensiones {
-    val radioTarjeta = 20.dp
-    val radioTarjetaGrande = 24.dp
-    val radioControl = 14.dp
-    val radioIcono = 14.dp
+    val radioTarjeta = 22.dp
+    val radioTarjetaGrande = 28.dp
+    val radioControl = 16.dp
+    val radioIcono = 12.dp
+    val radioInsignia = 10.dp
 
-    val espacioSeccion = 20.dp
+    val espacioSeccion = 24.dp
     val espacioElemento = 12.dp
     val espacioCompacto = 8.dp
-    val margenPantalla = 16.dp
+    val espacioMinimo = 4.dp
+    val margenPantalla = 20.dp
     val rellenoTarjeta = 18.dp
-    val rellenoTarjetaGrande = 22.dp
+    val rellenoTarjetaGrande = 24.dp
+    val rellenoLista = 16.dp
 
     val elevacionTarjeta = 0.dp
-    val elevacionDestacada = 2.dp
+    val elevacionDestacada = 3.dp
 
-    val iconoCirculo = 40.dp
-    val alturaAcceso = 96.dp
+    val iconoCirculo = 44.dp
+    val iconoCirculoCompacto = 38.dp
+    val alturaAcceso = 104.dp
+    val alturaControl = 54.dp
+    val areaTactilMinima = 48.dp
 }
 
 private val tipografia = Typography(
-    displayMedium = TextStyle(fontSize = 36.sp, fontWeight = FontWeight.Bold),
-    displaySmall = TextStyle(fontSize = 32.sp, fontWeight = FontWeight.Bold),
-    headlineMedium = TextStyle(fontSize = 26.sp, fontWeight = FontWeight.Bold),
-    headlineSmall = TextStyle(fontSize = 21.sp, fontWeight = FontWeight.SemiBold),
-    titleLarge = TextStyle(fontSize = 19.sp, fontWeight = FontWeight.SemiBold),
-    titleMedium = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Medium),
-    bodyLarge = TextStyle(fontSize = 16.sp),
-    bodyMedium = TextStyle(fontSize = 14.sp),
-    labelLarge = TextStyle(fontSize = 14.sp, fontWeight = FontWeight.Medium),
+    displayMedium = TextStyle(
+        fontSize = 38.sp,
+        lineHeight = 44.sp,
+        fontWeight = FontWeight.Bold,
+        letterSpacing = (-1).sp,
+    ),
+    displaySmall = TextStyle(
+        fontSize = 34.sp,
+        lineHeight = 40.sp,
+        fontWeight = FontWeight.Bold,
+        letterSpacing = (-0.8).sp,
+    ),
+    headlineMedium = TextStyle(
+        fontSize = 27.sp,
+        lineHeight = 33.sp,
+        fontWeight = FontWeight.Bold,
+        letterSpacing = (-0.5).sp,
+    ),
+    headlineSmall = TextStyle(
+        fontSize = 22.sp,
+        lineHeight = 28.sp,
+        fontWeight = FontWeight.Bold,
+        letterSpacing = (-0.3).sp,
+    ),
+    titleLarge = TextStyle(fontSize = 19.sp, lineHeight = 25.sp, fontWeight = FontWeight.SemiBold),
+    titleMedium = TextStyle(fontSize = 16.sp, lineHeight = 22.sp, fontWeight = FontWeight.SemiBold),
+    bodyLarge = TextStyle(fontSize = 16.sp, lineHeight = 23.sp),
+    bodyMedium = TextStyle(fontSize = 14.sp, lineHeight = 20.sp),
+    labelLarge = TextStyle(fontSize = 15.sp, fontWeight = FontWeight.SemiBold),
     labelMedium = TextStyle(fontSize = 13.sp, fontWeight = FontWeight.Medium),
-    labelSmall = TextStyle(fontSize = 12.sp),
+    labelSmall = TextStyle(fontSize = 12.sp, lineHeight = 16.sp),
 )
 
 @Composable

@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.Chat
@@ -24,14 +23,8 @@ import androidx.compose.material.icons.filled.ReceiptLong
 import androidx.compose.material.icons.filled.Savings
 import androidx.compose.material.icons.filled.SouthWest
 import androidx.compose.material.icons.filled.SwapHoriz
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilterChip
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -42,7 +35,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -59,8 +51,10 @@ import mx.bancoatm.movil.ui.Dimensiones
 import mx.bancoatm.movil.ui.componentes.AccesoCuadricula
 import mx.bancoatm.movil.ui.componentes.EstadoVacio
 import mx.bancoatm.movil.ui.componentes.FilaConIcono
+import mx.bancoatm.movil.ui.componentes.FilaOpcion
+import mx.bancoatm.movil.ui.componentes.Separador
+import mx.bancoatm.movil.ui.componentes.TarjetaAgrupada
 import mx.bancoatm.movil.ui.componentes.TarjetaSaldo
-import mx.bancoatm.movil.ui.componentes.TarjetaAccion
 import mx.bancoatm.movil.ui.componentes.TituloSeccion
 import mx.bancoatm.movil.ui.formatearFecha
 import mx.bancoatm.movil.ui.formatearMoneda
@@ -144,8 +138,8 @@ fun PantallaInicio(
     }
 
     LazyColumn(
-        modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.fillMaxSize().padding(horizontal = Dimensiones.margenPantalla),
+        verticalArrangement = Arrangement.spacedBy(Dimensiones.espacioElemento),
     ) {
         item {
             Spacer(Modifier.height(16.dp))
@@ -213,7 +207,16 @@ fun PantallaInicio(
         if (movimientos.isEmpty()) {
             item { EstadoVacio(stringResource(R.string.inicio_sin_movimientos)) }
         } else {
-            items(movimientos) { FilaMovimiento(it, idioma) }
+            item {
+                TarjetaAgrupada {
+                    movimientos.forEachIndexed { indice, movimiento ->
+                        FilaMovimiento(movimiento, idioma)
+                        if (indice < movimientos.lastIndex) {
+                            Separador()
+                        }
+                    }
+                }
+            }
         }
 
         item { Spacer(Modifier.height(24.dp)) }
@@ -341,56 +344,10 @@ private val operacionesProductos = listOf(
 )
 
 @Composable
-private fun FilaOpcionMenu(
-    icono: ImageVector,
-    titulo: String,
-    detalle: String?,
-    contador: Int,
-    alPulsar: () -> Unit,
-) {
-    val descripcion = if (detalle == null) titulo else "$titulo. $detalle"
-
-    TarjetaAccion(
-        modifier = Modifier.fillMaxWidth(),
-        descripcion = if (contador > 0) "$descripcion ($contador)" else descripcion,
-        alPulsar = alPulsar,
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(18.dp),
-            horizontalArrangement = Arrangement.spacedBy(14.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Icon(
-                imageVector = icono,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary,
-            )
-            Column(Modifier.weight(1f)) {
-                Text(titulo, style = MaterialTheme.typography.titleMedium)
-                if (detalle != null) {
-                    Text(
-                        detalle,
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-            }
-            if (contador > 0) {
-                Text(
-                    contador.toString(),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.error,
-                )
-            }
-        }
-    }
-}
-
-@Composable
 fun PantallaOperar(alElegir: (String) -> Unit) {
     LazyColumn(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = Modifier.fillMaxSize().padding(Dimensiones.margenPantalla),
+        verticalArrangement = Arrangement.spacedBy(Dimensiones.espacioElemento),
     ) {
         item {
             Text(
@@ -401,28 +358,40 @@ fun PantallaOperar(alElegir: (String) -> Unit) {
         }
 
         item { TituloSeccion(stringResource(R.string.operar_grupo_dinero)) }
-        items(operacionesDinero) { opcion ->
-            FilaOpcionMenu(
-                icono = opcion.icono,
-                titulo = stringResource(opcion.etiqueta),
-                detalle = stringResource(opcion.detalle),
-                contador = 0,
-                alPulsar = { alElegir(opcion.ruta) },
-            )
+        item {
+            TarjetaAgrupada {
+                operacionesDinero.forEachIndexed { indice, opcion ->
+                    FilaOpcion(
+                        icono = opcion.icono,
+                        titulo = stringResource(opcion.etiqueta),
+                        detalle = stringResource(opcion.detalle),
+                        alPulsar = { alElegir(opcion.ruta) },
+                    )
+                    if (indice < operacionesDinero.lastIndex) {
+                        Separador()
+                    }
+                }
+            }
         }
 
         item { TituloSeccion(stringResource(R.string.operar_grupo_productos)) }
-        items(operacionesProductos) { opcion ->
-            FilaOpcionMenu(
-                icono = opcion.icono,
-                titulo = stringResource(opcion.etiqueta),
-                detalle = stringResource(opcion.detalle),
-                contador = 0,
-                alPulsar = { alElegir(opcion.ruta) },
-            )
+        item {
+            TarjetaAgrupada {
+                operacionesProductos.forEachIndexed { indice, opcion ->
+                    FilaOpcion(
+                        icono = opcion.icono,
+                        titulo = stringResource(opcion.etiqueta),
+                        detalle = stringResource(opcion.detalle),
+                        alPulsar = { alElegir(opcion.ruta) },
+                    )
+                    if (indice < operacionesProductos.lastIndex) {
+                        Separador()
+                    }
+                }
+            }
         }
 
-        item { Spacer(Modifier.height(24.dp)) }
+        item { Spacer(Modifier.height(Dimensiones.espacioSeccion)) }
     }
 }
 
@@ -440,8 +409,8 @@ fun PantallaMas(modelo: ModeloBanco, alElegir: (String) -> Unit) {
     )
 
     LazyColumn(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = Modifier.fillMaxSize().padding(Dimensiones.margenPantalla),
+        verticalArrangement = Arrangement.spacedBy(Dimensiones.espacioElemento),
     ) {
         item {
             Text(
@@ -450,24 +419,33 @@ fun PantallaMas(modelo: ModeloBanco, alElegir: (String) -> Unit) {
                 modifier = Modifier.semantics { heading() },
             )
         }
-        items(opciones) { (ruta, etiqueta, icono) ->
-            FilaOpcionMenu(
-                icono = icono,
-                titulo = stringResource(etiqueta),
-                detalle = null,
-                contador = if (ruta == Rutas.AVISOS) noLeidas else 0,
-                alPulsar = { alElegir(ruta) },
-            )
+        item {
+            TarjetaAgrupada {
+                opciones.forEachIndexed { indice, (ruta, etiqueta, icono) ->
+                    FilaOpcion(
+                        icono = icono,
+                        titulo = stringResource(etiqueta),
+                        detalle = null,
+                        contador = if (ruta == Rutas.AVISOS) noLeidas else 0,
+                        destacado = ruta == Rutas.AVISOS && noLeidas > 0,
+                        alPulsar = { alElegir(ruta) },
+                    )
+                    if (indice < opciones.lastIndex) {
+                        Separador()
+                    }
+                }
+            }
         }
         item {
-            FilaOpcionMenu(
-                icono = Icons.Filled.Logout,
-                titulo = stringResource(R.string.perfil_cerrar_sesion),
-                detalle = null,
-                contador = 0,
-                alPulsar = { confirmarSalida = true },
-            )
-            Spacer(Modifier.height(24.dp))
+            TarjetaAgrupada {
+                FilaOpcion(
+                    icono = Icons.Filled.Logout,
+                    titulo = stringResource(R.string.perfil_cerrar_sesion),
+                    detalle = null,
+                    alPulsar = { confirmarSalida = true },
+                )
+            }
+            Spacer(Modifier.height(Dimensiones.espacioSeccion))
         }
     }
 

@@ -9,8 +9,10 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.ListAlt
 import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -132,10 +134,20 @@ private fun ContenedorPrincipal(modelo: ModeloBanco, navegador: NavHostControlle
     Scaffold(
         bottomBar = {
             if (mostrarBarra) {
-                NavigationBar {
+                NavigationBar(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    tonalElevation = Dimensiones.elevacionDestacada,
+                ) {
                     pestanas.forEach { pestana ->
                         NavigationBarItem(
                             selected = rutaActual == pestana.ruta,
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                selectedTextColor = MaterialTheme.colorScheme.primary,
+                                indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+                                unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                            ),
                             onClick = {
                                 if (rutaActual != pestana.ruta) {
                                     navegador.navigate(pestana.ruta) {
@@ -148,7 +160,13 @@ private fun ContenedorPrincipal(modelo: ModeloBanco, navegador: NavHostControlle
                             icon = {
                                 Icon(pestana.icono, contentDescription = null)
                             },
-                            label = { Text(stringResource(pestana.etiqueta)) },
+                            label = {
+                                Text(
+                                    stringResource(pestana.etiqueta),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    maxLines = 1,
+                                )
+                            },
                         )
                     }
                 }

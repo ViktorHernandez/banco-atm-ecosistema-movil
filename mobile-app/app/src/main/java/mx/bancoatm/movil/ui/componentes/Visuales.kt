@@ -15,16 +15,22 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.CreditCard
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.material3.Card
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,6 +42,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.semantics.heading
 import mx.bancoatm.movil.ui.Dimensiones
 
 @Composable
@@ -221,6 +228,147 @@ fun FilaConIcono(
             style = MaterialTheme.typography.titleMedium,
             color = colorValor,
             textAlign = TextAlign.End,
+        )
+    }
+}
+
+@Composable
+fun ContenedorPantalla(
+    titulo: String? = null,
+    modifier: Modifier = Modifier,
+    accion: (@Composable () -> Unit)? = null,
+    contenido: @Composable () -> Unit,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = Dimensiones.margenPantalla),
+        verticalArrangement = Arrangement.spacedBy(Dimensiones.espacioElemento),
+    ) {
+        if (titulo != null) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    titulo,
+                    style = MaterialTheme.typography.headlineSmall,
+                    modifier = Modifier.semantics { heading() },
+                )
+                accion?.invoke()
+            }
+        }
+        contenido()
+    }
+}
+
+@Composable
+fun TarjetaAgrupada(
+    modifier: Modifier = Modifier,
+    relleno: androidx.compose.ui.unit.Dp = Dimensiones.rellenoLista,
+    contenido: @Composable ColumnScope.() -> Unit,
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(Dimensiones.radioTarjeta),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = Dimensiones.elevacionTarjeta,
+        ),
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(relleno),
+            verticalArrangement = Arrangement.spacedBy(Dimensiones.espacioCompacto),
+            content = contenido,
+        )
+    }
+}
+
+@Composable
+fun Separador(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(1.dp)
+            .background(MaterialTheme.colorScheme.outlineVariant),
+    )
+}
+
+@Composable
+fun Insignia(
+    texto: String,
+    color: Color = MaterialTheme.colorScheme.primary,
+    fondo: Color = MaterialTheme.colorScheme.primaryContainer,
+) {
+    Box(
+        modifier = Modifier
+            .background(fondo, RoundedCornerShape(Dimensiones.radioInsignia))
+            .padding(horizontal = 10.dp, vertical = 4.dp),
+    ) {
+        Text(texto, style = MaterialTheme.typography.labelSmall, color = color)
+    }
+}
+
+
+@Composable
+fun FilaOpcion(
+    icono: ImageVector,
+    titulo: String,
+    detalle: String?,
+    contador: Int = 0,
+    destacado: Boolean = false,
+    alPulsar: () -> Unit,
+) {
+    val tinteFondo by animateColorAsState(
+        targetValue = if (destacado) {
+            MaterialTheme.colorScheme.errorContainer
+        } else {
+            MaterialTheme.colorScheme.primaryContainer
+        },
+        label = "fondoIcono",
+    )
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .semantics {
+                role = Role.Button
+                contentDescription = if (contador > 0) "$titulo ($contador)" else titulo
+            }
+            .clickable(onClick = alPulsar)
+            .padding(vertical = Dimensiones.espacioElemento),
+        horizontalArrangement = Arrangement.spacedBy(Dimensiones.espacioElemento),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        IconoCircular(
+            icono = icono,
+            fondo = tinteFondo,
+            tamano = Dimensiones.iconoCirculoCompacto,
+        )
+        Column(Modifier.weight(1f)) {
+            Text(titulo, style = MaterialTheme.typography.titleMedium)
+            if (!detalle.isNullOrBlank()) {
+                Text(
+                    detalle,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+        if (contador > 0) {
+            Insignia(
+                texto = contador.toString(),
+                color = MaterialTheme.colorScheme.onErrorContainer,
+                fondo = MaterialTheme.colorScheme.errorContainer,
+            )
+        }
+        Icon(
+            imageVector = Icons.Filled.ChevronRight,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }

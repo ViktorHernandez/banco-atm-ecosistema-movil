@@ -116,7 +116,8 @@ fun BotonPrincipal(
     Button(
         onClick = alPulsar,
         enabled = habilitado && !cargando,
-        modifier = modifier.fillMaxWidth().height(52.dp),
+        modifier = modifier.fillMaxWidth().height(Dimensiones.alturaControl),
+        shape = RoundedCornerShape(Dimensiones.radioControl),
     ) {
         if (cargando) {
             CircularProgressIndicator(
@@ -189,15 +190,27 @@ fun Cargando(modifier: Modifier = Modifier, etiqueta: String? = null) {
 
 @Composable
 fun EstadoVacio(texto: String, modifier: Modifier = Modifier) {
-    Box(
-        modifier = modifier.fillMaxWidth().padding(32.dp),
-        contentAlignment = Alignment.Center,
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(Dimensiones.radioTarjeta),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = Dimensiones.elevacionTarjeta,
+        ),
     ) {
-        Text(
-            texto,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
+        Box(
+            modifier = Modifier.fillMaxWidth().padding(28.dp),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(
+                texto,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+            )
+        }
     }
 }
 
@@ -230,19 +243,31 @@ fun ErrorReintentable(
     alReintentar: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier.fillMaxWidth().padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+    Card(
+        modifier = modifier.fillMaxWidth().padding(Dimensiones.espacioCompacto),
+        shape = RoundedCornerShape(Dimensiones.radioTarjeta),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.errorContainer,
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = Dimensiones.elevacionTarjeta,
+        ),
     ) {
-        Text(
-            mensaje,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.error,
-            modifier = Modifier.semantics { liveRegion = LiveRegionMode.Assertive },
-        )
-        Spacer(Modifier.height(12.dp))
-        TextButton(onClick = alReintentar) {
-            Text(stringResource(R.string.accion_reintentar))
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(Dimensiones.rellenoTarjetaGrande),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(Dimensiones.espacioElemento),
+        ) {
+            Text(
+                mensaje,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onErrorContainer,
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                modifier = Modifier.semantics { liveRegion = LiveRegionMode.Assertive },
+            )
+            TextButton(onClick = alReintentar) {
+                Text(stringResource(R.string.accion_reintentar))
+            }
         }
     }
 }
@@ -271,6 +296,12 @@ fun TarjetaAccion(
             }
             .clickable(onClick = alPulsar),
         shape = RoundedCornerShape(Dimensiones.radioTarjeta),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = Dimensiones.elevacionTarjeta,
+        ),
     ) {
         contenido()
     }
