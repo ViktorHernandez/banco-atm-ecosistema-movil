@@ -60,6 +60,14 @@ private val esquemaOscuro = darkColorScheme(
     onError = Color(0xFF690005),
 )
 
+object ColoresTarjeta {
+    val acero = Color(0xFF37474F)
+    val oro = Color(0xFF8A6A16)
+    val platino = Color(0xFF4A5568)
+    val obsidiana = Color(0xFF17202A)
+    val debito = Color(0xFF0B4F6C)
+}
+
 object Dimensiones {
     val radioTarjeta = 22.dp
     val radioTarjetaGrande = 28.dp

@@ -85,17 +85,17 @@ fun FilaMovimiento(movimiento: Movimiento, idioma: String) {
         colorValor = if (esAbono) {
             MaterialTheme.colorScheme.tertiary
         } else {
-            MaterialTheme.colorScheme.onSurface
+            MaterialTheme.colorScheme.error
         },
         fondoIcono = if (esAbono) {
             MaterialTheme.colorScheme.tertiary.copy(alpha = 0.14f)
         } else {
-            MaterialTheme.colorScheme.primaryContainer
+            MaterialTheme.colorScheme.error.copy(alpha = 0.12f)
         },
         tinteIcono = if (esAbono) {
             MaterialTheme.colorScheme.tertiary
         } else {
-            MaterialTheme.colorScheme.onPrimaryContainer
+            MaterialTheme.colorScheme.error
         },
     )
 }

@@ -358,6 +358,9 @@ export class PushService implements OnModuleInit {
     const credenciales = this.credenciales();
 
     if (!credenciales) {
+      this.logger.warn(
+        `Push omitida para la cuenta ${cuentaId}: Firebase no esta configurado en el servidor`,
+      );
       return 0;
     }
 
@@ -377,12 +380,18 @@ export class PushService implements OnModuleInit {
     }
 
     if (!dispositivos.length) {
+      this.logger.warn(
+        `Push omitida para la cuenta ${cuentaId}: no hay dispositivos activos registrados`,
+      );
       return 0;
     }
 
     const tokenAcceso = await this.obtenerTokenAcceso(credenciales);
 
     if (!tokenAcceso) {
+      this.logger.error(
+        `Push omitida para la cuenta ${cuentaId}: no se obtuvo el token de acceso de Firebase`,
+      );
       return 0;
     }
 
@@ -396,7 +405,11 @@ export class PushService implements OnModuleInit {
 
     if (entregadas > 0) {
       this.logger.log(
-        `Push entregada a ${entregadas} dispositivo(s) de la cuenta ${cuentaId}`,
+        `Push entregada a ${entregadas} de ${dispositivos.length} dispositivo(s) de la cuenta ${cuentaId}`,
+      );
+    } else {
+      this.logger.error(
+        `Push rechazada por Firebase para los ${dispositivos.length} dispositivo(s) de la cuenta ${cuentaId}`,
       );
     }
 

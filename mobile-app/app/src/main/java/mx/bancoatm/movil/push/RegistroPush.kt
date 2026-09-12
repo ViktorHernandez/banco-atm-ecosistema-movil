@@ -12,7 +12,10 @@ object RegistroPush {
         val token = obtenerToken() ?: sesion.tokenPush() ?: return false
 
         return when (repositorio.registrarDispositivo(token, Build.MODEL ?: "android")) {
-            is mx.bancoatm.movil.data.Resultado.Exito -> true
+            is mx.bancoatm.movil.data.Resultado.Exito -> {
+                sesion.guardarTokenPush(token)
+                true
+            }
             is mx.bancoatm.movil.data.Resultado.Fallo -> false
         }
     }

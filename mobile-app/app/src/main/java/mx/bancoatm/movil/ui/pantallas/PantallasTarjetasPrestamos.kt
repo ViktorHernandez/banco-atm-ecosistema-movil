@@ -35,6 +35,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import mx.bancoatm.movil.R
+import androidx.compose.ui.graphics.Color
+import mx.bancoatm.movil.ui.ColoresTarjeta
 import mx.bancoatm.movil.ui.Dimensiones
 import mx.bancoatm.movil.data.CatalogoCredito
 import mx.bancoatm.movil.data.DetalleTarjeta
@@ -84,11 +86,7 @@ private fun TarjetaVisual(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(Dimensiones.radioTarjetaGrande),
         colors = CardDefaults.cardColors(
-            containerColor = if (esCredito) {
-                MaterialTheme.colorScheme.secondary
-            } else {
-                MaterialTheme.colorScheme.primary
-            },
+            containerColor = colorDeTarjeta(tarjeta.color, esCredito),
         ),
     ) {
         Column(Modifier.padding(20.dp)) {
@@ -650,4 +648,12 @@ fun PantallaPrestamos(modelo: ModeloBanco, alVolver: () -> Unit) {
 
         item { Spacer(Modifier.height(24.dp)) }
     }
+}
+
+private fun colorDeTarjeta(color: String?, esCredito: Boolean): Color = when (color?.lowercase()) {
+    "oro" -> ColoresTarjeta.oro
+    "platino" -> ColoresTarjeta.platino
+    "obsidiana" -> ColoresTarjeta.obsidiana
+    "acero" -> ColoresTarjeta.acero
+    else -> if (esCredito) ColoresTarjeta.acero else ColoresTarjeta.debito
 }

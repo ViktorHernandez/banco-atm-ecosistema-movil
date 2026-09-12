@@ -35,6 +35,7 @@ data class Tarjeta(
     val creditoDisponible: Double?,
     val anualidad: Double?,
     val beneficios: List<String>,
+    val color: String?,
 )
 
 data class DetalleTarjeta(
@@ -191,6 +192,7 @@ fun JSONObject.aTarjeta() = Tarjeta(
     creditoDisponible = decimalONulo("creditoDisponible"),
     anualidad = decimalONulo("anualidad"),
     beneficios = listaDeTextos("beneficios"),
+    color = cadenaONulo("color"),
 )
 
 fun JSONObject.listaDeTextos(clave: String): List<String> {
