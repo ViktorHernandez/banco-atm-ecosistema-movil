@@ -42,6 +42,10 @@ import mx.bancoatm.movil.ui.pantallas.PantallaMas
 import mx.bancoatm.movil.ui.pantallas.PantallaMovimientos
 import mx.bancoatm.movil.ui.pantallas.PantallaOperar
 import mx.bancoatm.movil.ui.pantallas.PantallaPagoServicio
+import mx.bancoatm.movil.ui.pantallas.PantallaAdminAuditoria
+import mx.bancoatm.movil.ui.pantallas.PantallaAdminReportes
+import mx.bancoatm.movil.ui.pantallas.PantallaAdminTarjetas
+import mx.bancoatm.movil.ui.pantallas.PantallaAdminUsuarios
 import mx.bancoatm.movil.ui.pantallas.PantallaPanelAdmin
 import mx.bancoatm.movil.ui.pantallas.PantallaPerfil
 import mx.bancoatm.movil.ui.pantallas.PantallaPrestamos
@@ -56,6 +60,10 @@ object Rutas {
     const val REGISTRO = "registro"
     const val RECUPERAR = "recuperar"
     const val PANEL_ADMIN = "panelAdmin"
+    const val ADMIN_USUARIOS = "adminUsuarios"
+    const val ADMIN_TARJETAS = "adminTarjetas"
+    const val ADMIN_REPORTES = "adminReportes"
+    const val ADMIN_AUDITORIA = "adminAuditoria"
     const val INICIO = "inicio"
     const val MOVIMIENTOS = "movimientos"
     const val OPERAR = "operar"
@@ -189,7 +197,19 @@ private fun ContenedorPrincipal(modelo: ModeloBanco, navegador: NavHostControlle
         Box(Modifier.padding(relleno)) {
             NavHost(navController = navegador, startDestination = raiz) {
                 composable(Rutas.PANEL_ADMIN) {
-                    PantallaPanelAdmin(modelo)
+                    PantallaPanelAdmin(modelo) { navegador.navigate(it) }
+                }
+                composable(Rutas.ADMIN_USUARIOS) {
+                    PantallaAdminUsuarios(modelo) { navegador.popBackStack() }
+                }
+                composable(Rutas.ADMIN_TARJETAS) {
+                    PantallaAdminTarjetas(modelo) { navegador.popBackStack() }
+                }
+                composable(Rutas.ADMIN_REPORTES) {
+                    PantallaAdminReportes(modelo) { navegador.popBackStack() }
+                }
+                composable(Rutas.ADMIN_AUDITORIA) {
+                    PantallaAdminAuditoria(modelo) { navegador.popBackStack() }
                 }
                 composable(Rutas.INICIO) {
                     PantallaInicio(

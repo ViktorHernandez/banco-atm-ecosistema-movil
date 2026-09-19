@@ -222,8 +222,27 @@
   }
 
   var contadorModal = 0;
+  var vigilanciaModales = null;
+
+  function sincronizarBloqueoModal() {
+    var hayModal = !!document.querySelector('.modal');
+    if (hayModal) {
+      document.body.classList.add('modal-abierto');
+    } else {
+      document.body.classList.remove('modal-abierto');
+    }
+  }
+
+  function vigilarModales() {
+    if (vigilanciaModales || typeof MutationObserver !== 'function') {
+      return;
+    }
+    vigilanciaModales = new MutationObserver(sincronizarBloqueoModal);
+    vigilanciaModales.observe(document.body, { childList: true });
+  }
 
   function abrirModal(opciones) {
+    vigilarModales();
     contadorModal += 1;
     var idTitulo = 'modal-titulo-' + contadorModal;
     var origen = document.activeElement;
@@ -255,7 +274,7 @@
         capa.parentNode.removeChild(capa);
       }
       document.removeEventListener('keydown', alPresionar);
-      document.body.classList.remove('modal-abierto');
+      sincronizarBloqueoModal();
       if (origen && typeof origen.focus === 'function') {
         origen.focus();
       }
@@ -324,7 +343,7 @@
 
     document.addEventListener('keydown', alPresionar);
     document.body.appendChild(capa);
-    document.body.classList.add('modal-abierto');
+    sincronizarBloqueoModal();
 
     var enfocable = nodo('input, select, textarea, button', capa);
     if (enfocable) {
@@ -513,6 +532,7 @@
     agruparNumero: agruparNumero,
     avisar: avisar,
     abrirModal: abrirModal,
+    sincronizarBloqueoModal: sincronizarBloqueoModal,
     confirmar: confirmar,
     textoComprobante: textoComprobante,
     bloqueComprobante: bloqueComprobante,

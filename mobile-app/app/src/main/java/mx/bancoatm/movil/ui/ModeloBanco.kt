@@ -21,7 +21,10 @@ import mx.bancoatm.movil.data.Prestamo
 import mx.bancoatm.movil.data.Proveedor
 import mx.bancoatm.movil.data.RepositorioBanco
 import mx.bancoatm.movil.data.ResumenApartados
+import mx.bancoatm.movil.data.RegistroAuditoria
 import mx.bancoatm.movil.data.ResumenAdministrativo
+import mx.bancoatm.movil.data.TarjetaAdministrativa
+import mx.bancoatm.movil.data.UsuarioAdministrativo
 import mx.bancoatm.movil.data.Resultado
 import mx.bancoatm.movil.data.Sesion
 import mx.bancoatm.movil.data.SolicitudCredito
@@ -83,6 +86,15 @@ class ModeloBanco(
 
     private val _resumenAdmin = MutableStateFlow<ResumenAdministrativo?>(null)
     val resumenAdmin: StateFlow<ResumenAdministrativo?> = _resumenAdmin.asStateFlow()
+
+    private val _usuariosAdmin = MutableStateFlow<List<UsuarioAdministrativo>>(emptyList())
+    val usuariosAdmin: StateFlow<List<UsuarioAdministrativo>> = _usuariosAdmin.asStateFlow()
+
+    private val _tarjetasAdmin = MutableStateFlow<List<TarjetaAdministrativa>>(emptyList())
+    val tarjetasAdmin: StateFlow<List<TarjetaAdministrativa>> = _tarjetasAdmin.asStateFlow()
+
+    private val _auditoria = MutableStateFlow<List<RegistroAuditoria>>(emptyList())
+    val auditoria: StateFlow<List<RegistroAuditoria>> = _auditoria.asStateFlow()
 
     val autenticado: StateFlow<Boolean> = sesion.autenticado
     val rol: StateFlow<String> = sesion.rolActual
@@ -633,6 +645,73 @@ class ModeloBanco(
                 is Resultado.Exito -> {
                     _resumenAdmin.value = r.datos
                     _estado.value = EstadoPantalla()
+                }
+            }
+        }
+    }
+
+    fun cargarUsuariosAdmin() {
+        _estado.value = EstadoPantalla(cargando = true)
+        viewModelScope.launch {
+            when (val r = repositorio.usuariosAdministrativos()) {
+                is Resultado.Fallo -> publicarError(r.error)
+                is Resultado.Exito -> {
+                    _usuariosAdmin.value = r.datos
+                    _estado.value = EstadoPantalla()
+                }
+            }
+        }
+    }
+
+    fun cargarTarjetasAdmin() {
+        _estado.value = EstadoPantalla(cargando = true)
+        viewModelScope.launch {
+            when (val r = repositorio.tarjetasAdministrativas()) {
+                is Resultado.Fallo -> publicarError(r.error)
+                is Resultado.Exito -> {
+                    _tarjetasAdmin.value = r.datos
+                    _estado.value = EstadoPantalla()
+                }
+            }
+        }
+    }
+
+    fun cargarAuditoria() {
+        _estado.value = EstadoPantalla(cargando = true)
+        viewModelScope.launch {
+            when (val r = repositorio.auditoria()) {
+                is Resultado.Fallo -> publicarError(r.error)
+                is Resultado.Exito -> {
+                    _auditoria.value = r.datos
+                    _estado.value = EstadoPantalla()
+                }
+            }
+        }
+    }
+
+    fun cambiarRolUsuario(usuarioId: String, rol: String, alTerminar: () -> Unit) {
+        _estado.value = EstadoPantalla(procesando = true)
+        viewModelScope.launch {
+            when (val r = repositorio.cambiarRolUsuario(usuarioId, rol)) {
+                is Resultado.Fallo -> publicarError(r.error)
+                is Resultado.Exito -> {
+                    _estado.value = EstadoPantalla()
+                    alTerminar()
+                    cargarUsuariosAdmin()
+                }
+            }
+        }
+    }
+
+    fun cambiarEstadoTarjetaAdmin(tarjetaId: String, estado: String, alTerminar: () -> Unit) {
+        _estado.value = EstadoPantalla(procesando = true)
+        viewModelScope.launch {
+            when (val r = repositorio.cambiarEstadoTarjetaAdmin(tarjetaId, estado)) {
+                is Resultado.Fallo -> publicarError(r.error)
+                is Resultado.Exito -> {
+                    _estado.value = EstadoPantalla()
+                    alTerminar()
+                    cargarTarjetasAdmin()
                 }
             }
         }

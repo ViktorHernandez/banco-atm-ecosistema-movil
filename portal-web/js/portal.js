@@ -273,6 +273,11 @@
       recargar: function () {
         resolverRuta();
       },
+      refrescarIdentidad: function () {
+        pintarIdentidad();
+        construirNavegacion();
+        marcarNavegacion(rutaActualDelNavegador());
+      },
     };
   }
 

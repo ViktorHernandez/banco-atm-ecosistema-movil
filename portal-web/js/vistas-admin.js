@@ -345,7 +345,7 @@
         }
 
         function abrirEliminacion(usuario) {
-          util.abrirModal({
+          var modal = util.abrirModal({
             titulo: util.frase('Eliminar la cuenta de {titular}', {
               titular: usuario.nombreCompleto,
             }),
@@ -399,9 +399,7 @@
                           : util.t('La cuenta fue eliminada.'),
                         'exito',
                       );
-                      if (capa.parentNode) {
-                        capa.parentNode.removeChild(capa);
-                      }
+                      modal.cerrar();
                       contexto.recargar();
                     })
                     .catch(function (error) {
@@ -421,7 +419,7 @@
           var esAdmin = usuario.rol === 'ADMINISTRADOR';
           var rolDestino = esAdmin ? 'CLIENTE' : 'ADMINISTRADOR';
 
-          util.abrirModal({
+          var modal = util.abrirModal({
             titulo: 'Cambiar perfil de ' + usuario.nombreCompleto,
             contenido:
               '<div class="resumen-operacion">' +
@@ -455,9 +453,12 @@
                     .adminCambiarRol(usuario.id, rolDestino)
                     .then(function (resultado) {
                       contexto.mostrarCarga(false);
+                      modal.cerrar();
                       util.avisar(resultado.mensaje, 'exito');
-                      if (capa.parentNode) {
-                        capa.parentNode.removeChild(capa);
+                      var propio = api.usuarioSesion();
+                      if (propio && propio.id === usuario.id) {
+                        api.actualizarUsuarioSesion({ rol: rolDestino });
+                        contexto.refrescarIdentidad();
                       }
                       contexto.recargar();
                     })
@@ -581,6 +582,11 @@
                       contexto.mostrarCarga(false);
                       modal.cerrar();
                       util.avisar('Usuario actualizado.', 'exito');
+                      var propio = api.usuarioSesion();
+                      if (propio && propio.id === usuario.id) {
+                        api.actualizarUsuarioSesion(datos);
+                        contexto.refrescarIdentidad();
+                      }
                       contexto.recargar();
                     })
                     .catch(function (error) {

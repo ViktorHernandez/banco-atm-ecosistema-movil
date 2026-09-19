@@ -23,6 +23,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -322,4 +323,21 @@ fun BarraProgreso(
             progressBarRangeInfo = ProgressBarRangeInfo(fraccion, 0f..1f)
         },
     )
+}
+
+@Composable
+fun BotonSecundario(
+    texto: String,
+    modifier: Modifier = Modifier,
+    habilitado: Boolean = true,
+    alPulsar: () -> Unit,
+) {
+    OutlinedButton(
+        onClick = alPulsar,
+        enabled = habilitado,
+        modifier = modifier.height(Dimensiones.alturaControl),
+        shape = RoundedCornerShape(Dimensiones.radioControl),
+    ) {
+        Text(texto, maxLines = 1)
+    }
 }

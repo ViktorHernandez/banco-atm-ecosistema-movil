@@ -395,3 +395,76 @@ fun JSONObject.aResumenAdministrativo(): ResumenAdministrativo {
         ultimasOperaciones = operaciones,
     )
 }
+
+data class UsuarioAdministrativo(
+    val id: String,
+    val nombreCompleto: String,
+    val correo: String,
+    val telefono: String?,
+    val rol: String,
+    val estadoCuenta: String,
+    val puedeEliminarse: Boolean,
+    val numeroCuenta: String?,
+    val saldo: Double?,
+)
+
+data class TarjetaAdministrativa(
+    val id: String,
+    val numeroTarjeta: String,
+    val estado: String,
+    val tipo: String?,
+    val titular: String?,
+    val numeroCuenta: String?,
+    val motivoBloqueo: String?,
+    val intentosFallidos: Int,
+)
+
+data class RegistroAuditoria(
+    val accion: String,
+    val canal: String,
+    val usuario: String?,
+    val entidadAfectada: String?,
+    val detalle: String?,
+    val fecha: String?,
+)
+
+fun JSONObject.aUsuarioAdministrativo(): UsuarioAdministrativo {
+    val cuenta = optJSONObject("cuenta")
+    return UsuarioAdministrativo(
+        id = optString("id", ""),
+        nombreCompleto = optString("nombreCompleto", ""),
+        correo = optString("correo", ""),
+        telefono = cadenaONulo("telefono"),
+        rol = optString("rol", "CLIENTE"),
+        estadoCuenta = optString("estadoCuenta", ""),
+        puedeEliminarse = optBoolean("puedeEliminarse", false),
+        numeroCuenta = cuenta?.let { if (it.isNull("numeroCuenta")) null else it.optString("numeroCuenta") },
+        saldo = cuenta?.let { if (it.isNull("saldo")) null else it.optDouble("saldo", 0.0) },
+    )
+}
+
+fun JSONObject.aTarjetaAdministrativa(): TarjetaAdministrativa {
+    val cuenta = optJSONObject("cuenta")
+    return TarjetaAdministrativa(
+        id = optString("id", ""),
+        numeroTarjeta = optString("numeroTarjeta", ""),
+        estado = optString("estado", ""),
+        tipo = cadenaONulo("tipo"),
+        titular = cuenta?.let { if (it.isNull("titular")) null else it.optString("titular") },
+        numeroCuenta = cuenta?.let { if (it.isNull("numeroCuenta")) null else it.optString("numeroCuenta") },
+        motivoBloqueo = cadenaONulo("motivoBloqueo"),
+        intentosFallidos = optInt("intentosFallidos", 0),
+    )
+}
+
+fun JSONObject.aRegistroAuditoria(): RegistroAuditoria {
+    val usuario = optJSONObject("usuario")
+    return RegistroAuditoria(
+        accion = optString("accion", ""),
+        canal = optString("canal", ""),
+        usuario = usuario?.let { if (it.isNull("nombreCompleto")) null else it.optString("nombreCompleto") },
+        entidadAfectada = cadenaONulo("entidadAfectada"),
+        detalle = cadenaONulo("detalle"),
+        fecha = cadenaONulo("fecha"),
+    )
+}

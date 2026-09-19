@@ -14,6 +14,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBalanceWallet
+import androidx.compose.material.icons.filled.Assessment
+import androidx.compose.material.icons.filled.FactCheck
+import androidx.compose.material.icons.filled.Group
+import androidx.compose.material.icons.filled.CreditCard
 import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Notifications
@@ -404,6 +408,10 @@ fun PantallaMas(modelo: ModeloBanco, alElegir: (String) -> Unit) {
 
     val opciones = if (rol == Sesion.ROL_ADMINISTRADOR) {
         listOf(
+            Triple(Rutas.ADMIN_USUARIOS, R.string.admin_menu_usuarios, Icons.Filled.Group),
+            Triple(Rutas.ADMIN_TARJETAS, R.string.admin_menu_tarjetas, Icons.Filled.CreditCard),
+            Triple(Rutas.ADMIN_REPORTES, R.string.admin_menu_reportes, Icons.Filled.Assessment),
+            Triple(Rutas.ADMIN_AUDITORIA, R.string.admin_menu_auditoria, Icons.Filled.FactCheck),
             Triple(Rutas.PERFIL, R.string.operar_perfil, Icons.Filled.Person),
         )
     } else {

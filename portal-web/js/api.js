@@ -295,6 +295,25 @@
       });
     },
 
+    actualizarUsuarioSesion: function (datos) {
+      if (!estado.sesion || !estado.sesion.usuario || !datos) {
+        return null;
+      }
+
+      ['nombreCompleto', 'correo', 'telefono', 'rol'].forEach(function (campo) {
+        if (typeof datos[campo] !== 'undefined' && datos[campo] !== null) {
+          estado.sesion.usuario[campo] = datos[campo];
+        }
+      });
+
+      escribirAlmacen(CLAVE_SESION, JSON.stringify(estado.sesion));
+      return estado.sesion.usuario;
+    },
+
+    usuarioSesion: function () {
+      return estado.sesion ? estado.sesion.usuario : null;
+    },
+
     perfil: function () {
       return solicitar('GET', '/auth/me');
     },

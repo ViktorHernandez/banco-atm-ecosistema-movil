@@ -343,9 +343,35 @@ class RepositorioBanco(
             is Resultado.Exito -> Resultado.Exito(r.datos.aResumenAdministrativo())
             is Resultado.Fallo -> Resultado.Fallo(r.error)
         }
+
+    suspend fun usuariosAdministrativos(): Resultado<List<UsuarioAdministrativo>> =
+        mapearLista(api.obtenerLista(RUTA_ADMIN_USUARIOS)) { it.aUsuarioAdministrativo() }
+
+    suspend fun tarjetasAdministrativas(): Resultado<List<TarjetaAdministrativa>> =
+        mapearLista(api.obtenerLista(RUTA_ADMIN_TARJETAS)) { it.aTarjetaAdministrativa() }
+
+    suspend fun auditoria(limite: Int = 150): Resultado<List<RegistroAuditoria>> =
+        mapearLista(api.obtenerLista("$RUTA_ADMIN_AUDITORIA?limite=$limite")) {
+            it.aRegistroAuditoria()
+        }
+
+    suspend fun cambiarRolUsuario(usuarioId: String, rol: String): Resultado<JSONObject> =
+        api.modificar("$RUTA_ADMIN_USUARIOS/$usuarioId/rol", JSONObject().put("rol", rol))
+
+    suspend fun cambiarEstadoTarjetaAdmin(
+        tarjetaId: String,
+        estado: String,
+    ): Resultado<JSONObject> =
+        api.modificar(
+            "$RUTA_ADMIN_TARJETAS/$tarjetaId/estado",
+            JSONObject().put("estado", estado),
+        )
 }
 
 const val RUTA_REPORTE_ADMIN = "/admin/reportes/operaciones"
+const val RUTA_ADMIN_USUARIOS = "/admin/usuarios"
+const val RUTA_ADMIN_TARJETAS = "/admin/tarjetas"
+const val RUTA_ADMIN_AUDITORIA = "/admin/auditoria"
 const val RUTA_CATALOGO_CREDITO = "/cards/credito/catalogo"
 const val RUTA_SOLICITAR_CREDITO = "/cards/credito/solicitar"
 
