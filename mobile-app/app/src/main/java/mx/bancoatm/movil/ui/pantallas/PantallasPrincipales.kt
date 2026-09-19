@@ -42,6 +42,7 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import mx.bancoatm.movil.R
+import mx.bancoatm.movil.data.Sesion
 import mx.bancoatm.movil.data.Movimiento
 import mx.bancoatm.movil.ui.ModeloBanco
 import mx.bancoatm.movil.ui.Rutas
@@ -398,15 +399,22 @@ fun PantallaOperar(alElegir: (String) -> Unit) {
 @Composable
 fun PantallaMas(modelo: ModeloBanco, alElegir: (String) -> Unit) {
     val noLeidas by modelo.noLeidas.collectAsState()
+    val rol by modelo.rol.collectAsState()
     var confirmarSalida by remember { mutableStateOf(false) }
 
-    val opciones = listOf(
-        Triple(Rutas.AVISOS, R.string.operar_avisos, Icons.Filled.Notifications),
-        Triple(Rutas.PERFIL, R.string.operar_perfil, Icons.Filled.Person),
-        Triple(Rutas.ASISTENTE, R.string.operar_asistente, Icons.Filled.Chat),
-        Triple(Rutas.PRESTAMOS, R.string.operar_prestamos, Icons.Filled.ReceiptLong),
-        Triple(Rutas.APARTADOS, R.string.operar_apartados, Icons.Filled.Savings),
-    )
+    val opciones = if (rol == Sesion.ROL_ADMINISTRADOR) {
+        listOf(
+            Triple(Rutas.PERFIL, R.string.operar_perfil, Icons.Filled.Person),
+        )
+    } else {
+        listOf(
+            Triple(Rutas.AVISOS, R.string.operar_avisos, Icons.Filled.Notifications),
+            Triple(Rutas.PERFIL, R.string.operar_perfil, Icons.Filled.Person),
+            Triple(Rutas.ASISTENTE, R.string.operar_asistente, Icons.Filled.Chat),
+            Triple(Rutas.PRESTAMOS, R.string.operar_prestamos, Icons.Filled.ReceiptLong),
+            Triple(Rutas.APARTADOS, R.string.operar_apartados, Icons.Filled.Savings),
+        )
+    }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize().padding(Dimensiones.margenPantalla),

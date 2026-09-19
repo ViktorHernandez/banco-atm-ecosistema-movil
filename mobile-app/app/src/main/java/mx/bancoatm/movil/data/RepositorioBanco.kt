@@ -55,6 +55,7 @@ class RepositorioBanco(
                     correo = usuario?.optString("correo").orEmpty(),
                     cuentaId = cuenta?.optString("id"),
                     numeroCuenta = cuenta?.optString("numeroCuenta"),
+                    rol = usuario?.optString("rol"),
                 )
             }
         }
@@ -336,8 +337,15 @@ class RepositorioBanco(
             it.aRespuestaAsistente()
         }
     }
+
+    suspend fun resumenAdministrativo(): Resultado<ResumenAdministrativo> =
+        when (val r = api.obtenerObjeto(RUTA_REPORTE_ADMIN)) {
+            is Resultado.Exito -> Resultado.Exito(r.datos.aResumenAdministrativo())
+            is Resultado.Fallo -> Resultado.Fallo(r.error)
+        }
 }
 
+const val RUTA_REPORTE_ADMIN = "/admin/reportes/operaciones"
 const val RUTA_CATALOGO_CREDITO = "/cards/credito/catalogo"
 const val RUTA_SOLICITAR_CREDITO = "/cards/credito/solicitar"
 

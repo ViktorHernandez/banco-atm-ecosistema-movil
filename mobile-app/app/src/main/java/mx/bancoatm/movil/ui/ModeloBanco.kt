@@ -21,6 +21,7 @@ import mx.bancoatm.movil.data.Prestamo
 import mx.bancoatm.movil.data.Proveedor
 import mx.bancoatm.movil.data.RepositorioBanco
 import mx.bancoatm.movil.data.ResumenApartados
+import mx.bancoatm.movil.data.ResumenAdministrativo
 import mx.bancoatm.movil.data.Resultado
 import mx.bancoatm.movil.data.Sesion
 import mx.bancoatm.movil.data.SolicitudCredito
@@ -80,7 +81,11 @@ class ModeloBanco(
     private val _pushDisponible = MutableStateFlow(false)
     val pushDisponible: StateFlow<Boolean> = _pushDisponible.asStateFlow()
 
+    private val _resumenAdmin = MutableStateFlow<ResumenAdministrativo?>(null)
+    val resumenAdmin: StateFlow<ResumenAdministrativo?> = _resumenAdmin.asStateFlow()
+
     val autenticado: StateFlow<Boolean> = sesion.autenticado
+    val rol: StateFlow<String> = sesion.rolActual
     val idioma: StateFlow<String> = sesion.idiomaFlujo
     val entorno: StateFlow<Entorno> = sesion.entornoFlujo
     val servidorLocal: StateFlow<String> = sesion.servidorLocalFlujo
@@ -502,6 +507,7 @@ class ModeloBanco(
                 is Resultado.Fallo -> publicarError(r.error)
                 is Resultado.Exito -> {
                     _perfil.value = r.datos
+                    sesion.actualizarRol(r.datos.rol)
                     _estado.value = EstadoPantalla()
                 }
             }
@@ -618,4 +624,17 @@ class ModeloBanco(
         repositorio.consultarAsistente(mensaje)
 
     suspend fun bienvenidaAsistente() = repositorio.bienvenidaAsistente()
+
+    fun cargarResumenAdmin() {
+        _estado.value = EstadoPantalla(cargando = true)
+        viewModelScope.launch {
+            when (val r = repositorio.resumenAdministrativo()) {
+                is Resultado.Fallo -> publicarError(r.error)
+                is Resultado.Exito -> {
+                    _resumenAdmin.value = r.datos
+                    _estado.value = EstadoPantalla()
+                }
+            }
+        }
+    }
 }

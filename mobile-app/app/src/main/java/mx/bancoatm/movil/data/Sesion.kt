@@ -24,6 +24,11 @@ class Sesion(contexto: Context) : ContextoSesion {
     private val _autenticado = MutableStateFlow(almacen.leer(AlmacenSeguro.TOKEN) != null)
     val autenticado: StateFlow<Boolean> = _autenticado
 
+    private val _rol = MutableStateFlow(
+        normalizarRol(almacen.leer(AlmacenSeguro.ROL)),
+    )
+    val rolActual: StateFlow<String> = _rol
+
     private val _idioma = MutableStateFlow(almacen.leerPlano(AlmacenSeguro.IDIOMA, "es"))
     val idiomaFlujo: StateFlow<String> = _idioma
 
@@ -94,14 +99,27 @@ class Sesion(contexto: Context) : ContextoSesion {
         correo: String,
         cuentaId: String?,
         numeroCuenta: String?,
+        rol: String?,
     ) {
         almacen.guardar(AlmacenSeguro.TOKEN, token)
         almacen.guardar(AlmacenSeguro.NOMBRE, nombreCompleto)
         almacen.guardar(AlmacenSeguro.CORREO, correo)
         almacen.guardar(AlmacenSeguro.CUENTA_ID, cuentaId)
         almacen.guardar(AlmacenSeguro.NUMERO_CUENTA, numeroCuenta)
+        almacen.guardar(AlmacenSeguro.ROL, normalizarRol(rol))
+        _rol.value = normalizarRol(rol)
         _autenticado.value = true
     }
+
+    fun actualizarRol(rol: String?) {
+        val valor = normalizarRol(rol)
+        almacen.guardar(AlmacenSeguro.ROL, valor)
+        _rol.value = valor
+    }
+
+    fun rol(): String = _rol.value
+
+    fun esAdministrador(): Boolean = _rol.value == ROL_ADMINISTRADOR
 
     fun tokenPush(): String? = almacen.leer(AlmacenSeguro.TOKEN_PUSH)
 
@@ -116,10 +134,17 @@ class Sesion(contexto: Context) : ContextoSesion {
         almacen.borrar(AlmacenSeguro.CUENTA_ID)
         almacen.borrar(AlmacenSeguro.NUMERO_CUENTA)
         almacen.borrar(AlmacenSeguro.TOKEN_PUSH)
+        almacen.borrar(AlmacenSeguro.ROL)
+        _rol.value = ROL_CLIENTE
         _autenticado.value = false
     }
 
+    private fun normalizarRol(valor: String?): String =
+        if (valor?.trim()?.uppercase() == ROL_ADMINISTRADOR) ROL_ADMINISTRADOR else ROL_CLIENTE
+
     companion object {
         private const val SERVIDOR_LOCAL = "servidorLocal"
+        const val ROL_CLIENTE = "CLIENTE"
+        const val ROL_ADMINISTRADOR = "ADMINISTRADOR"
     }
 }

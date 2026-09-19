@@ -1,11 +1,12 @@
 package mx.bancoatm.movil.ui.pantallas
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.ui.Alignment
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,7 +26,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
@@ -34,6 +34,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import mx.bancoatm.movil.R
+import mx.bancoatm.movil.data.Sesion
 import mx.bancoatm.movil.ui.Dimensiones
 import mx.bancoatm.movil.data.Apartado
 import mx.bancoatm.movil.data.Entorno
@@ -45,6 +46,7 @@ import mx.bancoatm.movil.ui.componentes.CampoTexto
 import mx.bancoatm.movil.ui.componentes.Cargando
 import mx.bancoatm.movil.ui.componentes.ErrorReintentable
 import mx.bancoatm.movil.ui.componentes.EstadoVacio
+import mx.bancoatm.movil.ui.componentes.Insignia
 import mx.bancoatm.movil.ui.componentes.MensajeEstado
 import mx.bancoatm.movil.ui.componentes.TituloSeccion
 import mx.bancoatm.movil.ui.formatearFecha
@@ -398,11 +400,28 @@ fun PantallaPerfil(modelo: ModeloBanco, alVolver: () -> Unit) {
         item { EncabezadoOperacion(stringResource(R.string.perfil_titulo), alVolver) }
 
         item {
-            Text(
-                stringResource(R.string.perfil_cuenta) + ": " +
-                    (cuenta?.numeroCuenta ?: ""),
-                style = MaterialTheme.typography.bodyMedium,
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Insignia(
+                    stringResource(
+                        if (perfil?.rol == Sesion.ROL_ADMINISTRADOR) {
+                            R.string.rol_administrador
+                        } else {
+                            R.string.rol_cliente
+                        },
+                    ),
+                )
+                if (!cuenta?.numeroCuenta.isNullOrBlank()) {
+                    Text(
+                        stringResource(R.string.perfil_cuenta) + ": " +
+                            cuenta?.numeroCuenta.orEmpty(),
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                }
+            }
         }
 
         item { MensajeEstado(aviso, esError = false) }

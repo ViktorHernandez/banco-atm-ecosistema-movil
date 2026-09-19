@@ -232,4 +232,27 @@
     <string name="error_credenciales">Correo o contraseña incorrectos. Compruebe sus datos e inténtelo de nuevo.</string>
     <string name="registro_cuenta_existente">Este correo ya está vinculado a una cuenta. Inicie sesión para continuar.</string>
     <string name="inicio_accesos">Accesos rápidos</string>
+    <string name="menu_panel">Panel</string>
+    <string name="rol_administrador">Administrador</string>
+    <string name="rol_cliente">Cliente</string>
+    <string name="admin_panel_titulo">Panel administrativo</string>
+    <string name="admin_panel_descripcion">Estado general del banco a partir de las operaciones registradas por todos los canales.</string>
+    <string name="admin_usuarios">Usuarios</string>
+    <string name="admin_usuarios_detalle">Clientes y administradores activos</string>
+    <string name="admin_cuentas">Cuentas</string>
+    <string name="admin_cuentas_detalle">Activas en el banco</string>
+    <string name="admin_monto_operado">Monto operado</string>
+    <string name="admin_monto_detalle">En las operaciones analizadas</string>
+    <string name="admin_por_canal">Operaciones por canal</string>
+    <string name="admin_resultado">Resultado de las operaciones</string>
+    <string name="admin_exitosas">Exitosas: %1$d</string>
+    <string name="admin_fallidas">Fallidas: %1$d</string>
+    <string name="admin_analizadas">Analizamos las %1$d operaciones más recientes del banco.</string>
+    <string name="admin_ultimas">Últimas operaciones del banco</string>
+    <string name="admin_sin_operaciones">Todavía no hay operaciones registradas.</string>
+    <string name="admin_sin_datos">No fue posible obtener el resumen del banco.</string>
+    <string name="admin_porcentaje">%1$d por ciento</string>
+    <string name="canal_app">App móvil</string>
+    <string name="canal_web">Portal web</string>
+    <string name="canal_atm">Cajero automático</string>
 </resources>

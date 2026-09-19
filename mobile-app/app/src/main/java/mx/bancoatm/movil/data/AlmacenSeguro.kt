@@ -102,6 +102,7 @@ class AlmacenSeguro(contexto: Context) {
         const val CORREO = "correo"
         const val CUENTA_ID = "cuentaId"
         const val NUMERO_CUENTA = "numeroCuenta"
+        const val ROL = "rol"
         const val TOKEN_PUSH = "tokenPush"
         const val IDIOMA = "idioma"
         const val ENTORNO = "entorno"

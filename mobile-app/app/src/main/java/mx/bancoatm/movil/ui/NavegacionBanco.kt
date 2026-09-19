@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CreditCard
 import androidx.compose.material.icons.filled.Grid4x4
+import androidx.compose.material.icons.filled.Dashboard
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.ListAlt
 import androidx.compose.material.icons.filled.MoreHoriz
@@ -30,6 +31,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import mx.bancoatm.movil.R
+import mx.bancoatm.movil.data.Sesion
 import mx.bancoatm.movil.ui.pantallas.PantallaAcceso
 import mx.bancoatm.movil.ui.pantallas.PantallaApartados
 import mx.bancoatm.movil.ui.pantallas.PantallaAsistente
@@ -40,6 +42,7 @@ import mx.bancoatm.movil.ui.pantallas.PantallaMas
 import mx.bancoatm.movil.ui.pantallas.PantallaMovimientos
 import mx.bancoatm.movil.ui.pantallas.PantallaOperar
 import mx.bancoatm.movil.ui.pantallas.PantallaPagoServicio
+import mx.bancoatm.movil.ui.pantallas.PantallaPanelAdmin
 import mx.bancoatm.movil.ui.pantallas.PantallaPerfil
 import mx.bancoatm.movil.ui.pantallas.PantallaPrestamos
 import mx.bancoatm.movil.ui.pantallas.PantallaRecuperar
@@ -52,6 +55,7 @@ object Rutas {
     const val ACCESO = "acceso"
     const val REGISTRO = "registro"
     const val RECUPERAR = "recuperar"
+    const val PANEL_ADMIN = "panelAdmin"
     const val INICIO = "inicio"
     const val MOVIMIENTOS = "movimientos"
     const val OPERAR = "operar"
@@ -72,6 +76,11 @@ private data class Pestana(
     val ruta: String,
     val etiqueta: Int,
     val icono: ImageVector,
+)
+
+private val pestanasAdmin = listOf(
+    Pestana(Rutas.PANEL_ADMIN, R.string.menu_panel, Icons.Filled.Dashboard),
+    Pestana(Rutas.MAS, R.string.menu_mas, Icons.Filled.MoreHoriz),
 )
 
 private val pestanas = listOf(
@@ -129,7 +138,11 @@ fun NavegacionBanco(modelo: ModeloBanco) {
 private fun ContenedorPrincipal(modelo: ModeloBanco, navegador: NavHostController) {
     val entrada by navegador.currentBackStackEntryAsState()
     val rutaActual = entrada?.destination?.route
-    val mostrarBarra = pestanas.any { it.ruta == rutaActual }
+    val rol by modelo.rol.collectAsState()
+    val esAdministrador = rol == Sesion.ROL_ADMINISTRADOR
+    val pestanasVisibles = if (esAdministrador) pestanasAdmin else pestanas
+    val mostrarBarra = pestanasVisibles.any { it.ruta == rutaActual }
+    val raiz = if (esAdministrador) Rutas.PANEL_ADMIN else Rutas.INICIO
 
     Scaffold(
         bottomBar = {
@@ -138,7 +151,7 @@ private fun ContenedorPrincipal(modelo: ModeloBanco, navegador: NavHostControlle
                     containerColor = MaterialTheme.colorScheme.surface,
                     tonalElevation = Dimensiones.elevacionDestacada,
                 ) {
-                    pestanas.forEach { pestana ->
+                    pestanasVisibles.forEach { pestana ->
                         NavigationBarItem(
                             selected = rutaActual == pestana.ruta,
                             colors = NavigationBarItemDefaults.colors(
@@ -151,7 +164,7 @@ private fun ContenedorPrincipal(modelo: ModeloBanco, navegador: NavHostControlle
                             onClick = {
                                 if (rutaActual != pestana.ruta) {
                                     navegador.navigate(pestana.ruta) {
-                                        popUpTo(Rutas.INICIO) { saveState = true }
+                                        popUpTo(raiz) { saveState = true }
                                         launchSingleTop = true
                                         restoreState = true
                                     }
@@ -174,7 +187,10 @@ private fun ContenedorPrincipal(modelo: ModeloBanco, navegador: NavHostControlle
         },
     ) { relleno ->
         Box(Modifier.padding(relleno)) {
-            NavHost(navController = navegador, startDestination = Rutas.INICIO) {
+            NavHost(navController = navegador, startDestination = raiz) {
+                composable(Rutas.PANEL_ADMIN) {
+                    PantallaPanelAdmin(modelo)
+                }
                 composable(Rutas.INICIO) {
                     PantallaInicio(
                         modelo = modelo,

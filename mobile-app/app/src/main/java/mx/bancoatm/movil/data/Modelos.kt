@@ -333,3 +333,65 @@ fun JSONObject.aRespuestaAsistente(): RespuestaAsistente {
 fun cuentaYaExiste(respuesta: JSONObject): Boolean =
     respuesta.optString("estadoCuenta", "") == "ACTIVA" &&
         !respuesta.optBoolean("registrado", true)
+
+data class OperacionAdministrativa(
+    val tipo: String,
+    val estado: String,
+    val canal: String,
+    val monto: Double,
+    val origen: String?,
+    val destino: String?,
+    val fecha: String?,
+)
+
+data class ResumenAdministrativo(
+    val usuarios: Int,
+    val cuentas: Int,
+    val transaccionesAnalizadas: Int,
+    val exitosas: Int,
+    val fallidas: Int,
+    val montoOperado: Double,
+    val porCanal: List<Pair<String, Int>>,
+    val ultimasOperaciones: List<OperacionAdministrativa>,
+)
+
+fun JSONObject.aOperacionAdministrativa() = OperacionAdministrativa(
+    tipo = optString("tipo", ""),
+    estado = optString("estado", ""),
+    canal = optString("canal", ""),
+    monto = optDouble("monto", 0.0),
+    origen = cadenaONulo("origen"),
+    destino = cadenaONulo("destino"),
+    fecha = cadenaONulo("fecha"),
+)
+
+fun JSONObject.aResumenAdministrativo(): ResumenAdministrativo {
+    val totales = optJSONObject("totales") ?: JSONObject()
+
+    val canales = mutableListOf<Pair<String, Int>>()
+    optJSONObject("porCanal")?.let { objeto ->
+        val claves = objeto.keys()
+        while (claves.hasNext()) {
+            val clave = claves.next()
+            canales.add(clave to objeto.optInt(clave, 0))
+        }
+    }
+
+    val operaciones = mutableListOf<OperacionAdministrativa>()
+    optJSONArray("ultimasOperaciones")?.let { lista ->
+        for (i in 0 until lista.length()) {
+            lista.optJSONObject(i)?.let { operaciones.add(it.aOperacionAdministrativa()) }
+        }
+    }
+
+    return ResumenAdministrativo(
+        usuarios = totales.optInt("usuarios", 0),
+        cuentas = totales.optInt("cuentas", 0),
+        transaccionesAnalizadas = totales.optInt("transaccionesAnalizadas", 0),
+        exitosas = totales.optInt("exitosas", 0),
+        fallidas = totales.optInt("fallidas", 0),
+        montoOperado = totales.optDouble("montoOperado", 0.0),
+        porCanal = canales.sortedByDescending { it.second },
+        ultimasOperaciones = operaciones,
+    )
+}

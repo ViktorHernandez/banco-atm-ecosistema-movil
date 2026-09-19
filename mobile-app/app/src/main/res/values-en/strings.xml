@@ -211,4 +211,27 @@
     <string name="error_credenciales">Incorrect email or password. Check your details and try again.</string>
     <string name="registro_cuenta_existente">This email is already linked to an account. Sign in to continue.</string>
     <string name="inicio_accesos">Quick actions</string>
+    <string name="menu_panel">Dashboard</string>
+    <string name="rol_administrador">Administrator</string>
+    <string name="rol_cliente">Client</string>
+    <string name="admin_panel_titulo">Administrative dashboard</string>
+    <string name="admin_panel_descripcion">Overall status of the bank based on the operations recorded by every channel.</string>
+    <string name="admin_usuarios">Users</string>
+    <string name="admin_usuarios_detalle">Active clients and administrators</string>
+    <string name="admin_cuentas">Accounts</string>
+    <string name="admin_cuentas_detalle">Active in the bank</string>
+    <string name="admin_monto_operado">Amount processed</string>
+    <string name="admin_monto_detalle">Across the analysed operations</string>
+    <string name="admin_por_canal">Operations by channel</string>
+    <string name="admin_resultado">Operation outcome</string>
+    <string name="admin_exitosas">Successful: %1$d</string>
+    <string name="admin_fallidas">Failed: %1$d</string>
+    <string name="admin_analizadas">We analysed the %1$d most recent operations of the bank.</string>
+    <string name="admin_ultimas">Latest bank operations</string>
+    <string name="admin_sin_operaciones">There are no recorded operations yet.</string>
+    <string name="admin_sin_datos">The bank summary could not be retrieved.</string>
+    <string name="admin_porcentaje">%1$d percent</string>
+    <string name="canal_app">Mobile app</string>
+    <string name="canal_web">Web portal</string>
+    <string name="canal_atm">ATM</string>
 </resources>
