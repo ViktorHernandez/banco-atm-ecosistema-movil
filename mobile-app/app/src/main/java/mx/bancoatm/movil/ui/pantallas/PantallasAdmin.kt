@@ -322,7 +322,7 @@ private fun etiquetaCanal(canal: String): String = when (canal) {
 }
 
 @Composable
-fun PantallaAdminUsuarios(modelo: ModeloBanco, alVolver: () -> Unit) {
+fun PantallaAdminUsuarios(modelo: ModeloBanco, alVolver: (() -> Unit)? = null) {
     val estado by modelo.estado.collectAsState()
     val usuarios by modelo.usuariosAdmin.collectAsState()
     var busqueda by remember { mutableStateOf("") }
@@ -373,7 +373,7 @@ fun PantallaAdminUsuarios(modelo: ModeloBanco, alVolver: () -> Unit) {
         modifier = Modifier.fillMaxSize().padding(horizontal = Dimensiones.margenPantalla),
         verticalArrangement = Arrangement.spacedBy(Dimensiones.espacioElemento),
     ) {
-        item { EncabezadoOperacion(stringResource(R.string.admin_menu_usuarios), alVolver) }
+        item { EncabezadoAdmin(stringResource(R.string.admin_menu_usuarios), alVolver) }
 
         item {
             CampoTexto(
@@ -450,7 +450,7 @@ private fun etiquetaRol(rol: String): Int =
     if (rol == Sesion.ROL_ADMINISTRADOR) R.string.rol_administrador else R.string.rol_cliente
 
 @Composable
-fun PantallaAdminTarjetas(modelo: ModeloBanco, alVolver: () -> Unit) {
+fun PantallaAdminTarjetas(modelo: ModeloBanco, alVolver: (() -> Unit)? = null) {
     val estado by modelo.estado.collectAsState()
     val tarjetas by modelo.tarjetasAdmin.collectAsState()
 
@@ -460,7 +460,7 @@ fun PantallaAdminTarjetas(modelo: ModeloBanco, alVolver: () -> Unit) {
         modifier = Modifier.fillMaxSize().padding(horizontal = Dimensiones.margenPantalla),
         verticalArrangement = Arrangement.spacedBy(Dimensiones.espacioElemento),
     ) {
-        item { EncabezadoOperacion(stringResource(R.string.admin_menu_tarjetas), alVolver) }
+        item { EncabezadoAdmin(stringResource(R.string.admin_menu_tarjetas), alVolver) }
 
         if (estado.cargando && tarjetas.isEmpty()) {
             item { Cargando(etiqueta = stringResource(R.string.estado_cargando)) }
@@ -526,7 +526,7 @@ fun PantallaAdminTarjetas(modelo: ModeloBanco, alVolver: () -> Unit) {
 }
 
 @Composable
-fun PantallaAdminReportes(modelo: ModeloBanco, alVolver: () -> Unit) {
+fun PantallaAdminReportes(modelo: ModeloBanco, alVolver: (() -> Unit)? = null) {
     val estado by modelo.estado.collectAsState()
     val resumen by modelo.resumenAdmin.collectAsState()
     val idioma by modelo.idioma.collectAsState()
@@ -561,7 +561,7 @@ fun PantallaAdminReportes(modelo: ModeloBanco, alVolver: () -> Unit) {
         modifier = Modifier.fillMaxSize().padding(horizontal = Dimensiones.margenPantalla),
         verticalArrangement = Arrangement.spacedBy(Dimensiones.espacioElemento),
     ) {
-        item { EncabezadoOperacion(titulo, alVolver) }
+        item { EncabezadoAdmin(titulo, alVolver) }
 
         if (estado.cargando && resumen == null) {
             item { Cargando(etiqueta = stringResource(R.string.estado_cargando)) }
@@ -661,7 +661,7 @@ fun PantallaAdminReportes(modelo: ModeloBanco, alVolver: () -> Unit) {
 }
 
 @Composable
-fun PantallaAdminAuditoria(modelo: ModeloBanco, alVolver: () -> Unit) {
+fun PantallaAdminAuditoria(modelo: ModeloBanco, alVolver: (() -> Unit)? = null) {
     val estado by modelo.estado.collectAsState()
     val registros by modelo.auditoria.collectAsState()
     val idioma by modelo.idioma.collectAsState()
@@ -703,7 +703,7 @@ fun PantallaAdminAuditoria(modelo: ModeloBanco, alVolver: () -> Unit) {
         modifier = Modifier.fillMaxSize().padding(horizontal = Dimensiones.margenPantalla),
         verticalArrangement = Arrangement.spacedBy(Dimensiones.espacioElemento),
     ) {
-        item { EncabezadoOperacion(titulo, alVolver) }
+        item { EncabezadoAdmin(titulo, alVolver) }
 
         item {
             CampoTexto(
@@ -809,4 +809,20 @@ fun PantallaAdminAuditoria(modelo: ModeloBanco, alVolver: () -> Unit) {
 
         item { Spacer(Modifier.height(Dimensiones.espacioSeccion)) }
     }
+}
+
+@Composable
+private fun EncabezadoAdmin(titulo: String, alVolver: (() -> Unit)?) {
+    if (alVolver != null) {
+        EncabezadoOperacion(titulo, alVolver)
+        return
+    }
+
+    Text(
+        titulo,
+        style = MaterialTheme.typography.headlineSmall,
+        modifier = Modifier
+            .padding(top = Dimensiones.espacioElemento, bottom = Dimensiones.espacioCompacto)
+            .semantics { heading() },
+    )
 }

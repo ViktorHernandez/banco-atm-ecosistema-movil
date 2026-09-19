@@ -408,9 +408,6 @@ fun PantallaMas(modelo: ModeloBanco, alElegir: (String) -> Unit) {
 
     val opciones = if (rol == Sesion.ROL_ADMINISTRADOR) {
         listOf(
-            Triple(Rutas.ADMIN_USUARIOS, R.string.admin_menu_usuarios, Icons.Filled.Group),
-            Triple(Rutas.ADMIN_TARJETAS, R.string.admin_menu_tarjetas, Icons.Filled.CreditCard),
-            Triple(Rutas.ADMIN_REPORTES, R.string.admin_menu_reportes, Icons.Filled.Assessment),
             Triple(Rutas.ADMIN_AUDITORIA, R.string.admin_menu_auditoria, Icons.Filled.FactCheck),
             Triple(Rutas.PERFIL, R.string.operar_perfil, Icons.Filled.Person),
         )

@@ -2811,6 +2811,10 @@
                 .then(function (resultado) {
                   contexto.mostrarCarga(false);
                   util.avisar(resultado.mensaje, 'exito');
+                  if (resultado && resultado.perfil) {
+                    api.actualizarUsuarioSesion(resultado.perfil);
+                    contexto.refrescarIdentidad();
+                  }
                   contexto.recargar();
                 })
                 .catch(function (error) {

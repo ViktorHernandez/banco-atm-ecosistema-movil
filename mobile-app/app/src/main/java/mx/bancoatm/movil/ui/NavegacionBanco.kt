@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CreditCard
 import androidx.compose.material.icons.filled.Grid4x4
+import androidx.compose.material.icons.filled.Assessment
+import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.Dashboard
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.ListAlt
@@ -88,6 +90,9 @@ private data class Pestana(
 
 private val pestanasAdmin = listOf(
     Pestana(Rutas.PANEL_ADMIN, R.string.menu_panel, Icons.Filled.Dashboard),
+    Pestana(Rutas.ADMIN_USUARIOS, R.string.admin_menu_usuarios, Icons.Filled.Group),
+    Pestana(Rutas.ADMIN_TARJETAS, R.string.admin_menu_tarjetas, Icons.Filled.CreditCard),
+    Pestana(Rutas.ADMIN_REPORTES, R.string.admin_menu_reportes, Icons.Filled.Assessment),
     Pestana(Rutas.MAS, R.string.menu_mas, Icons.Filled.MoreHoriz),
 )
 
@@ -200,13 +205,13 @@ private fun ContenedorPrincipal(modelo: ModeloBanco, navegador: NavHostControlle
                     PantallaPanelAdmin(modelo) { navegador.navigate(it) }
                 }
                 composable(Rutas.ADMIN_USUARIOS) {
-                    PantallaAdminUsuarios(modelo) { navegador.popBackStack() }
+                    PantallaAdminUsuarios(modelo)
                 }
                 composable(Rutas.ADMIN_TARJETAS) {
-                    PantallaAdminTarjetas(modelo) { navegador.popBackStack() }
+                    PantallaAdminTarjetas(modelo)
                 }
                 composable(Rutas.ADMIN_REPORTES) {
-                    PantallaAdminReportes(modelo) { navegador.popBackStack() }
+                    PantallaAdminReportes(modelo)
                 }
                 composable(Rutas.ADMIN_AUDITORIA) {
                     PantallaAdminAuditoria(modelo) { navegador.popBackStack() }
