@@ -4,6 +4,7 @@
   var CLAVE_API = 'portal.apiBaseUrl';
   var CLAVE_TOKEN = 'portal.token';
   var CLAVE_SESION = 'portal.sesion';
+  var CLAVE_NOMBRES = 'portal.nombresCuenta';
 
   var config = window.PORTAL_CONFIG || {};
 
@@ -168,6 +169,23 @@
     return partes.length ? '?' + partes.join('&') : '';
   }
 
+  function nombresCuenta() {
+    try {
+      return JSON.parse(leerAlmacen(CLAVE_NOMBRES) || '{}') || {};
+    } catch (error) {
+      return {};
+    }
+  }
+
+  function recordarNombreCuenta(correo, nombre) {
+    if (!correo || !nombre) {
+      return;
+    }
+    var registro = nombresCuenta();
+    registro[String(correo).toLowerCase().trim()] = nombre;
+    escribirAlmacen(CLAVE_NOMBRES, JSON.stringify(registro));
+  }
+
   function guardarSesion(datos) {
     estado.token = datos.accessToken;
     estado.sesion = {
@@ -177,6 +195,9 @@
     };
     escribirAlmacen(CLAVE_TOKEN, estado.token);
     escribirAlmacen(CLAVE_SESION, JSON.stringify(estado.sesion));
+    if (datos.usuario) {
+      recordarNombreCuenta(datos.usuario.correo, datos.usuario.nombreCompleto);
+    }
   }
 
   function expiracionDeToken(token) {
@@ -307,8 +328,14 @@
       });
 
       escribirAlmacen(CLAVE_SESION, JSON.stringify(estado.sesion));
+      recordarNombreCuenta(
+        estado.sesion.usuario.correo,
+        estado.sesion.usuario.nombreCompleto,
+      );
       return estado.sesion.usuario;
     },
+
+    nombresCuenta: nombresCuenta,
 
     usuarioSesion: function () {
       return estado.sesion ? estado.sesion.usuario : null;

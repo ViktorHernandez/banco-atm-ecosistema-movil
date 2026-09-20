@@ -19,6 +19,20 @@
     verificar: '/verificar',
   };
 
+  function aplicarNombresConocidos() {
+    var registro = api.nombresCuenta();
+
+    nodos('.credencial').forEach(function (boton) {
+      var correo = (boton.getAttribute('data-correo') || '').toLowerCase().trim();
+      var nombre = registro[correo];
+      var destino = nodo('strong', boton);
+
+      if (nombre && destino) {
+        destino.textContent = nombre;
+      }
+    });
+  }
+
   function aplicarIdentidad() {
     var nombre = config.nombreBanco || 'Banco ATM';
 
@@ -719,6 +733,8 @@
     prepararNavegacionPaneles();
     revisarMotivoSalida();
     verificarServicio();
+
+    aplicarNombresConocidos();
 
     nodos('.credencial').forEach(function (boton) {
       boton.addEventListener('click', function () {
