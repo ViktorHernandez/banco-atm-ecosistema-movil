@@ -459,7 +459,7 @@
 
     return []
       .concat(
-        centrar((config.nombreBanco || 'Banco ATM').toUpperCase(), ancho),
+        centrar((config.nombreBanco || 'Astreon').toUpperCase(), ancho),
         centrar(t('COMPROBANTE DE OPERACION'), ancho),
         separador,
         cuerpo,
@@ -1376,7 +1376,7 @@
 
     nodo('#textoCarga').textContent = t(estado.textoCarga);
 
-    nodo('#etiquetaBanco').textContent = config.nombreBanco || 'Banco ATM';
+    nodo('#etiquetaBanco').textContent = config.nombreBanco || 'Astreon';
     nodo('#etiquetaCajero').textContent = config.identificadorCajero || 'ATM-001';
 
     document.addEventListener('atmidiomacambiado', reaplicarIdioma);

@@ -97,7 +97,7 @@
     }
 
     try {
-      var aviso = new window.Notification(traducir('Banco ATM'), {
+      var aviso = new window.Notification(traducir('Astreon'), {
         body: traducir(notificacion.mensaje),
         tag: 'banco-atm-' + notificacion.id,
         lang: window.PortalI18n ? window.PortalI18n.actual() : 'es',

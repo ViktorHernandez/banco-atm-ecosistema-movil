@@ -55,8 +55,8 @@ const PALABRAS_ES = new RegExp(
 );
 
 const DATOS = [
-  'Banco ATM','Rodrigo Alcántara Vega','ATM','WEB','APP','MXN','ES','EN',
-  'Español','English','WhatsApp','atencion@bancoatm.test','App Store',
+  'Astreon','Rodrigo Alcántara Vega','ATM','WEB','APP','MXN','ES','EN',
+  'Español','English','WhatsApp','atencion@astreon.test','App Store',
   'Google Play','ATM-001','56 2972 7628',
 ];
 

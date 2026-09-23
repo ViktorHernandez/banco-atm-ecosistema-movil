@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_nombre">Banco ATM</string>
+    <string name="app_nombre">Astreon</string>
     <string name="canal_movimientos">Transactions</string>
     <string name="canal_movimientos_detalle">Alerts about activity on your account</string>
     <string name="accion_entrar">Sign in</string>

@@ -98,7 +98,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new LoggingInterceptor());
 
   const configuracionSwagger = new DocumentBuilder()
-    .setTitle('API Bancaria - Ecosistema Banco ATM')
+    .setTitle('API Bancaria - Ecosistema Astreon')
     .setDescription(
       'API comun consumida por el ATM, la aplicacion movil y el portal web (RNF-01 / HU-BE-09)',
     )

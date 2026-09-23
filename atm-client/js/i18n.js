@@ -11,9 +11,9 @@
 
   var DICCIONARIO = {
     en: {
-      'Banco ATM': 'Banco ATM',
+      'Astreon': 'Astreon',
       'Cajero automático': 'Automated teller machine',
-      'Cajero Automático - Banco ATM': 'ATM - Banco ATM',
+      'Cajero Automático - Astreon': 'ATM - Astreon',
       'Configurar API': 'Configure API',
       'Verificando enlace...': 'Checking link...',
       'En línea': 'Online',
@@ -481,7 +481,7 @@
     }
 
     if (document.title) {
-      document.title = t('Cajero Automático - Banco ATM');
+      document.title = t('Cajero Automático - Astreon');
     }
 
     document.dispatchEvent(

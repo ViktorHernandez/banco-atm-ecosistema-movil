@@ -34,13 +34,10 @@
   }
 
   function aplicarIdentidad() {
-    var nombre = config.nombreBanco || 'Banco ATM';
+    var nombre = config.nombreBanco || 'Astreon';
 
     nodos('.marca__nombre').forEach(function (elemento) {
       elemento.textContent = nombre;
-    });
-    nodos('.marca__sello').forEach(function (elemento) {
-      elemento.textContent = config.nombreCorto || 'BA';
     });
     document.title = nombre + ' · Banca en línea';
 
@@ -638,7 +635,7 @@
         var mensaje = util.frase(
           'Hola, escribo desde el portal de {banco}. Solicito información sobre: {motivo}. {detalle}',
           {
-            banco: config.nombreBanco || 'Banco ATM',
+            banco: config.nombreBanco || 'Astreon',
             motivo: util.t(motivo.titulo),
             detalle: util.t(motivo.texto),
           },
@@ -663,7 +660,7 @@
           encodeURIComponent(mensaje) +
           '">Enviar mensaje por WhatsApp</a>' +
           '<a class="boton boton--secundario" href="mailto:' +
-          util.escapar(config.correoAtencion || 'atencion@bancoatm.test') +
+          util.escapar(config.correoAtencion || 'atencion@astreon.test') +
           '?subject=' +
           encodeURIComponent(
             util.frase('Consulta: {motivo}', { motivo: util.t(motivo.titulo) }),
@@ -676,7 +673,7 @@
           util.escapar(
             util.frase(
               'Atención las 24 horas. {banco} nunca le pedirá su contraseña ni su PIN por WhatsApp, correo o teléfono.',
-              { banco: config.nombreBanco || 'Banco ATM' },
+              { banco: config.nombreBanco || 'Astreon' },
             ),
           ) +
           '</p>';

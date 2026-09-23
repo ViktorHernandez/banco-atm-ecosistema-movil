@@ -67,7 +67,7 @@ describe('AssistantService', () => {
         }
         const valor = TEXTOS[clave].en
           .replace(/\{[^}]+\}/g, ' ')
-          .replace(/Banco ATM/g, ' ');
+          .replace(/Astreon/g, ' ');
         return ACENTOS.test(valor) || PALABRAS_ES.test(valor);
       });
       expect(sospechosos).toEqual([]);

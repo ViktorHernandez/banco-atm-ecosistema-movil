@@ -37,7 +37,7 @@ const TITULOS: Record<string, { es: string; en: string }> = {
   PRESTAMO: { es: 'Sus préstamos', en: 'Your loans' },
   SEGURIDAD: { es: 'Seguridad', en: 'Security' },
   PERFIL: { es: 'Su perfil', en: 'Your profile' },
-  GENERAL: { es: 'Banco ATM', en: 'Banco ATM' },
+  GENERAL: { es: 'Astreon', en: 'Astreon' },
 };
 
 @Injectable()
@@ -426,8 +426,8 @@ export class PushService implements OnModuleInit {
     }
 
     return this.enviarACuenta(cuentaId, {
-      mensaje: 'Notificación de prueba del ecosistema Banco ATM.',
-      mensajeEn: 'Test notification from the Banco ATM ecosystem.',
+      mensaje: 'Notificación de prueba del ecosistema Astreon.',
+      mensajeEn: 'Test notification from the Astreon ecosystem.',
       categoria: CategoriaNotificacion.GENERAL,
       noLeidas: 0,
     });

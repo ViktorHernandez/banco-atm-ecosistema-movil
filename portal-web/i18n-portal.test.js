@@ -42,7 +42,7 @@ const PALABRAS_ES = new RegExp(
 );
 
 const DATOS_PERMITIDOS = [
-  'Banco ATM','Rodrigo Alcántara Vega','Ana Martínez Solís','María','José',
+  'Astreon','Rodrigo Alcántara Vega','Ana Martínez Solís','María','José',
   'CFE','Telmex','Izzi','Totalplay','Clásica','Oro','Platino','Infinite',
   'ATM','WEB','APP','MXN','ES','EN','Español','English',
   'Pago de renta',

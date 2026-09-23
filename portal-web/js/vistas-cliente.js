@@ -8,7 +8,7 @@
   window.PortalVistas = window.PortalVistas || {};
 
   function nombreBanco() {
-    return config.nombreBanco || 'Banco ATM';
+    return config.nombreBanco || 'Astreon';
   }
 
   function mostrarComprobante(comprobante, titulo) {

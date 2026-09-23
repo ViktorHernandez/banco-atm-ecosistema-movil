@@ -129,7 +129,7 @@ private val tipografia = Typography(
 )
 
 @Composable
-fun TemaBancoAtm(
+fun TemaAstreon(
     oscuro: Boolean = isSystemInDarkTheme(),
     contenido: @Composable () -> Unit,
 ) {

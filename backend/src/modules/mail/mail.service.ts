@@ -14,6 +14,7 @@ export interface CorreoPendiente {
   accion?: { texto: string; url: string };
   codigo?: string;
   piePersonalizado?: string;
+  idioma?: 'es' | 'en';
 }
 
 @Injectable()
@@ -236,16 +237,16 @@ export class MailService implements OnModuleInit {
     }
 
     if (!usuario) {
-      return declarado || 'Banco ATM <no-reply@bancoatm.test>';
+      return declarado || 'Astreon <no-reply@astreon.test>';
     }
 
     if (!declarado || !declarado.includes(usuario)) {
       if (declarado) {
         this.logger.warn(
-          `MAIL_FROM no coincide con MAIL_USER. Se enviara como "Banco ATM <${usuario}>" para que el servidor SMTP no rechace el mensaje.`,
+          `MAIL_FROM no coincide con MAIL_USER. Se enviara como "Astreon <${usuario}>" para que el servidor SMTP no rechace el mensaje.`,
         );
       }
-      return `Banco ATM <${usuario}>`;
+      return `Astreon <${usuario}>`;
     }
 
     return declarado;
@@ -285,61 +286,100 @@ export class MailService implements OnModuleInit {
   }
 
   private construirHtml(correo: CorreoPendiente): string {
+    const ingles = correo.idioma === 'en';
+    const fuente = "'Segoe UI',Arial,Helvetica,sans-serif";
     const parrafos = correo.parrafos
       .map(
         (texto) =>
-          `<p style="margin:0 0 14px;font-size:15px;line-height:1.6;color:#374151">${this.escapar(texto)}</p>`,
+          `<p style="margin:0 0 14px;font-size:15px;line-height:1.6;color:#34495E">${this.escapar(texto)}</p>`,
       )
       .join('');
 
     const codigo = correo.codigo
-      ? `<div style="margin:22px 0;padding:18px;background:#f1f5f9;border-radius:10px;text-align:center">
-           <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#64748b;margin-bottom:8px">Código de verificación</div>
-           <div style="font-size:30px;font-weight:700;letter-spacing:.28em;color:#0f172a;font-family:monospace">${this.escapar(correo.codigo)}</div>
-         </div>`
+      ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:22px 0">
+           <tr>
+             <td align="center" style="padding:18px;background:#EAF3FB;border:1px solid #D6DEE6;border-radius:10px">
+               <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5D7285;margin-bottom:8px">${ingles ? 'Verification code' : 'Código de verificación'}</div>
+               <div style="font-size:30px;font-weight:700;letter-spacing:.28em;color:#0C4A72;font-family:Consolas,'Courier New',monospace">${this.escapar(correo.codigo)}</div>
+             </td>
+           </tr>
+         </table>`
       : '';
 
     const accion = correo.accion
-      ? `<div style="margin:24px 0">
-           <a href="${this.escapar(correo.accion.url)}"
-              style="display:inline-block;padding:12px 22px;background:#0f766e;color:#ffffff;text-decoration:none;border-radius:8px;font-size:15px;font-weight:600">
-             ${this.escapar(correo.accion.texto)}
-           </a>
-         </div>`
+      ? `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:24px 0 8px">
+           <tr>
+             <td bgcolor="#0C4A72" style="border-radius:8px">
+               <a href="${this.escapar(correo.accion.url)}"
+                  style="display:inline-block;padding:13px 24px;color:#FFFFFF;text-decoration:none;border-radius:8px;font-size:15px;font-weight:600;font-family:${fuente}">${this.escapar(correo.accion.texto)}</a>
+             </td>
+           </tr>
+         </table>`
       : '';
 
     const pie = correo.piePersonalizado
-      ? `<p style="margin:0 0 8px;font-size:13px;color:#64748b">${this.escapar(correo.piePersonalizado)}</p>`
+      ? `<p style="margin:0 0 10px;font-size:13px;line-height:1.5;color:#34495E">${this.escapar(correo.piePersonalizado)}</p>`
       : '';
 
+    const aviso = ingles
+      ? 'Astreon is a fictitious institution created as an academic project. This message does not correspond to a real financial operation.'
+      : 'Astreon es una institución ficticia creada como proyecto académico. Este mensaje no corresponde a una operación financiera real.';
+
     return `<!DOCTYPE html>
-<html lang="es"><body style="margin:0;padding:24px;background:#f8fafc;font-family:'Segoe UI',Arial,sans-serif">
-  <div style="max-width:560px;margin:0 auto;background:#ffffff;border-radius:14px;overflow:hidden;border:1px solid #e2e8f0">
-    <div style="background:#0f172a;padding:20px 26px">
-      <span style="display:inline-block;width:34px;height:34px;line-height:34px;text-align:center;background:#0f766e;color:#fff;border-radius:9px;font-weight:700;vertical-align:middle">BA</span>
-      <span style="color:#f8fafc;font-size:17px;font-weight:600;margin-left:10px;vertical-align:middle">Banco ATM</span>
-    </div>
-    <div style="padding:28px 26px">
-      <h1 style="margin:0 0 16px;font-size:20px;color:#0f172a">${this.escapar(correo.titulo)}</h1>
-      ${parrafos}
-      ${codigo}
-      ${accion}
-    </div>
-    <div style="padding:18px 26px;background:#f8fafc;border-top:1px solid #e2e8f0">
-      ${pie}
-      <p style="margin:0;font-size:12px;color:#94a3b8">
-        Banco ATM es una institución ficticia creada como proyecto académico.
-        Este mensaje no corresponde a una operación financiera real.
-      </p>
-    </div>
-  </div>
-</body></html>`;
+<html lang="${ingles ? 'en' : 'es'}">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>${this.escapar(correo.asunto)}</title>
+</head>
+<body style="margin:0;padding:0;background:#F2F5F9">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#F2F5F9">
+    <tr>
+      <td align="center" style="padding:28px 12px">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;background:#FFFFFF;border:1px solid #D6DEE6;border-radius:14px;overflow:hidden;font-family:${fuente}">
+          <tr>
+            <td style="background:#0C4A72;padding:18px 28px">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="vertical-align:middle"><img src="${this.escapar(this.urlPortal())}/img/astreon-correo.png" width="40" height="40" alt="" style="display:block;border:0;outline:none" /></td>
+                  <td style="vertical-align:middle;padding-left:12px;font-size:19px;font-weight:600;letter-spacing:.16em;color:#EAF3FB">ASTREON</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td style="height:4px;line-height:4px;font-size:0;background:#1F7FC4">&nbsp;</td>
+          </tr>
+          <tr>
+            <td style="padding:30px 28px 22px">
+              <h1 style="margin:0 0 18px;font-size:21px;line-height:1.35;font-weight:600;color:#0B1B2B">${this.escapar(correo.titulo)}</h1>
+              ${parrafos}
+              ${codigo}
+              ${accion}
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:20px 28px;background:#F7F9FB;border-top:1px solid #D6DEE6">
+              ${pie}
+              <p style="margin:0;font-size:12px;line-height:1.5;color:#5D7285">${aviso}</p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
   }
 
   private construirTexto(correo: CorreoPendiente): string {
-    const lineas = [correo.titulo, '', ...correo.parrafos];
+    const ingles = correo.idioma === 'en';
+    const lineas = ['ASTREON', '', correo.titulo, '', ...correo.parrafos];
     if (correo.codigo) {
-      lineas.push('', `Código de verificación: ${correo.codigo}`);
+      lineas.push(
+        '',
+        `${ingles ? 'Verification code' : 'Código de verificación'}: ${correo.codigo}`,
+      );
     }
     if (correo.accion) {
       lineas.push('', `${correo.accion.texto}: ${correo.accion.url}`);
@@ -347,7 +387,12 @@ export class MailService implements OnModuleInit {
     if (correo.piePersonalizado) {
       lineas.push('', correo.piePersonalizado);
     }
-    lineas.push('', 'Banco ATM · proyecto académico sin operación real.');
+    lineas.push(
+      '',
+      ingles
+        ? 'Astreon · academic project with no real operation.'
+        : 'Astreon · proyecto académico sin operación real.',
+    );
     return lineas.join('\n');
   }
 
@@ -572,10 +617,10 @@ export class MailService implements OnModuleInit {
     const coincidencia = remitente.match(/^\s*(.*?)\s*<([^>]+)>\s*$/);
 
     if (coincidencia) {
-      return { name: coincidencia[1] || 'Banco ATM', email: coincidencia[2] };
+      return { name: coincidencia[1] || 'Astreon', email: coincidencia[2] };
     }
 
-    return { name: 'Banco ATM', email: remitente.trim() };
+    return { name: 'Astreon', email: remitente.trim() };
   }
 
   async avisoInicioSesion(
@@ -598,7 +643,7 @@ export class MailService implements OnModuleInit {
       titulo: 'Detectamos un inicio de sesión',
       parrafos: [
         `Hola ${nombre}:`,
-        `Se inició sesión en su cuenta de Banco ATM el ${fecha}, desde el canal ${canal}.`,
+        `Se inició sesión en su cuenta de Astreon el ${fecha}, desde el canal ${canal}.`,
         'Si fue usted, puede ignorar este mensaje. No necesita hacer nada.',
         'Si no reconoce esta actividad, entre al portal y cambie su contraseña de inmediato desde la sección Mi perfil. Si su tarjeta también pudo verse comprometida, bloquéela desde Mis tarjetas.',
       ],
@@ -607,7 +652,7 @@ export class MailService implements OnModuleInit {
         url: `${this.urlPortal()}/login`,
       },
       piePersonalizado:
-        'Banco ATM nunca le pedirá su contraseña ni su PIN por correo o por teléfono.',
+        'Astreon nunca le pedirá su contraseña ni su PIN por correo o por teléfono.',
     });
   }
 
@@ -622,7 +667,7 @@ export class MailService implements OnModuleInit {
       titulo: 'Confirme su correo electrónico',
       parrafos: [
         `Hola ${nombre}:`,
-        'Gracias por registrarse en Banco ATM. Para activar su cuenta necesitamos comprobar que este correo le pertenece.',
+        'Gracias por registrarse en Astreon. Para activar su cuenta necesitamos comprobar que este correo le pertenece.',
         'Escriba el siguiente código en la pantalla de verificación. El código vence en 30 minutos.',
       ],
       codigo,
@@ -644,7 +689,7 @@ export class MailService implements OnModuleInit {
   ): Promise<boolean> {
     return this.enviar({
       para,
-      asunto: 'Su cuenta de Banco ATM ya está activa',
+      asunto: 'Su cuenta de Astreon ya está activa',
       titulo: 'Su cuenta bancaria fue creada',
       parrafos: [
         `Hola ${nombre}:`,
@@ -657,20 +702,20 @@ export class MailService implements OnModuleInit {
         url: `${this.urlPortal()}/login`,
       },
       piePersonalizado:
-        'Banco ATM nunca le pedirá su contraseña ni su PIN por correo o por teléfono.',
+        'Astreon nunca le pedirá su contraseña ni su PIN por correo o por teléfono.',
     });
   }
 
   async cuentaEliminada(para: string, nombre: string): Promise<boolean> {
     return this.enviar({
       para,
-      asunto: 'Su cuenta de Banco ATM fue eliminada',
+      asunto: 'Su cuenta de Astreon fue eliminada',
       titulo: 'Su cuenta fue eliminada',
       parrafos: [
         `Hola ${nombre}:`,
-        'Le informamos que su cuenta de Banco ATM fue eliminada por el banco. A partir de este momento no podrá iniciar sesión ni utilizar sus tarjetas.',
+        'Le informamos que su cuenta de Astreon fue eliminada por el banco. A partir de este momento no podrá iniciar sesión ni utilizar sus tarjetas.',
         'Sus operaciones anteriores permanecen registradas en nuestros archivos por obligación de auditoría, pero ya no están disponibles para consulta desde la banca en línea.',
-        'Si desea volver a utilizar Banco ATM, puede crear una cuenta nueva desde nuestro portal web cuando lo desee.',
+        'Si desea volver a utilizar Astreon, puede crear una cuenta nueva desde nuestro portal web cuando lo desee.',
       ],
       accion: {
         texto: 'Crear una cuenta nueva',
@@ -693,11 +738,12 @@ export class MailService implements OnModuleInit {
     if (idioma === 'en') {
       return this.enviar({
         para,
-        asunto: 'Reset your Banco ATM password',
+        asunto: 'Reset your Astreon password',
+        idioma: 'en',
         titulo: 'Reset your password',
         parrafos: [
           `Hello ${nombre}:`,
-          'We received a request to reset the password of your Banco ATM online banking.',
+          'We received a request to reset the password of your Astreon online banking.',
           `Enter the following code on the recovery screen. It expires in ${minutos} minutes.`,
         ],
         codigo,
@@ -709,11 +755,11 @@ export class MailService implements OnModuleInit {
 
     return this.enviar({
       para,
-      asunto: 'Restablezca su contraseña de Banco ATM',
+      asunto: 'Restablezca su contraseña de Astreon',
       titulo: 'Restablezca su contraseña',
       parrafos: [
         `Hola ${nombre}:`,
-        'Recibimos una solicitud para restablecer la contraseña de su banca en línea de Banco ATM.',
+        'Recibimos una solicitud para restablecer la contraseña de su banca en línea de Astreon.',
         `Escriba el siguiente código en la pantalla de recuperación. Vence en ${minutos} minutos.`,
       ],
       codigo,
@@ -752,7 +798,7 @@ export class MailService implements OnModuleInit {
   ): Promise<boolean> {
     return this.enviar({
       para,
-      asunto: 'Aviso de su cuenta Banco ATM',
+      asunto: 'Aviso de su cuenta Astreon',
       titulo: 'Movimiento en su cuenta',
       parrafos: [
         `Hola ${nombre}:`,

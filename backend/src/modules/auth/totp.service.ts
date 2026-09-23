@@ -32,7 +32,7 @@ export class SecretoTotpIlegible extends Error {
   }
 }
 
-const EMISOR = 'Banco ATM';
+const EMISOR = 'Astreon';
 const CODIGOS_RECUPERACION = 8;
 
 @Injectable()

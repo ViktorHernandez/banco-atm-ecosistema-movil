@@ -176,10 +176,9 @@
       (usuario.rol === 'ADMINISTRADOR' ? 'Administrador' : 'Cliente') +
       ' · ' +
       (usuario.correo || '');
-    nodo('#nombreMarca').textContent = config.nombreBanco || 'Banco ATM';
-    nodo('#selloMarca').textContent = config.nombreCorto || 'BA';
+    nodo('#nombreMarca').textContent = config.nombreBanco || 'Astreon';
     document.title =
-      (config.nombreBanco || 'Banco ATM') +
+      (config.nombreBanco || 'Astreon') +
       ' · ' +
       (usuario.rol === 'ADMINISTRADOR' ? 'Administración' : 'Mi banca');
     nodo('#pieCanal').textContent =
@@ -324,7 +323,7 @@
       '<div id="cuerpoVista"><div class="vacio">Cargando…</div></div>';
 
     var cuerpo = nodo('#cuerpoVista');
-    document.title = vista.titulo + ' · ' + (config.nombreBanco || 'Banco ATM');
+    document.title = vista.titulo + ' · ' + (config.nombreBanco || 'Astreon');
 
     Promise.resolve(vista.render(cuerpo, contexto()))
       .then(function () {

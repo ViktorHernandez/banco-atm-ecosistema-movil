@@ -8,6 +8,6 @@ window.ATM_CONFIG = {
   segundosInactividad: 120,
   montosRapidosRetiro: [200, 500, 1000, 2000, 3000, 5000],
   montosRapidosDeposito: [500, 1000, 2000, 5000],
-  nombreBanco: 'Banco ATM',
+  nombreBanco: 'Astreon',
   identificadorCajero: 'ATM-001',
 };

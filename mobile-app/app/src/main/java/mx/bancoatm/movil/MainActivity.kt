@@ -19,7 +19,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import mx.bancoatm.movil.ui.ModeloBanco
 import mx.bancoatm.movil.ui.NavegacionBanco
-import mx.bancoatm.movil.ui.TemaBancoAtm
+import mx.bancoatm.movil.ui.TemaAstreon
 import mx.bancoatm.movil.ui.localeDe
 
 class MainActivity : ComponentActivity() {
@@ -57,7 +57,7 @@ class MainActivity : ComponentActivity() {
                 LocalContext provides contextoLocalizado,
                 LocalConfiguration provides configuracion,
             ) {
-                TemaBancoAtm {
+                TemaAstreon {
                     NavegacionBanco(modelo)
                 }
             }

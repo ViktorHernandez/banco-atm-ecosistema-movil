@@ -52,7 +52,7 @@ describe('MailService', () => {
         MAIL_ENABLED: 'true',
         MAIL_TRANSPORT: 'api',
         MAIL_API_KEY: 'clave-de-prueba',
-        MAIL_FROM: 'Banco ATM <no-reply@example.test>',
+        MAIL_FROM: 'Astreon <no-reply@example.test>',
       });
       expect(servicio.estado.modo).toBe('api');
     });
@@ -61,7 +61,7 @@ describe('MailService', () => {
       const servicio = await crear({
         MAIL_ENABLED: 'true',
         MAIL_API_KEY: 'clave-de-prueba',
-        MAIL_FROM: 'Banco ATM <no-reply@example.test>',
+        MAIL_FROM: 'Astreon <no-reply@example.test>',
       });
       expect(servicio.estado.modo).toBe('api');
     });
@@ -70,7 +70,7 @@ describe('MailService', () => {
       const servicio = await crear({
         MAIL_ENABLED: 'true',
         MAIL_TRANSPORT: 'api',
-        MAIL_FROM: 'Banco ATM <no-reply@example.test>',
+        MAIL_FROM: 'Astreon <no-reply@example.test>',
       });
       expect(servicio.estado.modo).toBe('ninguno');
       expect(servicio.estado.ultimoError).toContain('MAIL_API_KEY');
@@ -92,7 +92,7 @@ describe('MailService', () => {
         MAIL_TRANSPORT: 'api',
         MAIL_API_PROVIDER: 'inventado',
         MAIL_API_KEY: 'clave-de-prueba',
-        MAIL_FROM: 'Banco ATM <no-reply@example.test>',
+        MAIL_FROM: 'Astreon <no-reply@example.test>',
       });
       expect(servicio.estado.modo).toBe('ninguno');
     });
@@ -104,7 +104,7 @@ describe('MailService', () => {
       MAIL_TRANSPORT: 'api',
       MAIL_API_PROVIDER: 'resend',
       MAIL_API_KEY: 'clave-de-prueba',
-      MAIL_FROM: 'Banco ATM <no-reply@example.test>',
+      MAIL_FROM: 'Astreon <no-reply@example.test>',
       PORTAL_PUBLIC_URL: 'https://portal.example.test',
     };
 
@@ -165,7 +165,7 @@ describe('MailService', () => {
       expect(peticiones[0].url).toBe('https://api.brevo.com/v3/smtp/email');
       const cuerpo = JSON.parse(String(peticiones[0].opciones.body));
       expect(cuerpo.sender).toEqual({
-        name: 'Banco ATM',
+        name: 'Astreon',
         email: 'no-reply@example.test',
       });
       expect(cuerpo.to).toEqual([{ email: 'c@example.test' }]);
@@ -176,7 +176,7 @@ describe('MailService', () => {
       await servicio.codigoVerificacion('c@example.test', 'C', '222222');
 
       const cuerpo = JSON.parse(String(peticiones[0].opciones.body));
-      expect(cuerpo.from).toBe('Banco ATM <no-reply@example.test>');
+      expect(cuerpo.from).toBe('Astreon <no-reply@example.test>');
     });
 
     it('informa el fallo cuando el proveedor responde con error', async () => {
@@ -249,7 +249,7 @@ describe('MailService', () => {
       MAIL_TRANSPORT: 'api',
       MAIL_API_PROVIDER: 'emailjs',
       MAIL_API_KEY: 'no-usada-por-emailjs',
-      MAIL_FROM: 'Banco ATM <no-reply@example.test>',
+      MAIL_FROM: 'Astreon <no-reply@example.test>',
       MAIL_EMAILJS_SERVICE_ID: 'service_pruebas',
       MAIL_EMAILJS_TEMPLATE_ID: 'template_pruebas',
       MAIL_EMAILJS_PUBLIC_KEY: 'clave-publica',
@@ -364,7 +364,7 @@ describe('MailService', () => {
       MAIL_ENABLED: 'true',
       MAIL_TRANSPORT: 'api',
       MAIL_API_KEY: 'clave-de-prueba',
-      MAIL_FROM: 'Banco ATM <no-reply@example.test>',
+      MAIL_FROM: 'Astreon <no-reply@example.test>',
       PORTAL_PUBLIC_URL: 'https://portal.example.test',
     };
 
@@ -457,7 +457,7 @@ describe('MailService', () => {
       );
 
       const cuerpo = JSON.parse(String(peticiones[0].opciones.body));
-      expect(cuerpo.subject).toBe('Reset your Banco ATM password');
+      expect(cuerpo.subject).toBe('Reset your Astreon password');
       expect(cuerpo.textContent).toContain('654321');
       expect(cuerpo.textContent).not.toContain('localhost');
     });
@@ -478,7 +478,7 @@ describe('MailService', () => {
         MAIL_TRANSPORT: 'api',
         MAIL_API_PROVIDER: 'resend',
         MAIL_API_KEY: 'clave',
-        MAIL_FROM: 'Banco ATM <no-reply@example.test>',
+        MAIL_FROM: 'Astreon <no-reply@example.test>',
       });
       await servicio.codigoVerificacion('c@example.test', 'C', '123456');
 
@@ -492,7 +492,7 @@ describe('MailService', () => {
         MAIL_TRANSPORT: 'api',
         MAIL_API_PROVIDER: 'resend',
         MAIL_API_KEY: 'clave',
-        MAIL_FROM: 'Banco ATM <no-reply@example.test>',
+        MAIL_FROM: 'Astreon <no-reply@example.test>',
         PORTAL_PUBLIC_URL: 'https://portal.example.test/',
       });
       await servicio.codigoVerificacion('c@example.test', 'C', '123456');

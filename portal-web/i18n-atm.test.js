@@ -132,7 +132,7 @@ function comprobar(nombre, condicion, detalle) {
   );
 
   const cuerpoEn = docEn.body.textContent
-    .replace(/Banco ATM/g, ' ')
+    .replace(/Astreon/g, ' ')
     .replace(/ATM-001/g, ' ');
   const lineasEspanolas = cuerpoEn
     .split('\n')

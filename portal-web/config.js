@@ -15,8 +15,7 @@ window.PORTAL_CONFIG = {
       : 'https://banco-atm-cajero-movil.onrender.com/';
   })(),
 
-  nombreBanco: 'Banco ATM',
-  nombreCorto: 'BA',
+  nombreBanco: 'Astreon',
   canal: 'WEB',
   minutosInactividad: 10,
   movimientosResumen: 5,
@@ -24,7 +23,7 @@ window.PORTAL_CONFIG = {
   notificacionesResumen: 4,
   telefonoAtencion: '56 2972 7628',
   ladaAtencion: '52',
-  correoAtencion: 'atencion@bancoatm.test',
+  correoAtencion: 'atencion@astreon.test',
 
   motivosContacto: [
     {

@@ -5,8 +5,8 @@
     en: {
       'Ya está': 'It is now',
       'disponible': 'available',
-      'La aplicación móvil de Banco ATM para Android completa el ecosistema. Trabaja contra la misma API bancaria que el portal web y los cajeros, por lo que una operación hecha en el teléfono se ve de inmediato en los otros canales y al revés.':
-        'The Banco ATM mobile app for Android completes the ecosystem. It works against the same banking API as the web portal and the ATMs, so an operation made on the phone is immediately visible on the other channels and the other way around.',
+      'La aplicación móvil de Astreon para Android completa el ecosistema. Trabaja contra la misma API bancaria que el portal web y los cajeros, por lo que una operación hecha en el teléfono se ve de inmediato en los otros canales y al revés.':
+        'The Astreon mobile app for Android completes the ecosystem. It works against the same banking API as the web portal and the ATMs, so an operation made on the phone is immediately visible on the other channels and the other way around.',
       'Al tratarse de un proyecto académico, la aplicación no se publica en tiendas. Se instala directamente mediante un archivo APK.':
         'As this is an academic project, the app is not published in stores. It is installed directly from an APK file.',
       'Descargar el APK': 'Download the APK',
@@ -44,8 +44,8 @@
       'Archivo disponible para descargar.': 'File available to download.',
       'El archivo todavía no está publicado en este servidor. Solicítelo al equipo del proyecto.':
         'The file is not published on this server yet. Please request it from the project team.',
-      'Descargue la aplicación móvil de Banco ATM para Android y opere su cuenta desde el teléfono con avisos en tiempo real.':
-        'Download the Banco ATM mobile app for Android and manage your account from your phone with real-time alerts.',
+      'Descargue la aplicación móvil de Astreon para Android y opere su cuenta desde el teléfono con avisos en tiempo real.':
+        'Download the Astreon mobile app for Android and manage your account from your phone with real-time alerts.',
       'Debe volver a vincular su aplicación': 'You must link your app again',
       'La configuración guardada ya no puede leerse con la clave actual del servidor. Vuelva a vincular su aplicación autenticadora. Mientras tanto, puede entrar con uno de sus códigos de recuperación.':
         'The saved configuration can no longer be read with the current server key. Please link your authenticator app again. In the meantime, you can sign in with one of your recovery codes.',
@@ -157,8 +157,8 @@
       '{progreso} % pagado · quedan {restantes} pagos':
         '{progreso} % paid · {restantes} payments left',
       '{proveedor} · {categoria}': '{proveedor} · {categoria}',
-      '© 2026 Banco ATM. Proyecto académico sin operación financiera real.':
-        '© 2026 Banco ATM. Academic project with no real financial operation.',
+      '© 2026 Astreon. Proyecto académico sin operación financiera real.':
+        '© 2026 Astreon. Academic project with no real financial operation.',
       '2 % de bonificación en supermercado y gasolina':
         '2 % cashback on groceries and fuel',
       'Abono': 'Credit',
@@ -234,15 +234,15 @@
       'Avisos push': 'Push alerts',
       'Ayuda': 'Help',
       'Banca en línea': 'Online banking',
-      'Banco ATM': 'Banco ATM',
-      'Banco ATM · Aplicación móvil': 'Banco ATM · Mobile app',
-      'Banco ATM · Banca en línea': 'Banco ATM · Online banking',
-      'Banco ATM · Consejos de seguridad': 'Banco ATM · Security advice',
-      'Banco ATM · Mi banca': 'Banco ATM · My banking',
-      'Banco ATM nunca le pedirá su contraseña ni su PIN.':
-        'Banco ATM will never ask you for your password or your PIN.',
-      'Banco ATM. Proyecto académico sin operación financiera real.':
-        'Banco ATM. Academic project with no real financial operation.',
+      'Astreon': 'Astreon',
+      'Astreon · Aplicación móvil': 'Astreon · Mobile app',
+      'Astreon · Banca en línea': 'Astreon · Online banking',
+      'Astreon · Consejos de seguridad': 'Astreon · Security advice',
+      'Astreon · Mi banca': 'Astreon · My banking',
+      'Astreon nunca le pedirá su contraseña ni su PIN.':
+        'Astreon will never ask you for your password or your PIN.',
+      'Astreon. Proyecto académico sin operación financiera real.':
+        'Astreon. Academic project with no real financial operation.',
       'base de datos conectada': 'database connected',
       'base de datos no disponible': 'database unavailable',
       'Beneficios': 'Benefits',
@@ -441,8 +441,8 @@
       'Destino': 'Destination',
       'Detalle': 'Detail',
       'Disponible': 'Available',
-      'Ecosistema Banco ATM · Portal web, app móvil y cajeros conectados a la misma API bancaria':
-        'Banco ATM ecosystem · Web portal, mobile app and ATMs connected to the same banking API',
+      'Ecosistema Astreon · Portal web, app móvil y cajeros conectados a la misma API bancaria':
+        'Astreon ecosystem · Web portal, mobile app and ATMs connected to the same banking API',
       'Editar': 'Edit',
       'El alcance previsto para la primera versión, tomado del backlog del proyecto. Todas estas operaciones ya existen en la API bancaria: lo que falta es la interfaz del canal móvil.':
         'The scope planned for the first version, taken from the project backlog. All these operations already exist in the banking API: what is missing is the mobile channel interface.',
@@ -626,8 +626,8 @@
       'Ir a Transferencias': 'Go to Transfers',
       'Ir a Usuarios': 'Go to Users',
       'Ir al contenido principal': 'Skip to main content',
-      'La aplicación móvil de Banco ATM se encuentra en desarrollo por el equipo responsable de ese canal. Todavía no está disponible para descarga, y por eso preferimos decirlo aquí con claridad en lugar de anunciar una fecha que aún no podemos sostener.':
-        'The Banco ATM mobile app is being developed by the team responsible for that channel. It is not available for download yet, which is why we prefer to say so plainly here rather than announce a date we cannot yet commit to.',
+      'La aplicación móvil de Astreon se encuentra en desarrollo por el equipo responsable de ese canal. Todavía no está disponible para descarga, y por eso preferimos decirlo aquí con claridad en lugar de anunciar una fecha que aún no podemos sostener.':
+        'The Astreon mobile app is being developed by the team responsible for that channel. It is not available for download yet, which is why we prefer to say so plainly here rather than announce a date we cannot yet commit to.',
       'La confirmación no coincide con la nueva contraseña.':
         'The confirmation does not match the new password.',
       'La contraseña debe tener al menos 6 caracteres.':

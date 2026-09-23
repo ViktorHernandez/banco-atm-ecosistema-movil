@@ -453,7 +453,7 @@
 
     return []
       .concat(
-        centrar(banco || 'Banco ATM', ancho),
+        centrar(banco || 'Astreon', ancho),
         centrar(bloque.titulo, ancho),
         bloque.separador,
         bloque.lineas,

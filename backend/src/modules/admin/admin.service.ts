@@ -303,8 +303,8 @@ export class AdminService {
 
     const descripcion =
       dto.rol === RolUsuario.ADMINISTRADOR
-        ? 'Su usuario recibió el perfil de Administrador en Banco ATM.'
-        : 'Su usuario volvió al perfil de Cliente en Banco ATM.';
+        ? 'Su usuario recibió el perfil de Administrador en Astreon.'
+        : 'Su usuario volvió al perfil de Cliente en Astreon.';
 
     const cuenta = await this.cuentaRepository.findOne({
       where: { usuario: { id: usuario.id } },

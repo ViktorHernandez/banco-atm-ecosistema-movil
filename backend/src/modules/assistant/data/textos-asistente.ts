@@ -120,16 +120,16 @@ export const TEXTOS: Record<string, Entrada> = {
   },
 
   'saludo.con_nombre': {
-    es: 'Hola {nombre}. Soy el asistente de Banco ATM. Puedo consultar su saldo, sus préstamos y sus tarjetas, y explicarle cómo hacer cualquier operación del portal. ¿Qué necesita?',
-    en: 'Hello {nombre}. I am the Banco ATM assistant. I can check your balance, your loans and your cards, and explain how to carry out any operation in the portal. What do you need?',
+    es: 'Hola {nombre}. Soy el asistente de Astreon. Puedo consultar su saldo, sus préstamos y sus tarjetas, y explicarle cómo hacer cualquier operación del portal. ¿Qué necesita?',
+    en: 'Hello {nombre}. I am the Astreon assistant. I can check your balance, your loans and your cards, and explain how to carry out any operation in the portal. What do you need?',
   },
   'saludo.sin_nombre': {
-    es: 'Hola. Soy el asistente de Banco ATM. Puedo consultar su saldo, sus préstamos y sus tarjetas, y explicarle cómo hacer cualquier operación del portal. ¿Qué necesita?',
-    en: 'Hello. I am the Banco ATM assistant. I can check your balance, your loans and your cards, and explain how to carry out any operation in the portal. What do you need?',
+    es: 'Hola. Soy el asistente de Astreon. Puedo consultar su saldo, sus préstamos y sus tarjetas, y explicarle cómo hacer cualquier operación del portal. ¿Qué necesita?',
+    en: 'Hello. I am the Astreon assistant. I can check your balance, your loans and your cards, and explain how to carry out any operation in the portal. What do you need?',
   },
   'saludo.publico': {
-    es: 'Hola. Soy el asistente de Banco ATM. Puedo explicarle los servicios del banco, cómo abrir una cuenta, las tarjetas, las transferencias, el cajero y la seguridad. Para consultar su saldo o sus movimientos necesita iniciar sesión.',
-    en: 'Hello. I am the Banco ATM assistant. I can explain the bank services, how to open an account, cards, transfers, the ATM and security. To check your balance or transactions you need to sign in.',
+    es: 'Hola. Soy el asistente de Astreon. Puedo explicarle los servicios del banco, cómo abrir una cuenta, las tarjetas, las transferencias, el cajero y la seguridad. Para consultar su saldo o sus movimientos necesita iniciar sesión.',
+    en: 'Hello. I am the Astreon assistant. I can explain the bank services, how to open an account, cards, transfers, the ATM and security. To check your balance or transactions you need to sign in.',
   },
   despedida: {
     es: 'Con gusto. Aquí estaré si necesita algo más.',
@@ -312,8 +312,8 @@ export const TEXTOS: Record<string, Entrada> = {
     en: 'At the ATM you can check your balance, withdraw, deposit, transfer, pay bills, change your PIN, manage your card and review or pay your loans. You need your card and your PIN.',
   },
   seguridad: {
-    es: 'Banco ATM nunca le pedirá su contraseña ni su PIN por teléfono, correo o WhatsApp. Si alguien se los pide, es un fraude aunque conozca sus datos. Ante cualquier duda, bloquee su tarjeta desde el portal y cambie su contraseña: ninguna de las dos acciones tiene costo.',
-    en: 'Banco ATM will never ask for your password or your PIN by phone, email or WhatsApp. If someone asks for them, it is fraud even if they know your details. When in doubt, block your card from the portal and change your password: neither action has any cost.',
+    es: 'Astreon nunca le pedirá su contraseña ni su PIN por teléfono, correo o WhatsApp. Si alguien se los pide, es un fraude aunque conozca sus datos. Ante cualquier duda, bloquee su tarjeta desde el portal y cambie su contraseña: ninguna de las dos acciones tiene costo.',
+    en: 'Astreon will never ask for your password or your PIN by phone, email or WhatsApp. If someone asks for them, it is fraud even if they know your details. When in doubt, block your card from the portal and change your password: neither action has any cost.',
   },
   contacto: {
     es: 'Atención a clientes está disponible las 24 horas en el 56 2972 7628. Desde la página principal puede abrir el canal de contacto, elegir el motivo y enviarnos un mensaje por WhatsApp con el asunto ya preparado.',
@@ -332,8 +332,8 @@ export const TEXTOS: Record<string, Entrada> = {
     en: 'To open an account, use the Create account option on the sign-in page: enter your name, email, phone number and password. We will send a 6-digit verification code to your email and, once you confirm it, the bank automatically creates your account and your debit card.',
   },
   servicios_banco: {
-    es: 'Banco ATM ofrece cuentas de depósito, tarjetas de débito y de crédito en cuatro niveles, transferencias entre cuentas del banco, pago de servicios, préstamos personales y operaciones en cajero automático. Todo se opera desde la banca en línea, el cajero o la app móvil.',
-    en: 'Banco ATM offers deposit accounts, debit and credit cards in four tiers, transfers between bank accounts, bill payments, personal loans and ATM operations. Everything is handled from online banking, the ATM or the mobile app.',
+    es: 'Astreon ofrece cuentas de depósito, tarjetas de débito y de crédito en cuatro niveles, transferencias entre cuentas del banco, pago de servicios, préstamos personales y operaciones en cajero automático. Todo se opera desde la banca en línea, el cajero o la app móvil.',
+    en: 'Astreon offers deposit accounts, debit and credit cards in four tiers, transfers between bank accounts, bill payments, personal loans and ATM operations. Everything is handled from online banking, the ATM or the mobile app.',
   },
   admin_usuarios: {
     es: 'En Usuarios puede dar de alta un cliente con su cuenta y tarjeta, editar sus datos, cambiar su perfil entre Cliente y Administrador y eliminar la cuenta de un cliente. No es posible asignar un perfil a un usuario que aún no ha verificado su correo, y todo cambio queda en auditoría.',

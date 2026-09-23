@@ -14,14 +14,14 @@
         android:label="@string/app_nombre"
         android:networkSecurityConfig="@xml/seguridad_red"
         android:supportsRtl="true"
-        android:theme="@style/Theme.BancoAtm">
+        android:theme="@style/Theme.Astreon">
 
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
             android:windowSoftInputMode="adjustResize"
-            android:theme="@style/Theme.BancoAtm">
+            android:theme="@style/Theme.Astreon">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

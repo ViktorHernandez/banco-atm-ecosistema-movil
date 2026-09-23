@@ -144,7 +144,7 @@ export class ProfileService {
 
     await this.usuarioRepository.save(usuario);
 
-    const descripcion = `Se actualizó su ${cambios.join(', ')} en Banco ATM.`;
+    const descripcion = `Se actualizó su ${cambios.join(', ')} en Astreon.`;
 
     await this.registrarCambio(
       usuario,
@@ -158,7 +158,7 @@ export class ProfileService {
       void this.mailService.cambioDePerfil(
         correoAnterior,
         usuario.nombreCompleto,
-        `El correo asociado a su cuenta de Banco ATM cambió a ${usuario.correo}. Si no reconoce este cambio, comuníquese con el banco de inmediato.`,
+        `El correo asociado a su cuenta de Astreon cambió a ${usuario.correo}. Si no reconoce este cambio, comuníquese con el banco de inmediato.`,
       );
     }
 
