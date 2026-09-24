@@ -1086,8 +1086,8 @@
       'Una página que se parece a la de su banco y le pide entrar «para confirmar sus datos». Escriba usted la dirección en el navegador en lugar de tocar el enlace del mensaje.':
         'A page that looks like your bank\'s and asks you to sign in “to confirm your details”. Type the address in your browser yourself instead of tapping the link in the message.',
       'Una petición de claves': 'A request for credentials',
-      'Use el mismo correo y contraseña de su banca. Los administradores entran por esta misma pantalla.':
-        'Use the same email and password as your banking. Administrators sign in from this same screen.',
+      'Use el correo y la contraseña de su cuenta Astreon. Los administradores entran por esta misma pantalla.':
+        'Use the email and password of your Astreon account. Administrators sign in from this same screen.',
       'Use una contraseña distinta para su banca':
         'Use a different password for your banking',
       'Usted': 'You',

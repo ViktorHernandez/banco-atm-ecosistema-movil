@@ -512,8 +512,9 @@ button {
 
 .marca__sello img {
   display: block;
-  width: 28px;
-  height: 28px;
+  width: 38px;
+  height: 38px;
+  border-radius: inherit;
 }
 
 .marca__nombre {

@@ -12,6 +12,14 @@ import { AuditService } from '../audit/audit.service';
 import { Usuario } from '../users/entities/usuario.entity';
 import { generarCodigo } from '../../common/utils/totp.util';
 
+jest.mock('bcryptjs', () => {
+  const real = jest.requireActual('bcryptjs');
+  return {
+    ...real,
+    hash: jest.fn((valor: string) => real.hash(valor, 4)),
+  };
+});
+
 describe('TotpService', () => {
   let servicio: TotpService;
   let usuario: Record<string, unknown>;
@@ -132,6 +140,7 @@ describe('TotpService', () => {
       ) as string[];
 
       expect(guardados).toHaveLength(8);
+      expect(bcrypt.hash).toHaveBeenCalledWith(expect.any(String), 10);
       guardados.forEach((hash) => {
         expect(resultado.codigosRecuperacion).not.toContain(hash);
         expect(hash.startsWith('$2')).toBe(true);
